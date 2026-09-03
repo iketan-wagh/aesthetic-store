@@ -1,23 +1,51 @@
-# Python & Django
+# ==========================================
+# Python & Django Bytecode
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
 *.pyc
 *.pyo
-__pycache__/
-*.sqlite3
-db.sqlite3-journal
 
-# Environment Secrets
+# ==========================================
+# Environment Variables & Security Secrets
+# ==========================================
 .env
+.env.*
+!.env.example
+*.env
+
+# ==========================================
+# Virtual Environments
+# ==========================================
+venv/
 .venv/
 env/
-venv/
 ENV/
+env.bak/
+venv.bak/
 
-# Static compilation
+# ==========================================
+# Local Database Files & Cache
+# ==========================================
+*.sqlite3
+*.sqlite3-journal
+db.sqlite3
+db.sqlite3-journal
+
+# ==========================================
+# Static Compilation, Media Uploads & Logs
+# ==========================================
 staticfiles/
+media/
 *.log
 
-# OS & IDE
+# ==========================================
+# OS & IDE Specific Files
+# ==========================================
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
