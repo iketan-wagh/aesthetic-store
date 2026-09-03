@@ -94,7 +94,7 @@ pymysql.install_as_MySQLdb()
 
 import dj_database_url
 
-DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('MYSQL_URL')
+DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('MYSQL_URL') or os.environ.get('MYSQL_PUBLIC_URL')
 DB_ENGINE = os.environ.get('DB_ENGINE', '').lower()
 
 if DATABASE_URL:
