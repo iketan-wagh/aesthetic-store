@@ -29,7 +29,7 @@
             src="{{ product.primary_image_url }}" 
             alt="{{ product.name }}" 
             class="max-w-full max-h-full w-auto h-auto object-contain mx-auto transition duration-500 drop-shadow-sm hover:scale-105"
-            onerror="this.onerror=null; this.src='/static/images/products/{{ product.slug }}1.jpeg';"
+            onerror="this.onerror=null; this.src='/static/images/placeholder.svg';"
           >
           
           {% if product.badge and product.badge != 'NONE' %}
@@ -57,7 +57,7 @@
                 class="pdp-thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-white border {% if forloop.first %}border-terracotta border-2{% else %}border-[#ECE6DB]{% endif %} hover:border-terracotta p-2 focus:outline-none flex-shrink-0 flex items-center justify-center transition shadow-sm"
                 title="View Image {{ forloop.counter }}"
               >
-                <img src="{{ img.image_url }}" alt="{{ product.name }} angle {{ forloop.counter }}" class="max-w-full max-h-full object-contain" onerror="this.onerror=null; this.src='/static/images/products/{{ product.slug }}{{ forloop.counter }}.jpeg';">
+                <img src="{{ img.image_url }}" alt="{{ product.name }} angle {{ forloop.counter }}" class="max-w-full max-h-full object-contain" onerror="this.onerror=null; this.src='/static/images/placeholder.svg';">
               </button>
             {% endfor %}
           {% else %}
@@ -66,14 +66,7 @@
               onclick="document.getElementById('pdp-main-image').src='{{ product.primary_image_url }}'; document.querySelectorAll('.pdp-thumb-btn').forEach(b => { b.classList.remove('border-terracotta', 'border-2'); b.classList.add('border-[#ECE6DB]'); }); this.classList.add('border-terracotta', 'border-2'); this.classList.remove('border-[#ECE6DB]');" 
               class="pdp-thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-white border-2 border-terracotta p-2 focus:outline-none flex-shrink-0 flex items-center justify-center transition shadow-sm"
             >
-              <img src="{{ product.primary_image_url }}" alt="Angle 1" class="max-w-full max-h-full object-contain" onerror="this.onerror=null; this.src='/static/images/products/{{ product.slug }}1.jpeg';">
-            </button>
-            <button 
-              type="button" 
-              onclick="document.getElementById('pdp-main-image').src='{{ product.secondary_image_url }}'; document.querySelectorAll('.pdp-thumb-btn').forEach(b => { b.classList.remove('border-terracotta', 'border-2'); b.classList.add('border-[#ECE6DB]'); }); this.classList.add('border-terracotta', 'border-2'); this.classList.remove('border-[#ECE6DB]');" 
-              class="pdp-thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-white border border-[#ECE6DB] hover:border-terracotta p-2 focus:outline-none flex-shrink-0 flex items-center justify-center transition shadow-sm"
-            >
-              <img src="{{ product.secondary_image_url }}" alt="Angle 2" class="max-w-full max-h-full object-contain" onerror="this.onerror=null; this.src='/static/images/products/{{ product.slug }}2.jpeg';">
+              <img src="{{ product.primary_image_url }}" alt="Angle 1" class="max-w-full max-h-full object-contain" onerror="this.onerror=null; this.src='/static/images/placeholder.svg';">
             </button>
           {% endif %}
         </div>

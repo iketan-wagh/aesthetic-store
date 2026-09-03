@@ -188,6 +188,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+os.makedirs(MEDIA_ROOT / 'products', exist_ok=True)
+os.makedirs(MEDIA_ROOT / 'categories', exist_ok=True)
+os.makedirs(MEDIA_ROOT / 'avatars', exist_ok=True)
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -127,7 +127,7 @@ class Product(models.Model):
         img = self.primary_image_obj
         if img and img.image:
             return img.image.url
-        return f"/static/images/products/{self.slug}1.jpeg"
+        return "/static/images/placeholder.svg"
 
     @property
     def secondary_image_url(self):
@@ -135,11 +135,11 @@ class Product(models.Model):
             imgs = list(self.images.all())
             if len(imgs) > 1 and imgs[1].image:
                 return imgs[1].image.url
-            return f"/static/images/products/{self.slug}2.jpeg"
+            return self.primary_image_url
         imgs = self.images.all()
         if len(imgs) > 1 and imgs[1].image:
             return imgs[1].image.url
-        return f"/static/images/products/{self.slug}2.jpeg"
+        return self.primary_image_url
 
     @property
     def average_rating(self):
@@ -175,4 +175,4 @@ class ProductImage(models.Model):
     def image_url(self):
         if self.image:
             return self.image.url
-        return f"/static/images/products/{self.product.slug}1.jpeg"
+        return "/static/images/placeholder.svg"

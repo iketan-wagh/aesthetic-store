@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" fill="none">
+  <rect width="600" height="600" fill="#F7F4EE"/>
+  <circle cx="300" cy="270" r="80" stroke="#ECE6DB" stroke-width="2" fill="#FAF8F5"/>
+  <path d="M270 270L290 290L330 250" stroke="#C86D51" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="300" y="380" font-family="serif" font-size="20" fill="#1C1B19" text-anchor="middle" letter-spacing="2">AESTHETIC STORE</text>
+  <text x="300" y="410" font-family="sans-serif" font-size="12" fill="#8C827A" text-anchor="middle" letter-spacing="1">IMAGE COMING SOON</text>
+</svg>
