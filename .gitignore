@@ -1,0 +1,23 @@
+# Python & Django
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+db.sqlite3-journal
+
+# Environment Secrets
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Static compilation
+staticfiles/
+*.log
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,103 @@
+<footer class="bg-[#1C1B19] text-[#FAF8F5] pt-16 pb-12 border-t border-neutral-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Top Newsletter Section -->
+    <div class="pb-16 border-b border-neutral-800 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-6 space-y-2">
+        <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">The Aesthetic Letter</span>
+        <h2 class="font-editorial text-3xl sm:text-4xl text-[#FAF8F5]">GET THE GOOD STUFF.</h2>
+        <p class="text-sm text-neutral-400 font-light max-w-md">
+          New drops, aesthetic finds and sustainable swaps. Never spam, just quiet inspiration for intentional living.
+        </p>
+      </div>
+
+      <div class="lg:col-span-6">
+        <form class="newsletter-form flex flex-col sm:flex-row gap-3">
+          <input 
+            type="email" 
+            name="email" 
+            required 
+            placeholder="Your email address..." 
+            class="flex-1 px-5 py-3.5 bg-neutral-900 border border-neutral-700 rounded-full text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-[#C86D51] transition"
+          >
+          <button type="submit" class="btn-terracotta text-xs py-3.5 px-8 whitespace-nowrap">
+            JOIN STORE ✦
+          </button>
+        </form>
+        <p class="text-[11px] text-neutral-500 mt-2.5 sm:ml-4">
+          Enjoy 10% off your first drop with code <span class="text-white font-mono font-bold">AESTHETIC10</span>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Navigation Grid -->
+    <div class="py-14 grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+      
+      <!-- Col 1: Brand Info -->
+      <div class="col-span-2 md:col-span-2 space-y-4">
+        <span class="font-editorial text-3xl tracking-widest text-[#FAF8F5]">Aesthetic Store</span>
+        <p class="text-xs text-neutral-400 max-w-sm leading-relaxed">
+          Aesthetic Store is a modern sustainable lifestyle store that helps young people make their everyday lives more beautiful and conscious.
+        </p>
+        <div class="pt-2">
+          <p class="font-serif italic text-sm text-[#C57D56]">“Beautiful things shouldn't cost the planet.”</p>
+        </div>
+        <div class="flex items-center space-x-4 pt-2">
+          <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-[#C86D51] transition" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://pinterest.com" target="_blank" class="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-[#C86D51] transition" title="Pinterest">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Shop & Categories -->
+      <div class="space-y-3">
+        <p class="text-xs uppercase tracking-widest text-[#FAF8F5] font-bold">Shop</p>
+        <ul class="space-y-2 text-xs text-neutral-400">
+          <li><a href="{% url 'products:shop' %}" class="hover:text-white transition">All Products</a></li>
+          <li><a href="{% url 'products:shop' %}?category=drinkware" class="hover:text-white transition">Drinkware</a></li>
+          <li><a href="{% url 'products:shop' %}?category=home-living" class="hover:text-white transition">Home &amp; Living</a></li>
+          <li><a href="{% url 'products:shop' %}?category=workspace" class="hover:text-white transition">Workspace</a></li>
+          <li><a href="{% url 'products:shop' %}?category=wellness" class="hover:text-white transition">Wellness</a></li>
+          <li><a href="{% url 'products:shop' %}?category=new-drops" class="hover:text-white transition">New Drops</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Brand & Values -->
+      <div class="space-y-3">
+        <p class="text-xs uppercase tracking-widest text-[#FAF8F5] font-bold">About</p>
+        <ul class="space-y-2 text-xs text-neutral-400">
+          <li><a href="{% url 'core:our_story' %}" class="hover:text-white transition">Our Story</a></li>
+          <li><a href="{% url 'core:sustainable_living' %}" class="hover:text-white transition">Sustainable Living</a></li>
+          <li><a href="{% url 'core:sustainable_living' %}#materials" class="hover:text-white transition">Material Guide</a></li>
+          <li><a href="{% url 'core:contact' %}" class="hover:text-white transition">Contact Us</a></li>
+          <li><a href="{% url 'core:faq' %}" class="hover:text-white transition">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Customer Care & Legal -->
+      <div class="space-y-3">
+        <p class="text-xs uppercase tracking-widest text-[#FAF8F5] font-bold">Customer Care</p>
+        <ul class="space-y-2 text-xs text-neutral-400">
+          <li><a href="{% url 'core:shipping_policy' %}" class="hover:text-white transition">Shipping Policy</a></li>
+          <li><a href="{% url 'core:returns_policy' %}" class="hover:text-white transition">Returns &amp; Exchanges</a></li>
+          <li><a href="{% url 'core:privacy_policy' %}" class="hover:text-white transition">Privacy Policy</a></li>
+          <li><a href="{% url 'core:terms_conditions' %}" class="hover:text-white transition">Terms of Service</a></li>
+          <li><a href="{% url 'accounts:profile' %}?tab=orders" class="hover:text-white transition">Track Order</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-8 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
+      <p>© 2026 Aesthetic Store. All rights reserved. Good things. Better vibes.</p>
+      <div class="flex items-center space-x-6">
+        <span>Made with intention for conscious routines</span>
+      </div>
+    </div>
+
+  </div>
+</footer>

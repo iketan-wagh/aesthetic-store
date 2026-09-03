@@ -1,0 +1,187 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block header_title %}Inventory &amp; Product Stock Controller{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- Search & Category Filter -->
+  <div class="glass-card p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+    <form method="GET" action="{% url 'dashboard:inventory' %}" class="flex flex-1 w-full gap-3">
+      <div class="relative flex-1">
+        <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" name="q" value="{{ query }}" placeholder="Search products by Name, SKU, Category..." 
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#ECE6DB] text-xs focus:outline-none focus:border-neutral-900 bg-[#FAF8F5]">
+      </div>
+      <select name="category" onchange="this.form.submit()" class="py-2.5 px-3 rounded-xl border border-[#ECE6DB] text-xs bg-[#FAF8F5]">
+        <option value="">All Categories</option>
+        {% for c in categories %}
+          <option value="{{ c.slug }}" {% if cat_filter == c.slug %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="px-4 py-2.5 rounded-xl bg-[#1C1B19] text-white text-xs font-semibold hover:bg-[#C86D51] transition">
+        Filter
+      </button>
+    </form>
+    
+    <a href="{% url 'admin:products_product_add' %}" target="_blank" class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition flex items-center gap-1.5 shrink-0">
+      <span>+ Add New Product</span>
+      <span class="text-[10px] text-emerald-200">↗</span>
+    </a>
+  </div>
+
+  <!-- Products Table -->
+  <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="border-b border-[#ECE6DB] bg-[#FAF8F5] text-neutral-500 uppercase tracking-wider font-semibold text-[10px]">
+            <th class="py-3 px-4">Product</th>
+            <th class="py-3 px-4">Category</th>
+            <th class="py-3 px-4">Price</th>
+            <th class="py-3 px-4">Current Stock</th>
+            <th class="py-3 px-4 text-center">Quick Adjust</th>
+            <th class="py-3 px-4 text-center">Status</th>
+            <th class="py-3 px-4 text-right">Django Admin</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#ECE6DB]/60">
+          {% for p in products %}
+            <tr class="hover:bg-[#FAF8F5]/80 transition" id="prod-row-{{ p.id }}">
+              
+              <!-- Image & Title -->
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <img src="{{ p.primary_image_url }}" alt="{{ p.name }}" class="w-12 h-12 object-cover rounded-xl border border-[#ECE6DB] shrink-0">
+                  <div>
+                    <a href="{{ p.get_absolute_url }}" target="_blank" class="font-bold text-neutral-900 hover:text-[#C86D51] block text-xs">
+                      {{ p.name }} ↗
+                    </a>
+                    <span class="text-[10px] font-mono text-neutral-400">SKU: {{ p.sku }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Category -->
+              <td class="py-3 px-4 text-neutral-600 font-medium">
+                {{ p.category.name }}
+              </td>
+
+              <!-- Price -->
+              <td class="py-3 px-4 font-bold text-neutral-900">
+                ₹{{ p.current_price|floatformat:0 }}
+                {% if p.discount_price %}
+                  <span class="block text-[10px] text-neutral-400 line-through">₹{{ p.price|floatformat:0 }}</span>
+                {% endif %}
+              </td>
+
+              <!-- Current Stock Pill -->
+              <td class="py-3 px-4">
+                <span id="stock-badge-{{ p.id }}" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold 
+                  {% if p.stock == 0 %}bg-red-50 text-red-700 border border-red-200
+                  {% elif p.stock <= 5 %}bg-amber-50 text-amber-800 border border-amber-200
+                  {% else %}bg-emerald-50 text-emerald-800 border border-emerald-200{% endif %}">
+                  {{ p.stock }} units
+                </span>
+              </td>
+
+              <!-- Quick Stock Adjuster (+ / -) -->
+              <td class="py-3 px-4 text-center">
+                <div class="inline-flex items-center rounded-xl border border-[#ECE6DB] bg-white overflow-hidden shadow-sm">
+                  <button onclick="adjustStock({{ p.id }}, -1)" class="px-2.5 py-1 text-neutral-600 hover:bg-neutral-100 font-bold transition">
+                    −
+                  </button>
+                  <input type="number" id="stock-input-{{ p.id }}" value="{{ p.stock }}" min="0" 
+                    onchange="saveDirectStock({{ p.id }}, this.value)"
+                    class="w-14 text-center text-xs font-mono font-bold py-1 border-x border-[#ECE6DB] focus:outline-none bg-[#FAF8F5]">
+                  <button onclick="adjustStock({{ p.id }}, 1)" class="px-2.5 py-1 text-neutral-600 hover:bg-neutral-100 font-bold transition">
+                    +
+                  </button>
+                </div>
+              </td>
+
+              <!-- Active Toggle Switch -->
+              <td class="py-3 px-4 text-center">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="active-toggle-{{ p.id }}" {% if p.is_active %}checked{% endif %} 
+                    onchange="toggleActive({{ p.id }}, this.checked)" class="sr-only peer">
+                  <div class="w-9 h-5 bg-neutral-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-700"></div>
+                </label>
+              </td>
+
+              <!-- Django Admin Link -->
+              <td class="py-3 px-4 text-right">
+                <a href="{% url 'admin:products_product_change' p.id %}" target="_blank" class="text-[11px] font-semibold text-neutral-500 hover:text-neutral-900 underline">
+                  Edit in Core Admin ↗
+                </a>
+              </td>
+
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="py-8 text-center text-neutral-400 text-xs">
+                No products found.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function updateProduct(productId, payload) {
+    fetch(`/dashboard/inventory/${productId}/update-stock/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const input = document.getElementById(`stock-input-${productId}`);
+        const badge = document.getElementById(`stock-badge-${productId}`);
+        if (input && data.stock !== undefined) input.value = data.stock;
+        if (badge && data.stock !== undefined) {
+          badge.textContent = `${data.stock} units`;
+          badge.className = data.stock === 0 ? 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200' :
+            (data.stock <= 5 ? 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200' :
+            'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200');
+        }
+        const toast = document.getElementById('copy-toast');
+        const toastMsg = document.getElementById('copy-toast-msg');
+        toastMsg.textContent = data.message;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2000);
+      }
+    })
+    .catch(err => alert('Failed to update product stock.'));
+  }
+
+  function adjustStock(productId, delta) {
+    const input = document.getElementById(`stock-input-${productId}`);
+    let cur = parseInt(input.value) || 0;
+    let next = Math.max(0, cur + delta);
+    input.value = next;
+    updateProduct(productId, { stock: next });
+  }
+
+  function saveDirectStock(productId, val) {
+    let next = Math.max(0, parseInt(val) || 0);
+    updateProduct(productId, { stock: next });
+  }
+
+  function toggleActive(productId, isActive) {
+    updateProduct(productId, { is_active: isActive });
+  }
+</script>
+{% endblock %}

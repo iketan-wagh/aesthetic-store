@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shipping Policy | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-12 sm:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="text-center space-y-3 pb-8 border-b border-[#ECE6DB]">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Policy &amp; Timelines</span>
+      <h1 class="font-editorial text-4xl sm:text-5xl text-[#1C1B19]">SHIPPING POLICY</h1>
+    </div>
+    <div class="py-8 space-y-6 text-xs sm:text-sm text-neutral-600 leading-relaxed font-light">
+      <div class="bg-white p-6 rounded-2xl border border-[#ECE6DB] space-y-2">
+        <h3 class="font-serif font-bold text-neutral-900 text-base">Free Shipping Threshold</h3>
+        <p>We provide <strong>FREE SHIPPING on all orders with a subtotal above ₹999</strong> across India. For orders below ₹999, a flat conscious shipping fee of ₹99 is applied at checkout.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-[#ECE6DB] space-y-2">
+        <h3 class="font-serif font-bold text-neutral-900 text-base">Processing &amp; Dispatch</h3>
+        <p>All orders are verified and dispatched within 24 to 48 business hours from our Bengaluru studio. You will receive an email and SMS with live tracking details as soon as the courier scans your package.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-[#ECE6DB] space-y-2">
+        <h3 class="font-serif font-bold text-neutral-900 text-base">Delivery Timelines</h3>
+        <p>• Metro cities: 2-4 business days.</p>
+        <p>• Rest of India: 3-6 business days.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

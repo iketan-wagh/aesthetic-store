@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aesthetic Store | Aesthetic Essentials for a More Conscious Everyday{% endblock %}
+
+{% block content %}
+
+<!-- 1. HERO SECTION -->
+<section class="relative overflow-hidden bg-[#FAF8F5] pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      
+      <!-- Hero Copy -->
+      <div class="lg:col-span-6 space-y-6 text-left">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3EFE6] border border-[#E6DFD1] text-xs font-semibold tracking-wider text-[#C57D56] uppercase">
+          <span>✦</span>
+          <span>Curated Gen-Z Living</span>
+        </div>
+
+        <h1 class="font-editorial text-4xl sm:text-6xl lg:text-7xl font-normal leading-[1.08] text-[#1C1B19] tracking-tight">
+          Make everyday things <span class="italic font-serif text-[#C86D51]">feel better.</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-neutral-600 font-normal max-w-lg leading-relaxed">
+          Aesthetic essentials for a more conscious everyday. Thoughtfully designed objects you'll actually want to keep.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <a href="{% url 'products:shop' %}?category=new-drops" class="btn-primary">
+            SHOP THE DROP
+          </a>
+          <a href="{% url 'core:sustainable_living' %}" class="btn-secondary">
+            EXPLORE SUSTAINABLE LIVING
+          </a>
+        </div>
+
+        <!-- Micro stats -->
+        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-[#E8E2D5] max-w-md">
+          <div>
+            <span class="block font-serif text-xl sm:text-2xl font-bold text-neutral-900">100%</span>
+            <span class="text-[11px] text-neutral-500 uppercase tracking-wider">Plastic-Free Pack</span>
+          </div>
+          <div>
+            <span class="block font-serif text-xl sm:text-2xl font-bold text-neutral-900">Pure</span>
+            <span class="text-[11px] text-neutral-500 uppercase tracking-wider">Natural Materials</span>
+          </div>
+          <div>
+            <span class="block font-serif text-xl sm:text-2xl font-bold text-neutral-900">4.9★</span>
+            <span class="text-[11px] text-neutral-500 uppercase tracking-wider">Verified Reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Composition -->
+      <div class="lg:col-span-6 relative">
+        <div class="relative mx-auto rounded-3xl overflow-hidden shadow-xl border border-[#E8E2D5] bg-[#F7F4EE] aspect-[16/11]">
+          <img 
+            src="{% static 'images/lifestyle/hero-composition.jpg' %}" 
+            alt="Aesthetic Store Lifestyle Composition" 
+            class="w-full h-full object-cover transform hover:scale-[1.02] transition duration-700 ease-out"
+          >
+          
+          <!-- Floating Editorial Pill -->
+          <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-[#ECE6DB] shadow-md flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#C86D51] animate-pulse"></span>
+            <div>
+              <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Featured Edit</p>
+              <p class="text-xs font-serif font-bold text-neutral-900">The Modern Hydration Ritual</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 2. PRODUCT PHILOSOPHY SECTION -->
+<section class="py-16 sm:py-24 bg-white border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Our Philosophy</span>
+      <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19]">BEAUTIFUL. USEFUL. CONSCIOUS.</h2>
+      <p class="text-sm sm:text-base text-neutral-600 leading-relaxed font-light">
+        “Things you actually want to own — thoughtfully designed, made to last, and easier on the planet.”
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Principle 1 -->
+      <div class="p-8 rounded-2xl bg-[#FAF8F5] border border-[#ECE6DB] space-y-4 transition hover:border-[#C86D51]">
+        <div class="w-12 h-12 rounded-full bg-[#F3EFE6] flex items-center justify-center text-xl text-[#C86D51] font-serif">01</div>
+        <h3 class="font-serif text-xl font-bold text-neutral-900 tracking-wide">LOOKS GOOD</h3>
+        <p class="text-sm text-neutral-600 leading-relaxed font-light">
+          Designed for modern spaces and modern lives. Clean proportions, warm ivory tones, and calming textures that fit seamlessly into your aesthetic room.
+        </p>
+      </div>
+
+      <!-- Principle 2 -->
+      <div class="p-8 rounded-2xl bg-[#FAF8F5] border border-[#ECE6DB] space-y-4 transition hover:border-[#C86D51]">
+        <div class="w-12 h-12 rounded-full bg-[#F3EFE6] flex items-center justify-center text-xl text-[#C86D51] font-serif">02</div>
+        <h3 class="font-serif text-xl font-bold text-neutral-900 tracking-wide">BUILT TO LAST</h3>
+        <p class="text-sm text-neutral-600 leading-relaxed font-light">
+          Reusable alternatives to everyday disposable products. Solid single-source copper, double-wall stainless steel, and Moso bamboo that age with grace.
+        </p>
+      </div>
+
+      <!-- Principle 3 -->
+      <div class="p-8 rounded-2xl bg-[#FAF8F5] border border-[#ECE6DB] space-y-4 transition hover:border-[#C86D51]">
+        <div class="w-12 h-12 rounded-full bg-[#F3EFE6] flex items-center justify-center text-xl text-[#C86D51] font-serif">03</div>
+        <h3 class="font-serif text-xl font-bold text-neutral-900 tracking-wide">BETTER CHOICES</h3>
+        <p class="text-sm text-neutral-600 leading-relaxed font-light">
+          Thoughtfully selected materials and makers. Zero plastic packaging, plant-based soy wax, and honest craft without exaggerated greenwashing.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 3. THE NEW DROP SECTION -->
+<section class="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+      <div>
+        <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Limited Seasonal Batch</span>
+        <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19] mt-1">THE NEW DROP</h2>
+      </div>
+      <a href="{% url 'products:shop' %}?category=new-drops" class="text-xs font-semibold uppercase tracking-widest text-[#1C1B19] hover:text-[#C86D51] transition flex items-center gap-1.5">
+        View All Drops →
+      </a>
+    </div>
+
+    <!-- 4 Product Cards Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      {% for product in new_drops %}
+        {% include 'components/product_card.html' with product=product %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- 4. CATEGORY EXPLORER ("FIND YOUR VIBE") -->
+<section class="py-16 sm:py-24 bg-white border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-14 space-y-2">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Shop by Space</span>
+      <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19]">FIND YOUR VIBE</h2>
+      <p class="text-sm text-neutral-500 font-light">Explore conscious swaps curated for every moment of your routine.</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      
+      <!-- Category 1: Drinkware -->
+      <a href="{% url 'products:shop' %}?category=drinkware" class="group relative rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#ECE6DB] p-4 text-center hover:border-terracotta transition flex flex-col justify-between aspect-[3/4]">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#F3EFE6] mb-3">
+          <img src="{% static 'images/categories/category-drinkware.jpg' %}" alt="Drinkware" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        </div>
+        <div>
+          <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-terracotta transition">Drinkware</h4>
+          <p class="text-[10px] text-neutral-400 mt-0.5">Hydration Rituals</p>
+        </div>
+      </a>
+
+      <!-- Category 2: Home & Living -->
+      <a href="{% url 'products:shop' %}?category=home-living" class="group relative rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#ECE6DB] p-4 text-center hover:border-terracotta transition flex flex-col justify-between aspect-[3/4]">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#F3EFE6] mb-3">
+          <img src="{% static 'images/categories/category-home-living.jpg' %}" alt="Home & Living" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        </div>
+        <div>
+          <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-terracotta transition">Home</h4>
+          <p class="text-[10px] text-neutral-400 mt-0.5">Soy Candles & Mood</p>
+        </div>
+      </a>
+
+      <!-- Category 3: Workspace -->
+      <a href="{% url 'products:shop' %}?category=workspace" class="group relative rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#ECE6DB] p-4 text-center hover:border-terracotta transition flex flex-col justify-between aspect-[3/4]">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#F3EFE6] mb-3">
+          <img src="{% static 'images/categories/category-workspace.jpg' %}" alt="Workspace" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        </div>
+        <div>
+          <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-terracotta transition">Workspace</h4>
+          <p class="text-[10px] text-neutral-400 mt-0.5">Bamboo Desks</p>
+        </div>
+      </a>
+
+      <!-- Category 4: Wellness -->
+      <a href="{% url 'products:shop' %}?category=wellness" class="group relative rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#ECE6DB] p-4 text-center hover:border-terracotta transition flex flex-col justify-between aspect-[3/4]">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#F3EFE6] mb-3">
+          <img src="{% static 'images/categories/category-wellness.jpg' %}" alt="Wellness" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        </div>
+        <div>
+          <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-terracotta transition">Wellness</h4>
+          <p class="text-[10px] text-neutral-400 mt-0.5">Daily Grounding</p>
+        </div>
+      </a>
+
+      <!-- Category 5: Everyday Carry -->
+      <a href="{% url 'products:shop' %}?category=everyday-carry" class="group relative rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#ECE6DB] p-4 text-center hover:border-terracotta transition flex flex-col justify-between aspect-[3/4]">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#F3EFE6] mb-3">
+          <img src="{% static 'images/categories/category-everyday-carry.jpg' %}" alt="Everyday Carry" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        </div>
+        <div>
+          <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-terracotta transition">Everyday</h4>
+          <p class="text-[10px] text-neutral-400 mt-0.5">Conscious Transit</p>
+        </div>
+      </a>
+
+      <!-- Category 6: Gifting -->
+      <a href="{% url 'products:shop' %}?category=gifting" class="group relative rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#ECE6DB] p-4 text-center hover:border-terracotta transition flex flex-col justify-between aspect-[3/4]">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#F3EFE6] mb-3">
+          <img src="{% static 'images/categories/category-gifting.jpg' %}" alt="Gifting" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        </div>
+        <div>
+          <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-terracotta transition">Gifting</h4>
+          <p class="text-[10px] text-neutral-400 mt-0.5">Thoughtful Bundles</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 5. SUSTAINABILITY SECTION -->
+<section class="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-5 space-y-6">
+        <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Practical Impact</span>
+        <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19] leading-tight">
+          SMALL SWITCHES. BETTER EVERYDAYS.
+        </h2>
+        <p class="text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
+          Sustainability shouldn't mean sacrificing beauty or convenience. We engineer durable, plastic-free swaps that integrate smoothly into modern morning rushes, coffee breaks, and calm study sessions.
+        </p>
+
+        <div class="space-y-3 pt-2">
+          <div class="flex items-start gap-3">
+            <span class="text-terracotta font-bold">✦</span>
+            <div>
+              <p class="text-xs font-semibold text-neutral-900">Zero Single-Use Plastics</p>
+              <p class="text-xs text-neutral-500">Shipped exclusively in 100% recyclable kraft paper and compostable plant-based pouches.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-terracotta font-bold">✦</span>
+            <div>
+              <p class="text-xs font-semibold text-neutral-900">Honest Material Lineage</p>
+              <p class="text-xs text-neutral-500">Ayurvedic copper, 18/8 food-safe steel, Moso bamboo, and domestic clean-burning soy wax.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <a href="{% url 'core:sustainable_living' %}" class="btn-primary text-xs">
+            Read Our Material Guide →
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 grid grid-cols-2 gap-4">
+        <div class="rounded-2xl overflow-hidden bg-white border border-[#E8E2D5] p-6 space-y-3 shadow-sm">
+          <div class="text-2xl">🌱</div>
+          <h4 class="font-serif font-bold text-base text-neutral-900">1,400+ Bottles</h4>
+          <p class="text-xs text-neutral-500 leading-relaxed">Average disposable plastic bottles saved per Aura copper bottle over 5 years of daily hydration.</p>
+        </div>
+        <div class="rounded-2xl overflow-hidden bg-white border border-[#E8E2D5] p-6 space-y-3 shadow-sm">
+          <div class="text-2xl">☕</div>
+          <h4 class="font-serif font-bold text-base text-neutral-900">400+ Paper Cups</h4>
+          <p class="text-xs text-neutral-500 leading-relaxed">Diverted from landfills annually when replacing takeaway coffee with our Cloud vacuum tumbler.</p>
+        </div>
+        <div class="rounded-2xl overflow-hidden bg-white border border-[#E8E2D5] p-6 space-y-3 shadow-sm">
+          <div class="text-2xl">🎋</div>
+          <h4 class="font-serif font-bold text-base text-neutral-900">Rapid Regrowth</h4>
+          <p class="text-xs text-neutral-500 leading-relaxed">Moso bamboo matures in 3-5 years without chemical fertilizers or pesticide runoff.</p>
+        </div>
+        <div class="rounded-2xl overflow-hidden bg-white border border-[#E8E2D5] p-6 space-y-3 shadow-sm">
+          <div class="text-2xl">🕯️</div>
+          <h4 class="font-serif font-bold text-base text-neutral-900">Clean Plant Wax</h4>
+          <p class="text-xs text-neutral-500 leading-relaxed">100% natural soy wax burns soot-free with ceramic tumblers you can repurpose permanently.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 6. EDITORIAL SECTION ("THE EVERYDAY EDIT") -->
+<section class="py-16 sm:py-24 bg-[#F3EFE6] border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative rounded-3xl overflow-hidden bg-white border border-[#E8E2D5] shadow-xl p-8 sm:p-14 lg:p-20">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Curated Story</span>
+          <h2 class="font-editorial text-4xl sm:text-6xl text-[#1C1B19] leading-tight">
+            THE EVERYDAY EDIT.
+          </h2>
+          
+          <div class="space-y-2 font-serif text-lg sm:text-xl text-neutral-700 italic">
+            <p>Your desk. Your bottle. Your room. Your rituals.</p>
+            <p class="text-[#C86D51] font-bold not-italic text-2xl sm:text-3xl font-editorial mt-2">Upgrade the little things.</p>
+          </div>
+
+          <p class="text-xs sm:text-sm text-neutral-500 max-w-md font-light leading-relaxed">
+            The objects you interact with fifty times a day shouldn't be cheap, disposable, or ugly. Bring intention and aesthetic pleasure to your everyday moments.
+          </p>
+
+          <div class="pt-4">
+            <a href="{% url 'products:shop' %}" class="btn-primary text-xs py-4 px-8 tracking-widest uppercase">
+              SHOP THE EDIT →
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-[#FAF8F5] border border-[#ECE6DB] shadow-md">
+            <img src="{% static 'images/lifestyle/everyday-edit.jpg' %}" alt="The Everyday Edit" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 7. BEST SELLERS SECTION -->
+<section class="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12 space-y-2">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Community Favorites</span>
+      <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19]">BEST SELLERS</h2>
+      <p class="text-sm text-neutral-500 font-light">The everyday pieces our community can't stop raving about.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      {% for product in bestsellers %}
+        {% include 'components/product_card.html' with product=product %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- 8. BRAND STORY ("LESS STUFF. BETTER STUFF.") -->
+<section class="py-16 sm:py-24 bg-white border-b border-[#ECE6DB]">
+  <div class="max-w-4xl mx-auto px-4 text-center space-y-6">
+    <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">The Aesthetic Store Manifesto</span>
+    <h2 class="font-editorial text-4xl sm:text-6xl text-[#1C1B19]">
+      LESS STUFF. BETTER STUFF.
+    </h2>
+    <p class="font-serif text-xl sm:text-2xl text-neutral-700 italic max-w-2xl mx-auto leading-relaxed">
+      “Aesthetic Store exists for people who care about what they buy — but still want their world to look good.”
+    </p>
+    <p class="text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto font-light leading-relaxed">
+      We believe in conscious consumption without ascetic minimalism. Surround yourself with intentional items crafted from noble materials that elevate your daily space.
+    </p>
+    <div class="pt-2">
+      <a href="{% url 'core:our_story' %}" class="btn-secondary text-xs">
+        Read Our Story ✦
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- 9. SOCIAL PROOF / REVIEWS -->
+<section class="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#ECE6DB]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12 space-y-2">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Real Stories</span>
+      <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19]">WHAT OUR PEOPLE SAY</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for rev in reviews %}
+        <div class="p-6 sm:p-8 rounded-2xl bg-white border border-[#ECE6DB] flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div class="space-y-3">
+            <div class="flex items-center gap-1 text-amber-600 text-sm">
+              {% for i in rev.star_range %}★{% endfor %}
+            </div>
+            <h4 class="font-serif font-bold text-base text-neutral-900">“{{ rev.title }}”</h4>
+            <p class="text-xs text-neutral-600 leading-relaxed font-light">
+              {{ rev.comment }}
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-neutral-900">{{ rev.user.first_name|default:rev.user.username }}</p>
+              <p class="text-[10px] text-neutral-400">Verified Conscious Buyer</p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#F3EFE6] text-neutral-700 font-semibold truncate max-w-[120px]">
+              {{ rev.product.name }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- 10. INSTAGRAM GALLERY (@AESTHETICSTORE.EVERYDAY) -->
+<section class="py-16 sm:py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12 space-y-2">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Community Aesthetic</span>
+      <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19]">@AESTHETICSTORE.EVERYDAY</h2>
+      <p class="text-sm text-neutral-500 font-light">Tag your desk setups and slow mornings with #aestheticvibes to be featured.</p>
+    </div>
+
+    <!-- 6 Lifestyle Cards Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      
+      <div class="group relative rounded-2xl overflow-hidden aspect-square bg-[#FAF8F5] border border-[#ECE6DB]">
+        <img src="{% static 'images/instagram/instagram-1.jpg' %}" alt="Instagram 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden aspect-square bg-[#FAF8F5] border border-[#ECE6DB]">
+        <img src="{% static 'images/instagram/instagram-2.jpg' %}" alt="Instagram 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden aspect-square bg-[#FAF8F5] border border-[#ECE6DB]">
+        <img src="{% static 'images/instagram/instagram-3.jpg' %}" alt="Instagram 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden aspect-square bg-[#FAF8F5] border border-[#ECE6DB]">
+        <img src="{% static 'images/instagram/instagram-4.jpg' %}" alt="Instagram 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden aspect-square bg-[#FAF8F5] border border-[#ECE6DB]">
+        <img src="{% static 'images/instagram/instagram-5.jpg' %}" alt="Instagram 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden aspect-square bg-[#FAF8F5] border border-[#ECE6DB]">
+        <img src="{% static 'images/instagram/instagram-6.jpg' %}" alt="Instagram 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

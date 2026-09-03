@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact &amp; Studio | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-12 sm:py-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6">
+    
+    <div class="text-center space-y-3 pb-10 border-b border-[#ECE6DB]">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Get In Touch</span>
+      <h1 class="font-editorial text-4xl sm:text-5xl text-[#1C1B19]">SAY HELLO TO AESTHETIC STORE</h1>
+      <p class="text-xs sm:text-sm text-neutral-500 font-light">Questions about an order, custom gifting edits, or sustainable wholesale?</p>
+    </div>
+
+    <div class="py-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      
+      <!-- Contact Details -->
+      <div class="md:col-span-5 space-y-6">
+        <div class="p-6 bg-white rounded-2xl border border-[#ECE6DB] space-y-4 shadow-sm">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Studio &amp; HQ</p>
+            <p class="text-xs font-semibold text-neutral-900 mt-1">Aesthetic Store Conscious Living Labs</p>
+            <p class="text-xs text-neutral-500">Indiranagar, 100ft Road, Bengaluru 560038</p>
+          </div>
+
+          <div class="pt-2 border-t border-neutral-100">
+            <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Direct Email</p>
+            <p class="text-xs font-semibold text-neutral-900 mt-1">hello@aestheticstore.com</p>
+          </div>
+
+          <div class="pt-2 border-t border-neutral-100">
+            <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Hours</p>
+            <p class="text-xs text-neutral-600 mt-1">Mon – Fri: 10:00 AM – 6:00 PM IST</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="md:col-span-7">
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#ECE6DB] shadow-sm space-y-4">
+          {% if success %}
+            <div class="p-4 rounded-xl bg-emerald-50 text-emerald-800 text-xs border border-emerald-200">
+              ✦ Thank you, {{ name }}! Your message has been received. Our team will get back to you within 24 hours.
+            </div>
+          {% endif %}
+
+          <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 mb-1">Your Name</label>
+                <input type="text" name="name" required placeholder="Aarav Shah" class="form-input text-xs">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 mb-1">Your Email</label>
+                <input type="email" name="email" required placeholder="aarav@example.com" class="form-input text-xs">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-neutral-700 mb-1">Subject</label>
+              <input type="text" name="subject" required placeholder="Order inquiry / Gifting collaboration" class="form-input text-xs">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-neutral-700 mb-1">Message</label>
+              <textarea name="message" rows="4" required placeholder="Tell us how we can help..." class="form-input text-xs"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary w-full py-3.5 text-xs tracking-widest uppercase">
+              Send Message ✦
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

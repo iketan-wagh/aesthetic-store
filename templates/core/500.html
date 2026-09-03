@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}500 - Server Hiccup | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-24 sm:py-32">
+  <div class="max-w-xl mx-auto px-4 text-center space-y-6">
+    <span class="font-mono text-xs font-bold uppercase tracking-widest text-[#C57D56]">Error 500</span>
+    <h1 class="font-editorial text-5xl sm:text-6xl text-[#1C1B19]">
+      A subtle pause.
+    </h1>
+    <p class="font-serif text-xl text-neutral-600 italic">
+      “Our servers are taking a mindful breath.”
+    </p>
+    <p class="text-xs text-neutral-500 max-w-sm mx-auto font-light leading-relaxed">
+      Something unexpected happened on our end. We're already fine-tuning the system.
+    </p>
+    <div class="pt-4">
+      <a href="{% url 'core:home' %}" class="btn-primary py-4 px-8 text-xs tracking-widest uppercase">
+        RETURN HOME ✦
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

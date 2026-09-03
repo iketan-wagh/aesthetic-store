@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Packing Slip - {{ order.order_number }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-[#FAF8F5] p-6 md:p-12 font-sans text-[#1C1B19]">
+  <div class="max-w-2xl mx-auto bg-white p-8 sm:p-10 rounded-2xl border border-[#ECE6DB] shadow-sm space-y-6">
+    
+    <!-- Action Header (Hidden in Print) -->
+    <div class="no-print flex items-center justify-between pb-4 border-b border-[#ECE6DB]">
+      <a href="{% url 'dashboard:orders' %}" class="text-xs text-neutral-500 hover:text-neutral-900 font-semibold">&larr; Back to Dashboard</a>
+      <button onclick="window.print()" class="px-5 py-2 bg-[#1C1B19] hover:bg-[#C86D51] text-white text-xs font-semibold rounded-full transition shadow-sm flex items-center gap-2">
+        <span>🖨️ Print Dispatch Slip</span>
+      </button>
+    </div>
+
+    <!-- Slip Header -->
+    <div class="flex items-start justify-between border-b border-[#ECE6DB] pb-6">
+      <div>
+        <span class="text-[10px] font-bold tracking-[0.25em] text-[#C86D51] uppercase block">Conscious Lifestyle</span>
+        <h1 class="font-serif text-2xl font-bold tracking-tight text-neutral-900">Aesthetic Store</h1>
+        <p class="text-xs text-neutral-500">Good things. Better vibes.</p>
+      </div>
+      <div class="text-right font-mono">
+        <p class="text-xs font-bold text-neutral-400">DISPATCH &amp; PACKING SLIP</p>
+        <p class="text-lg font-bold text-neutral-900">{{ order.order_number }}</p>
+        <p class="text-xs text-neutral-500">{{ order.created_at|date:"d M Y, h:i A" }}</p>
+      </div>
+    </div>
+
+    <!-- Shipping Destination Box -->
+    <div class="grid grid-cols-2 gap-6 bg-[#FAF8F5] p-6 rounded-xl border border-[#ECE6DB] text-xs">
+      <div class="space-y-1">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">SHIP TO (RECIPIENT):</span>
+        <p class="text-sm font-bold text-neutral-900">{{ order.shipping_name }}</p>
+        <p class="text-neutral-800 font-medium leading-relaxed">
+          {{ order.shipping_address_line1 }}
+          {% if order.shipping_address_line2 %}<br>{{ order.shipping_address_line2 }}{% endif %}
+        </p>
+        {% if order.shipping_landmark %}
+          <p class="text-neutral-500">Landmark: {{ order.shipping_landmark }}</p>
+        {% endif %}
+        <p class="font-bold text-neutral-900">{{ order.shipping_city }}, {{ order.shipping_state }} - {{ order.shipping_pincode }}</p>
+        <p class="font-mono text-neutral-700 font-bold pt-1">Phone: {{ order.shipping_phone }}</p>
+      </div>
+
+      <div class="space-y-2 border-l border-[#ECE6DB] pl-6 text-right">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">PAYMENT STATUS</span>
+          <p class="font-bold text-emerald-800">{{ order.payment_status }} ✦ {{ order.payment_method }}</p>
+          {% if order.payment_id %}
+            <p class="text-[10px] text-neutral-500 font-mono">Txn: {{ order.payment_id }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">TRACKING / AWB</span>
+          <p class="font-mono text-xs font-bold text-neutral-900">{{ order.tracking_number|default:'Not Assigned' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="space-y-3">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-400">Items to Pack ({{ order.items.count }})</h3>
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="border-b border-[#ECE6DB] text-neutral-500 font-semibold text-[10px] uppercase">
+            <th class="py-2">Item Description</th>
+            <th class="py-2">SKU</th>
+            <th class="py-2 text-center">Qty</th>
+            <th class="py-2 text-right">Price</th>
+            <th class="py-2 text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#ECE6DB]/60">
+          {% for item in order.items.all %}
+            <tr>
+              <td class="py-3 font-semibold text-neutral-900">{{ item.product_name }}</td>
+              <td class="py-3 font-mono text-neutral-500 text-[10px]">{{ item.product_sku }}</td>
+              <td class="py-3 text-center font-bold text-neutral-900">{{ item.quantity }}</td>
+              <td class="py-3 text-right text-neutral-600">₹{{ item.price|floatformat:0 }}</td>
+              <td class="py-3 text-right font-bold text-neutral-900">₹{{ item.subtotal|floatformat:0 }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Order Financial Summary -->
+    <div class="border-t border-[#ECE6DB] pt-4 flex justify-between text-xs">
+      <div class="text-[11px] text-neutral-500 space-y-1">
+        <p>✦ Packed with 100% plastic-free recyclable materials.</p>
+        <p>✦ Thank you for shopping consciously with Aesthetic Store.</p>
+      </div>
+      <div class="space-y-1 text-right w-48">
+        <div class="flex justify-between text-neutral-600">
+          <span>Subtotal:</span>
+          <span>₹{{ order.subtotal|floatformat:2 }}</span>
+        </div>
+        {% if order.discount_amount > 0 %}
+          <div class="flex justify-between text-emerald-700">
+            <span>Discount ({{ order.coupon_code }}):</span>
+            <span>-₹{{ order.discount_amount|floatformat:2 }}</span>
+          </div>
+        {% endif %}
+        <div class="flex justify-between text-neutral-600">
+          <span>Shipping:</span>
+          <span>{% if order.shipping_fee == 0 %}FREE{% else %}₹{{ order.shipping_fee|floatformat:2 }}{% endif %}</span>
+        </div>
+        <div class="flex justify-between font-bold text-sm text-neutral-900 border-t border-[#ECE6DB] pt-1">
+          <span>Total Paid:</span>
+          <span>₹{{ order.total_amount|floatformat:2 }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

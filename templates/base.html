@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>{% block title %}Aesthetic Store | Good things. Better vibes.{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Aesthetic Store is a modern sustainable lifestyle store helping you make your everyday life more beautiful and conscious. Aesthetic essentials crafted to last.{% endblock %}">
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}Aesthetic Store | Good things. Better vibes.{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Aesthetic, sustainable, minimal lifestyle essentials for a more conscious everyday.{% endblock %}">
+  <meta property="og:site_name" content="Aesthetic Store">
+  
+  <!-- Font Preconnect & Stylesheets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ivory: '#FAF8F5',
+            charcoal: '#1C1B19',
+            terracotta: '#C86D51',
+            sage: '#7B8C78',
+            copper: '#C57D56',
+            beige: '#F3EFE6',
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'DM Serif Display', 'Georgia', 'serif'],
+            editorial: ['DM Serif Display', 'Cormorant Garamond', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Aesthetic Store",
+    "description": "Modern sustainable lifestyle store for conscious routines.",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "priceRange": "₹599 - ₹1499"
+  }
+  </script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-[#FAF8F5] text-[#1C1B19] antialiased flex flex-col min-h-screen">
+  
+  <!-- Announcement Bar -->
+  {% include 'components/announcement_bar.html' %}
+
+  <!-- Navbar -->
+  {% include 'components/navbar.html' %}
+
+  <!-- Slide-Over Cart Drawer -->
+  {% include 'components/cart_drawer.html' %}
+
+  <!-- Live Search Overlay -->
+  {% include 'components/search_overlay.html' %}
+
+  <!-- Toast Container -->
+  {% include 'components/toast.html' %}
+
+  <!-- Main Body Content -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  {% include 'components/footer.html' %}
+
+  <!-- JavaScript Modules -->
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/cart.js' %}"></script>
+  <script src="{% static 'js/wishlist.js' %}"></script>
+  <script src="{% static 'js/search.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

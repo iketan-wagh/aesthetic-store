@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Store Operations Hub | Aesthetic Store{% endblock %}</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              charcoal: '#1C1B19',
+              dark: '#141312',
+              cream: '#FAF8F5',
+              sand: '#ECE6DB',
+              terracotta: '#C86D51',
+              olive: '#4A5B4C',
+              amber: '#D97706',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card { background: #FFFFFF; border: 1px solid #ECE6DB; box-shadow: 0 2px 12px rgba(28,27,25,0.03); }
+    .nav-item-active { background: #1C1B19; color: #FAF8F5; }
+    .nav-item-inactive { color: #57534E; }
+    .nav-item-inactive:hover { background: #F5F0E8; color: #1C1B19; }
+    
+    /* Toast Animation */
+    @keyframes slideInUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="bg-[#F6F4EE] text-[#1C1B19] antialiased min-h-screen flex flex-col md:flex-row">
+
+  <!-- Sidebar Navigation -->
+  <aside class="w-full md:w-64 bg-white border-r border-[#ECE6DB] flex flex-col shrink-0">
+    <!-- Brand Header -->
+    <div class="p-6 border-b border-[#ECE6DB] flex items-center justify-between">
+      <div>
+        <span class="text-[10px] font-bold tracking-[0.25em] text-[#C86D51] uppercase block">Admin Operations</span>
+        <a href="{% url 'dashboard:home' %}" class="font-serif text-xl font-bold tracking-tight text-[#1C1B19]">Aesthetic Store</a>
+      </div>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        Live ✦
+      </span>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="p-4 space-y-1.5 flex-1">
+      <a href="{% url 'dashboard:home' %}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {% if active_nav == 'overview' %}nav-item-active{% else %}nav-item-inactive{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>Overview &amp; KPIs</span>
+      </a>
+
+      <a href="{% url 'dashboard:orders' %}" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {% if active_nav == 'orders' %}nav-item-active{% else %}nav-item-inactive{% endif %}">
+        <div class="flex items-center gap-3">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Orders &amp; Addresses</span>
+        </div>
+        <span class="text-[10px] px-2 py-0.5 rounded-full {% if active_nav == 'orders' %}bg-white/20 text-white{% else %}bg-neutral-100 text-neutral-600{% endif %} font-mono">
+          Fulfillment
+        </span>
+      </a>
+
+      <a href="{% url 'dashboard:inventory' %}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {% if active_nav == 'inventory' %}nav-item-active{% else %}nav-item-inactive{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <span>Inventory &amp; Stock</span>
+      </a>
+
+      <a href="{% url 'dashboard:customers' %}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {% if active_nav == 'customers' %}nav-item-active{% else %}nav-item-inactive{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span>Customer Directory</span>
+      </a>
+
+      <a href="{% url 'dashboard:coupons' %}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {% if active_nav == 'coupons' %}nav-item-active{% else %}nav-item-inactive{% endif %}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+        <span>Coupons &amp; Offers</span>
+      </a>
+    </nav>
+
+    <!-- Footer Controls -->
+    <div class="p-4 border-t border-[#ECE6DB] space-y-3 bg-[#FAF8F5]">
+      <a href="{% url 'core:home' %}" target="_blank" class="flex items-center justify-between text-xs text-neutral-600 hover:text-neutral-900 font-medium py-1">
+        <span>View Live Store</span>
+        <span>↗</span>
+      </a>
+      <div class="flex items-center justify-between pt-2 border-t border-[#ECE6DB]/60">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full bg-[#1C1B19] text-[#FAF8F5] flex items-center justify-center text-xs font-bold uppercase">
+            {{ request.user.username.0|default:'A' }}
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-neutral-900">{{ request.user.get_full_name|default:request.user.username }}</p>
+            <p class="text-[10px] text-neutral-400">Admin Staff</p>
+          </div>
+        </div>
+        <a href="{% url 'accounts:logout' %}" class="text-[11px] text-red-600 hover:underline font-medium">Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <!-- Top Bar -->
+    <header class="h-16 bg-white border-b border-[#ECE6DB] px-6 flex items-center justify-between shrink-0">
+      <h2 class="font-serif text-lg font-bold text-neutral-900">
+        {% block header_title %}Operations Overview{% endblock %}
+      </h2>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-neutral-500 font-mono" id="live-time"></span>
+        <a href="{% url 'dashboard:lock' %}" class="text-xs bg-red-50 hover:bg-red-100 text-red-700 font-semibold px-3 py-1.5 rounded-lg border border-red-200 transition flex items-center gap-1.5" title="Lock Dashboard Session">
+          <span>🔒 Lock Hub</span>
+        </a>
+        <a href="{% url 'admin:index' %}" target="_blank" class="text-xs bg-[#FAF8F5] hover:bg-[#ECE6DB] text-neutral-700 font-semibold px-3 py-1.5 rounded-lg border border-[#ECE6DB] transition flex items-center gap-1.5">
+          <span>Django Core Admin</span>
+          <span class="text-[10px] text-neutral-400">↗</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Body Content -->
+    <div class="p-6 md:p-8 flex-1">
+      {% if messages %}
+        <div class="mb-6 space-y-2">
+          {% for message in messages %}
+            <div class="p-3.5 rounded-xl text-xs font-medium border flex items-center justify-between {% if message.tags == 'error' %}bg-red-50 text-red-800 border-red-200{% else %}bg-emerald-50 text-emerald-800 border-emerald-200{% endif %}">
+              <span>{{ message }}</span>
+              <button onclick="this.parentElement.remove()" class="text-neutral-400 hover:text-neutral-700">✕</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Global Clipboard Toast -->
+  <div id="copy-toast" class="fixed bottom-6 right-6 bg-[#1C1B19] text-[#FAF8F5] px-5 py-3 rounded-2xl shadow-2xl text-xs font-semibold flex items-center gap-3 hidden z-50 toast-anim border border-neutral-700">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span id="copy-toast-msg">Shipping label copied to clipboard!</span>
+  </div>
+
+  <script>
+    // Live Clock
+    function updateTime() {
+      const now = new Date();
+      const el = document.getElementById('live-time');
+      if (el) el.textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Copy to Clipboard Utility
+    function copyToClipboard(text, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('copy-toast');
+        const toastMsg = document.getElementById('copy-toast-msg');
+        if (msg) toastMsg.textContent = msg;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+      });
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

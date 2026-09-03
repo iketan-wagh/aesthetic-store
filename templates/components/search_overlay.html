@@ -1,0 +1,68 @@
+<div id="search-overlay" class="fixed inset-0 z-50 bg-[#FAF8F5]/98 backdrop-blur-lg hidden overflow-y-auto transition-all duration-300">
+  <div class="max-w-4xl mx-auto px-4 py-8 sm:py-16">
+    
+    <!-- Top Action Bar -->
+    <div class="flex justify-between items-center pb-6 border-b border-[#E2DDD3]">
+      <span class="font-editorial text-2xl tracking-widest text-[#1C1B19]">NOMA SEARCH</span>
+      <button id="search-overlay-close" class="p-2 text-neutral-500 hover:text-black rounded-full hover:bg-[#F3EFE6] transition">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Search Input -->
+    <div class="mt-8 relative">
+      <input 
+        type="text" 
+        id="search-overlay-input" 
+        placeholder="Search aesthetic essentials, copper, tumbler, candle..." 
+        autocomplete="off"
+        class="w-full text-xl sm:text-3xl font-serif py-4 bg-transparent border-b-2 border-[#1C1B19] focus:outline-none placeholder-neutral-400 text-neutral-900"
+      >
+      <span class="absolute right-2 top-5 text-neutral-400">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </span>
+    </div>
+
+    <!-- Default Initial State -->
+    <div id="search-default-view" class="mt-12 space-y-10">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-400 font-bold mb-4">Trending Searches</p>
+        <div class="flex flex-wrap gap-2.5">
+          <button class="search-tag-btn text-xs px-4 py-2 rounded-full bg-white border border-[#E6DFD1] hover:border-terracotta hover:text-terracotta transition font-medium text-neutral-800" data-query="Aura Copper Bottle">
+            Aura Copper Bottle ✦
+          </button>
+          <button class="search-tag-btn text-xs px-4 py-2 rounded-full bg-white border border-[#E6DFD1] hover:border-terracotta hover:text-terracotta transition font-medium text-neutral-800" data-query="Cloud Reusable Tumbler">
+            Cloud Tumbler ✦
+          </button>
+          <button class="search-tag-btn text-xs px-4 py-2 rounded-full bg-white border border-[#E6DFD1] hover:border-terracotta hover:text-terracotta transition font-medium text-neutral-800" data-query="Slow Sunday Soy Candle">
+            Soy Candle ✦
+          </button>
+          <button class="search-tag-btn text-xs px-4 py-2 rounded-full bg-white border border-[#E6DFD1] hover:border-terracotta hover:text-terracotta transition font-medium text-neutral-800" data-query="Bamboo Desk Edit">
+            Bamboo Desk Edit ✦
+          </button>
+          <button class="search-tag-btn text-xs px-4 py-2 rounded-full bg-white border border-[#E6DFD1] hover:border-terracotta hover:text-terracotta transition font-medium text-neutral-800" data-query="Copper Water Recharge Balls">
+            Copper Balls ✦
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-400 font-bold mb-4">Explore by Category</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {% for cat in nav_categories %}
+            <a href="{% url 'products:shop' %}?category={{ cat.slug }}" onclick="SearchModal.close()" class="p-3 bg-white border border-[#E8E2D5] rounded-xl hover:border-[#C86D51] transition text-center group">
+              <span class="block text-xs font-semibold text-neutral-900 group-hover:text-terracotta transition">{{ cat.name }}</span>
+              <span class="block text-[10px] text-neutral-400 mt-0.5 truncate">{{ cat.tagline }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Results State (Populated by JS) -->
+    <div id="search-live-view" class="mt-8 hidden">
+      <div id="search-overlay-results"></div>
+    </div>
+
+  </div>
+</div>

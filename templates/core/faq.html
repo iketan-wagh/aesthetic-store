@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Frequently Asked Questions | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-12 sm:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    
+    <div class="text-center space-y-3 pb-10 border-b border-[#ECE6DB]">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Support &amp; FAQ</span>
+      <h1 class="font-editorial text-4xl sm:text-5xl text-[#1C1B19]">FREQUENTLY ASKED QUESTIONS</h1>
+      <p class="text-xs sm:text-sm text-neutral-500 font-light">Everything you need to know about our products, shipping, and conscious returns.</p>
+    </div>
+
+    <div class="py-10 space-y-4">
+      
+      <!-- FAQ 1 -->
+      <details class="p-6 bg-white rounded-2xl border border-[#ECE6DB] shadow-sm group">
+        <summary class="font-serif font-bold text-base text-neutral-900 cursor-pointer flex items-center justify-between list-none">
+          <span>How do I care for my Aura Copper Bottle?</span>
+          <span class="text-neutral-400 group-open:rotate-180 transition transform">▼</span>
+        </summary>
+        <div class="mt-4 pt-3 border-t border-neutral-100 text-xs text-neutral-600 leading-relaxed font-light space-y-2">
+          <p>Hand-wash only with room temperature or warm water. For routine cleaning, rinse with a mix of lemon juice and a pinch of salt, then rinse thoroughly with clean water. Never put copper products in a dishwasher or microwave.</p>
+        </div>
+      </details>
+
+      <!-- FAQ 2 -->
+      <details class="p-6 bg-white rounded-2xl border border-[#ECE6DB] shadow-sm group">
+        <summary class="font-serif font-bold text-base text-neutral-900 cursor-pointer flex items-center justify-between list-none">
+          <span>What are the shipping times and free shipping threshold?</span>
+          <span class="text-neutral-400 group-open:rotate-180 transition transform">▼</span>
+        </summary>
+        <div class="mt-4 pt-3 border-t border-neutral-100 text-xs text-neutral-600 leading-relaxed font-light space-y-2">
+          <p>We provide <strong>FREE SHIPPING on all orders above ₹999</strong>. Orders are dispatched within 24-48 business hours via carbon-neutral express courier. Delivery typically takes 3-5 business days across India.</p>
+        </div>
+      </details>
+
+      <!-- FAQ 3 -->
+      <details class="p-6 bg-white rounded-2xl border border-[#ECE6DB] shadow-sm group">
+        <summary class="font-serif font-bold text-base text-neutral-900 cursor-pointer flex items-center justify-between list-none">
+          <span>What is your return and exchange policy?</span>
+          <span class="text-neutral-400 group-open:rotate-180 transition transform">▼</span>
+        </summary>
+        <div class="mt-4 pt-3 border-t border-neutral-100 text-xs text-neutral-600 leading-relaxed font-light space-y-2">
+          <p>We offer a hassle-free 7-day return and exchange window for unused items in original unbleached packaging. If your piece arrives damaged or defective, we replace it immediately free of charge.</p>
+        </div>
+      </details>
+
+      <!-- FAQ 4 -->
+      <details class="p-6 bg-white rounded-2xl border border-[#ECE6DB] shadow-sm group">
+        <summary class="font-serif font-bold text-base text-neutral-900 cursor-pointer flex items-center justify-between list-none">
+          <span>Is your packaging truly 100% plastic-free?</span>
+          <span class="text-neutral-400 group-open:rotate-180 transition transform">▼</span>
+        </summary>
+        <div class="mt-4 pt-3 border-t border-neutral-100 text-xs text-neutral-600 leading-relaxed font-light space-y-2">
+          <p>Yes. We use unbleached recycled FSC-certified kraft cardboard, water-activated paper sealing tape, organic cotton dust pouches, and natural soy-based inks. No plastic bubble wrap or styrofoam ever.</p>
+        </div>
+      </details>
+
+      <!-- FAQ 5 -->
+      <details class="p-6 bg-white rounded-2xl border border-[#ECE6DB] shadow-sm group">
+        <summary class="font-serif font-bold text-base text-neutral-900 cursor-pointer flex items-center justify-between list-none">
+          <span>How do I apply the NOMA10 discount coupon?</span>
+          <span class="text-neutral-400 group-open:rotate-180 transition transform">▼</span>
+        </summary>
+        <div class="mt-4 pt-3 border-t border-neutral-100 text-xs text-neutral-600 leading-relaxed font-light space-y-2">
+          <p>Enter <strong>NOMA10</strong> in the discount code input box on the Cart or Checkout page and click 'Apply'. A 10% discount will automatically be deducted from your eligible subtotal.</p>
+        </div>
+      </details>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

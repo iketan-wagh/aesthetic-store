@@ -1,0 +1,80 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block header_title %}Coupons &amp; Promotional Codes{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- Header Card -->
+  <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
+    <div>
+      <h3 class="font-serif text-base font-bold text-neutral-900">Active Discount Vouchers</h3>
+      <p class="text-xs text-neutral-500">Manage promotional coupon codes and track their redemptions.</p>
+    </div>
+    <a href="{% url 'admin:coupons_coupon_add' %}" target="_blank" class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition flex items-center gap-1.5">
+      <span>+ Create Coupon</span>
+      <span class="text-[10px] text-emerald-200">↗</span>
+    </a>
+  </div>
+
+  <!-- Coupons Table -->
+  <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="border-b border-[#ECE6DB] bg-[#FAF8F5] text-neutral-500 uppercase tracking-wider font-semibold text-[10px]">
+            <th class="py-3 px-4">Coupon Code</th>
+            <th class="py-3 px-4">Discount</th>
+            <th class="py-3 px-4">Min. Spend</th>
+            <th class="py-3 px-4">Redemptions</th>
+            <th class="py-3 px-4">Validity</th>
+            <th class="py-3 px-4 text-center">Status</th>
+            <th class="py-3 px-4 text-right">Django Admin</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#ECE6DB]/60">
+          {% for coupon in coupons %}
+            <tr class="hover:bg-[#FAF8F5]/80 transition">
+              <td class="py-3 px-4">
+                <span class="font-mono font-bold text-neutral-900 bg-[#FAF8F5] px-3 py-1 rounded-lg border border-[#ECE6DB] text-xs">
+                  {{ coupon.code }}
+                </span>
+              </td>
+              <td class="py-3 px-4 font-bold text-emerald-800">
+                {{ coupon.discount_percentage }}% OFF
+              </td>
+              <td class="py-3 px-4 text-neutral-600">
+                ₹{{ coupon.min_purchase_amount|floatformat:0 }}
+              </td>
+              <td class="py-3 px-4 text-neutral-800 font-medium">
+                {{ coupon.used_count }} / {% if coupon.max_uses %}{{ coupon.max_uses }}{% else %}∞{% endif %}
+              </td>
+              <td class="py-3 px-4 text-neutral-500 font-light text-[11px]">
+                {% if coupon.valid_to %}{{ coupon.valid_to|date:"d M Y" }}{% else %}Never Expires{% endif %}
+              </td>
+              <td class="py-3 px-4 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold {% if coupon.active %}bg-emerald-50 text-emerald-800 border border-emerald-200{% else %}bg-neutral-100 text-neutral-600{% endif %}">
+                  {% if coupon.active %}Active ✦{% else %}Inactive{% endif %}
+                </span>
+              </td>
+              <td class="py-3 px-4 text-right">
+                <a href="{% url 'admin:coupons_coupon_change' coupon.id %}" target="_blank" class="text-[11px] font-semibold text-neutral-500 hover:text-neutral-900 underline">
+                  Edit ↗
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="py-8 text-center text-neutral-400 text-xs">
+                No coupons created yet.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

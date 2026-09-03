@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Security Verification | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-20 sm:py-28 min-h-[75vh] flex items-center justify-center">
+  <div class="max-w-md w-full mx-auto px-4 sm:px-6">
+    
+    <div class="bg-white p-8 sm:p-10 rounded-3xl border border-[#ECE6DB] shadow-lg space-y-6 text-center relative overflow-hidden">
+      
+      <!-- Top Decorative Accent -->
+      <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1C1B19] via-[#C86D51] to-[#1C1B19]"></div>
+
+      <!-- Shield Icon -->
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-[#FAF8F5] border border-[#ECE6DB] flex items-center justify-center text-2xl shadow-sm">
+        🔒
+      </div>
+
+      <div class="space-y-1">
+        <span class="text-[10px] font-bold tracking-[0.25em] text-[#C86D51] uppercase block">Security Gate</span>
+        <h1 class="font-serif text-2xl font-bold text-neutral-900">Admin Authentication</h1>
+        <p class="text-xs text-neutral-500 font-light">
+          {% if user.is_authenticated %}
+            Enter your admin password to unlock the <strong>Store Operations Hub</strong>.
+          {% else %}
+            Enter administrator credentials to access the <strong>Store Operations Hub</strong>.
+          {% endif %}
+        </p>
+      </div>
+
+      <!-- Error / Messages Alert -->
+      {% if messages %}
+        <div class="space-y-2 text-left">
+          {% for message in messages %}
+            <div class="p-3 rounded-xl text-xs font-medium border {% if message.tags == 'error' %}bg-red-50 text-red-700 border-red-200{% else %}bg-amber-50 text-amber-800 border-amber-200{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Password Challenge Form -->
+      <form method="POST" action="{% url 'dashboard:auth' %}" class="space-y-4 text-left">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+
+        {% if user.is_authenticated %}
+          <!-- Authenticated Staff Re-auth -->
+          <div class="p-3 bg-[#FAF8F5] rounded-xl border border-[#ECE6DB] flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-full bg-[#1C1B19] text-[#FAF8F5] flex items-center justify-center text-xs font-bold uppercase">
+                {{ user.username.0 }}
+              </div>
+              <div>
+                <p class="text-xs font-bold text-neutral-900">{{ user.get_full_name|default:user.username }}</p>
+                <p class="text-[10px] text-neutral-500">Authorized Staff</p>
+              </div>
+            </div>
+            <a href="{% url 'accounts:logout' %}?next={% url 'dashboard:auth' %}" class="text-[10px] text-neutral-400 hover:text-neutral-700">Switch user</a>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-neutral-700 mb-1.5">Admin Staff Password</label>
+            <input type="password" name="password" required autofocus placeholder="Enter your password to unlock" 
+              class="w-full px-4 py-3 rounded-xl border border-[#ECE6DB] text-xs focus:outline-none focus:border-neutral-900 bg-[#FAF8F5]">
+          </div>
+
+        {% else %}
+          <!-- Unauthenticated Staff Login -->
+          <div>
+            <label class="block text-xs font-semibold text-neutral-700 mb-1">Admin Username / Email</label>
+            <input type="text" name="username" required autofocus placeholder="Admin username or email" 
+              class="w-full px-4 py-2.5 rounded-xl border border-[#ECE6DB] text-xs focus:outline-none focus:border-neutral-900 bg-[#FAF8F5]">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-neutral-700 mb-1">Admin Password</label>
+            <input type="password" name="password" required placeholder="Password" 
+              class="w-full px-4 py-2.5 rounded-xl border border-[#ECE6DB] text-xs focus:outline-none focus:border-neutral-900 bg-[#FAF8F5]">
+          </div>
+        {% endif %}
+
+        <button type="submit" class="w-full bg-[#1C1B19] hover:bg-[#C86D51] text-white py-3.5 px-4 rounded-full text-xs font-semibold tracking-wider uppercase transition shadow-md flex items-center justify-center gap-2">
+          <span>Unlock Operations Hub ✦</span>
+        </button>
+      </form>
+
+      <div class="pt-2 text-[11px] text-neutral-400">
+        <a href="{% url 'core:home' %}" class="hover:underline">&larr; Return to Storefront</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

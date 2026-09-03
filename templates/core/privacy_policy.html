@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-12 sm:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="text-center space-y-3 pb-8 border-b border-[#ECE6DB]">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Privacy &amp; Data</span>
+      <h1 class="font-editorial text-4xl sm:text-5xl text-[#1C1B19]">PRIVACY POLICY</h1>
+    </div>
+    <div class="py-8 space-y-6 text-xs sm:text-sm text-neutral-600 leading-relaxed font-light">
+      <div class="bg-white p-6 rounded-2xl border border-[#ECE6DB] space-y-2">
+        <h3 class="font-serif font-bold text-neutral-900 text-base">Your Data, Protected</h3>
+        <p>At NOMA, we value your privacy. We never sell, rent, or trade your personal data to third parties. We collect only the information necessary to fulfill your orders, provide shipment tracking, and send our optional newsletter.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-[#ECE6DB] space-y-2">
+        <h3 class="font-serif font-bold text-neutral-900 text-base">Security</h3>
+        <p>All sensitive transactions and authentication credentials are encrypted using industry-standard protocols. Passwords are never stored in plain text.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

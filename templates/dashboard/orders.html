@@ -1,0 +1,250 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block header_title %}Order Fulfillment &amp; Address Lookup{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- Search & Status Filter Bar -->
+  <div class="glass-card p-5 rounded-2xl space-y-4">
+    <!-- Search Bar -->
+    <form method="GET" action="{% url 'dashboard:orders' %}" class="flex flex-col sm:flex-row gap-3">
+      <div class="relative flex-1">
+        <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by Customer Name, Phone, Address, City, PIN, Order #, Tracking ID..." 
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#ECE6DB] text-xs focus:outline-none focus:border-neutral-900 bg-[#FAF8F5]">
+      </div>
+      
+      {% if status_filter and status_filter != 'ALL' %}
+        <input type="hidden" name="status" value="{{ status_filter }}">
+      {% endif %}
+
+      <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#1C1B19] text-white text-xs font-semibold hover:bg-[#C86D51] transition shrink-0">
+        Search Orders ✦
+      </button>
+      {% if query %}
+        <a href="{% url 'dashboard:orders' %}" class="px-4 py-2.5 rounded-xl border border-[#ECE6DB] bg-white text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition flex items-center justify-center shrink-0">
+          Clear
+        </a>
+      {% endif %}
+    </form>
+
+    <!-- Status Tabs -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+      <a href="?status=ALL{% if query %}&q={{ query }}{% endif %}" class="px-3.5 py-1.5 rounded-full font-semibold transition shrink-0 {% if status_filter == 'ALL' %}bg-[#1C1B19] text-white{% else %}bg-[#FAF8F5] text-neutral-600 hover:bg-[#ECE6DB]{% endif %}">
+        All ({{ status_counts.ALL }})
+      </a>
+      <a href="?status=CONFIRMED{% if query %}&q={{ query }}{% endif %}" class="px-3.5 py-1.5 rounded-full font-semibold transition shrink-0 {% if status_filter == 'CONFIRMED' %}bg-amber-800 text-white{% else %}bg-amber-50 text-amber-900 hover:bg-amber-100{% endif %}">
+        Confirmed ({{ status_counts.CONFIRMED }})
+      </a>
+      <a href="?status=PROCESSING{% if query %}&q={{ query }}{% endif %}" class="px-3.5 py-1.5 rounded-full font-semibold transition shrink-0 {% if status_filter == 'PROCESSING' %}bg-blue-800 text-white{% else %}bg-blue-50 text-blue-900 hover:bg-blue-100{% endif %}">
+        Processing ({{ status_counts.PROCESSING }})
+      </a>
+      <a href="?status=SHIPPED{% if query %}&q={{ query }}{% endif %}" class="px-3.5 py-1.5 rounded-full font-semibold transition shrink-0 {% if status_filter == 'SHIPPED' %}bg-purple-800 text-white{% else %}bg-purple-50 text-purple-900 hover:bg-purple-100{% endif %}">
+        Shipped ({{ status_counts.SHIPPED }})
+      </a>
+      <a href="?status=DELIVERED{% if query %}&q={{ query }}{% endif %}" class="px-3.5 py-1.5 rounded-full font-semibold transition shrink-0 {% if status_filter == 'DELIVERED' %}bg-emerald-800 text-white{% else %}bg-emerald-50 text-emerald-900 hover:bg-emerald-100{% endif %}">
+        Delivered ({{ status_counts.DELIVERED }})
+      </a>
+      <a href="?status=CANCELLED{% if query %}&q={{ query }}{% endif %}" class="px-3.5 py-1.5 rounded-full font-semibold transition shrink-0 {% if status_filter == 'CANCELLED' %}bg-neutral-800 text-white{% else %}bg-neutral-100 text-neutral-600 hover:bg-neutral-200{% endif %}">
+        Cancelled ({{ status_counts.CANCELLED }})
+      </a>
+    </div>
+  </div>
+
+  <!-- Orders List -->
+  <div class="space-y-4">
+    {% for order in orders %}
+      <div class="glass-card rounded-2xl p-5 md:p-6 space-y-4 hover:border-neutral-400 transition" id="order-card-{{ order.order_number }}">
+        
+        <!-- Order Header Row -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[#ECE6DB] pb-4">
+          <div class="flex items-center gap-3">
+            <span class="font-mono text-sm font-bold text-neutral-900 bg-[#FAF8F5] px-3 py-1 rounded-lg border border-[#ECE6DB]">
+              {{ order.order_number }}
+            </span>
+            <span class="text-xs text-neutral-500 font-light">
+              {{ order.created_at|date:"d M Y, h:i A" }}
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold {% if order.payment_status == 'PAID' %}bg-emerald-50 text-emerald-800 border border-emerald-200{% else %}bg-amber-50 text-amber-800 border border-amber-200{% endif %}">
+              {{ order.payment_status }} ✦ {{ order.payment_method }}
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- 1-Click Copy Shipping Address Button -->
+            <button onclick="copyToClipboard(`Recipient: {{ order.shipping_name }}\nPhone: {{ order.shipping_phone }}\nEmail: {{ order.shipping_email }}\nAddress: {{ order.shipping_address_line1 }}{% if order.shipping_address_line2 %}, {{ order.shipping_address_line2 }}{% endif %}{% if order.shipping_landmark %}\nLandmark: {{ order.shipping_landmark }}{% endif %}\nCity & State: {{ order.shipping_city }}, {{ order.shipping_state }} - {{ order.shipping_pincode }}\nOrder #: {{ order.order_number }}`, 'Shipping label for {{ order.shipping_name }} copied!')" 
+              class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-semibold flex items-center gap-1.5 transition">
+              <span>📋</span>
+              <span>Copy Shipping Label</span>
+            </button>
+
+            <!-- Print Packing Slip -->
+            <a href="{% url 'dashboard:order_slip' order.order_number %}" target="_blank" class="px-3 py-1.5 rounded-lg bg-white hover:bg-neutral-100 text-neutral-800 border border-[#ECE6DB] text-xs font-semibold flex items-center gap-1.5 transition">
+              <span>🖨️</span>
+              <span>Print Slip</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3 Column Grid: Customer Details | Shipping Address | Items & Status -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+          
+          <!-- 1. Customer Details -->
+          <div class="space-y-2 bg-[#FAF8F5] p-4 rounded-xl border border-[#ECE6DB]/80">
+            <span class="text-[10px] font-bold tracking-wider uppercase text-neutral-400 block">Customer Information</span>
+            <p class="font-bold text-neutral-900 text-sm">{{ order.shipping_name }}</p>
+            <p class="text-neutral-600 flex items-center gap-1.5">
+              <span>📞</span>
+              <a href="tel:{{ order.shipping_phone }}" class="font-mono text-neutral-900 hover:text-[#C86D51] font-semibold underline">{{ order.shipping_phone }}</a>
+            </p>
+            <p class="text-neutral-600 flex items-center gap-1.5 truncate">
+              <span>✉️</span>
+              <a href="mailto:{{ order.shipping_email }}" class="text-neutral-700 hover:underline">{{ order.shipping_email }}</a>
+            </p>
+            {% if order.payment_id %}
+              <p class="text-[10px] text-neutral-500 font-mono pt-1 border-t border-[#ECE6DB]/60">
+                Razorpay ID: <span class="font-bold text-neutral-800">{{ order.payment_id }}</span>
+              </p>
+            {% endif %}
+          </div>
+
+          <!-- 2. Shipping Address & Delivery Destination -->
+          <div class="space-y-2 bg-[#FAF8F5] p-4 rounded-xl border border-[#ECE6DB]/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold tracking-wider uppercase text-neutral-400">Delivery Destination</span>
+              <span class="text-[10px] font-mono font-bold text-neutral-800 bg-white px-2 py-0.5 rounded border border-[#ECE6DB]">
+                PIN: {{ order.shipping_pincode }}
+              </span>
+            </div>
+            <p class="text-neutral-800 leading-relaxed font-medium">
+              {{ order.shipping_address_line1 }}
+              {% if order.shipping_address_line2 %}<br>{{ order.shipping_address_line2 }}{% endif %}
+            </p>
+            {% if order.shipping_landmark %}
+              <p class="text-neutral-500 text-[11px]">📍 Landmark: {{ order.shipping_landmark }}</p>
+            {% endif %}
+            <p class="font-bold text-neutral-900 text-[13px]">
+              {{ order.shipping_city }}, {{ order.shipping_state }}
+            </p>
+          </div>
+
+          <!-- 3. Status Stepper & Tracking Control -->
+          <div class="space-y-3 bg-white p-4 rounded-xl border border-[#ECE6DB]">
+            <span class="text-[10px] font-bold tracking-wider uppercase text-neutral-400 block">Fulfillment Controls</span>
+            
+            <!-- Inline Status Form -->
+            <div class="space-y-2">
+              <label class="block text-[11px] font-semibold text-neutral-700">Update Order Status:</label>
+              <select onchange="updateOrderStatus('{{ order.order_number }}', this.value, document.getElementById('tracking-{{ order.order_number }}').value)" 
+                class="w-full py-2 px-3 rounded-lg border border-[#ECE6DB] text-xs font-semibold bg-[#FAF8F5] focus:outline-none focus:border-neutral-900">
+                <option value="CONFIRMED" {% if order.order_status == 'CONFIRMED' %}selected{% endif %}>📦 Confirmed (Needs packing)</option>
+                <option value="PROCESSING" {% if order.order_status == 'PROCESSING' %}selected{% endif %}>⏳ Processing / Packed</option>
+                <option value="SHIPPED" {% if order.order_status == 'SHIPPED' %}selected{% endif %}>🚚 Shipped (In Transit)</option>
+                <option value="DELIVERED" {% if order.order_status == 'DELIVERED' %}selected{% endif %}>✅ Delivered to Customer</option>
+                <option value="CANCELLED" {% if order.order_status == 'CANCELLED' %}selected{% endif %}>✕ Cancelled</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="block text-[10px] text-neutral-500">Tracking / AWB #</label>
+              <div class="flex gap-1.5">
+                <input type="text" id="tracking-{{ order.order_number }}" value="{{ order.tracking_number|default:'' }}" placeholder="e.g. AWB-998877"
+                  class="flex-1 px-2.5 py-1.5 rounded-lg border border-[#ECE6DB] text-xs font-mono bg-[#FAF8F5]">
+                <button onclick="updateOrderStatus('{{ order.order_number }}', null, document.getElementById('tracking-{{ order.order_number }}').value)"
+                  class="px-2.5 py-1.5 rounded-lg bg-neutral-900 text-white text-[10px] font-semibold hover:bg-[#C86D51] transition">
+                  Save
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Ordered Items Expandable Table -->
+        <div class="border-t border-[#ECE6DB]/60 pt-3 flex flex-wrap items-center justify-between gap-4 text-xs">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-neutral-500 font-medium">Items Ordered:</span>
+            {% for item in order.items.all %}
+              <div class="flex items-center gap-2 bg-[#FAF8F5] px-2.5 py-1 rounded-lg border border-[#ECE6DB]">
+                <span class="font-bold text-neutral-900">{{ item.quantity }}x</span>
+                <span class="text-neutral-800">{{ item.product_name }}</span>
+                <span class="text-neutral-400 font-mono text-[10px]">(₹{{ item.price|floatformat:0 }})</span>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="flex items-center gap-4 text-right">
+            {% if order.discount_amount > 0 %}
+              <span class="text-[11px] text-emerald-700">Coupon Discount: -₹{{ order.discount_amount|floatformat:0 }}</span>
+            {% endif %}
+            <span class="text-xs text-neutral-500">Total:</span>
+            <span class="font-serif text-base font-bold text-neutral-900">₹{{ order.total_amount|floatformat:2 }}</span>
+          </div>
+        </div>
+
+      </div>
+    {% empty %}
+      <div class="glass-card rounded-2xl p-12 text-center space-y-3">
+        <p class="text-3xl">📦</p>
+        <h3 class="font-serif text-lg font-bold text-neutral-900">No Orders Found</h3>
+        <p class="text-xs text-neutral-500">No orders match your search filter criteria.</p>
+        <a href="{% url 'dashboard:orders' %}" class="inline-block text-xs font-semibold text-[#C86D51] hover:underline pt-2">
+          Clear All Filters &rarr;
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if orders.has_other_pages %}
+    <div class="flex items-center justify-center gap-2 pt-4 text-xs font-semibold">
+      {% if orders.has_previous %}
+        <a href="?page={{ orders.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="px-4 py-2 rounded-xl bg-white border border-[#ECE6DB] hover:bg-neutral-100">
+          &larr; Previous
+        </a>
+      {% endif %}
+      <span class="px-4 py-2 text-neutral-500">Page {{ orders.number }} of {{ orders.paginator.num_pages }}</span>
+      {% if orders.has_next %}
+        <a href="?page={{ orders.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="px-4 py-2 rounded-xl bg-white border border-[#ECE6DB] hover:bg-neutral-100">
+          Next &rarr;
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function updateOrderStatus(orderNumber, newStatus, newTracking) {
+    const payload = {};
+    if (newStatus) payload.order_status = newStatus;
+    if (newTracking !== undefined) payload.tracking_number = newTracking;
+
+    fetch(`/dashboard/orders/${orderNumber}/update-status/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const toast = document.getElementById('copy-toast');
+        const toastMsg = document.getElementById('copy-toast-msg');
+        toastMsg.textContent = data.message;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+      }
+    })
+    .catch(err => alert('Failed to update order status.'));
+  }
+</script>
+{% endblock %}

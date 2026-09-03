@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Story | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-12 sm:py-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6">
+    
+    <!-- Hero Title -->
+    <div class="text-center space-y-4 pb-12 border-b border-[#ECE6DB]">
+      <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">The Aesthetic Store Manifesto</span>
+      <h1 class="font-editorial text-4xl sm:text-6xl text-[#1C1B19]">
+        LESS STUFF. BETTER STUFF.
+      </h1>
+      <p class="font-serif text-xl sm:text-2xl text-neutral-700 italic max-w-2xl mx-auto">
+        “Aesthetic Store exists for people who care about what they buy — but still want their world to look good.”
+      </p>
+    </div>
+
+    <!-- Editorial Story Body -->
+    <div class="py-12 space-y-12 text-neutral-700 leading-relaxed font-light text-base sm:text-lg">
+      
+      <div class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-neutral-900">The Problem with Throwaway Objects</h2>
+        <p>
+          We grew tired of two extremes: cheap, disposable plastic essentials that clutter our desks and oceans, or clinical, preachy "eco-products" that look like science fair projects.
+        </p>
+        <p>
+          Why shouldn't a reusable water bottle look like a gallery sculpture? Why shouldn't a bamboo desk organizer bring warmth to your remote work sanctuary?
+        </p>
+      </div>
+
+      <div class="rounded-3xl overflow-hidden bg-white border border-[#ECE6DB] p-8 shadow-sm">
+        <blockquote class="font-serif text-2xl text-neutral-900 italic text-center">
+          “Beautiful things shouldn't cost the planet.”
+        </blockquote>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-neutral-900">Our Design Standard</h2>
+        <p>
+          Every piece in the Aesthetic Store catalog is built around four rules:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-[#C86D51] text-sm sm:text-base">
+          <li><strong class="font-serif font-bold text-neutral-900">1. High Utility:</strong> If it doesn't improve an everyday routine, we don't make it.</li>
+          <li><strong class="font-serif font-bold text-neutral-900">2. Noble Materials:</strong> Pure copper, 18/8 food-grade steel, solid bamboo, clean soy wax, recyclable glass.</li>
+          <li><strong class="font-serif font-bold text-neutral-900">3. Zero Plastic Packaging:</strong> Recycled kraft boxes, compostable paper tape, and soy-based inks.</li>
+          <li><strong class="font-serif font-bold text-neutral-900">4. Honest Claims:</strong> No fake green certifications or corporate buzzwords. Just honest materials made to last.</li>
+        </ul>
+      </div>
+
+      <div class="pt-8 text-center">
+        <a href="{% url 'products:shop' %}" class="btn-primary py-4 px-10 text-xs tracking-widest uppercase">
+          Explore The Edit ✦
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

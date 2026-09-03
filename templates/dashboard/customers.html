@@ -1,0 +1,91 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block header_title %}Customer Directory &amp; Lifetime Value{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- Search Bar -->
+  <div class="glass-card p-5 rounded-2xl">
+    <form method="GET" action="{% url 'dashboard:customers' %}" class="flex gap-3">
+      <div class="relative flex-1">
+        <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" name="q" value="{{ query }}" placeholder="Search customer by Name, Email, Username..." 
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#ECE6DB] text-xs focus:outline-none focus:border-neutral-900 bg-[#FAF8F5]">
+      </div>
+      <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#1C1B19] text-white text-xs font-semibold hover:bg-[#C86D51] transition">
+        Search Customers
+      </button>
+      {% if query %}
+        <a href="{% url 'dashboard:customers' %}" class="px-4 py-2.5 rounded-xl border border-[#ECE6DB] bg-white text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition flex items-center justify-center">
+          Clear
+        </a>
+      {% endif %}
+    </form>
+  </div>
+
+  <!-- Customers Table -->
+  <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="border-b border-[#ECE6DB] bg-[#FAF8F5] text-neutral-500 uppercase tracking-wider font-semibold text-[10px]">
+            <th class="py-3 px-4">Customer</th>
+            <th class="py-3 px-4">Contact Email</th>
+            <th class="py-3 px-4">Joined Date</th>
+            <th class="py-3 px-4 text-center">Total Orders</th>
+            <th class="py-3 px-4 text-right">Lifetime Spend</th>
+            <th class="py-3 px-4 text-right">Order History</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#ECE6DB]/60">
+          {% for customer in customers %}
+            <tr class="hover:bg-[#FAF8F5]/80 transition">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-[#1C1B19] text-[#FAF8F5] flex items-center justify-center font-bold uppercase text-xs">
+                    {{ customer.first_name.0|default:customer.username.0 }}
+                  </div>
+                  <div>
+                    <p class="font-bold text-neutral-900">{{ customer.get_full_name|default:customer.username }}</p>
+                    <p class="text-[10px] text-neutral-400 font-mono">@{{ customer.username }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4">
+                <a href="mailto:{{ customer.email }}" class="text-neutral-700 hover:text-[#C86D51] font-mono">
+                  {{ customer.email|default:"No email recorded" }}
+                </a>
+              </td>
+              <td class="py-3 px-4 text-neutral-500 font-light">
+                {{ customer.date_joined|date:"d M Y" }}
+              </td>
+              <td class="py-3 px-4 text-center">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-neutral-100 text-neutral-800">
+                  {{ customer.order_count }} orders
+                </span>
+              </td>
+              <td class="py-3 px-4 text-right font-bold text-neutral-900">
+                ₹{{ customer.total_spend|default:0|floatformat:2 }}
+              </td>
+              <td class="py-3 px-4 text-right">
+                <a href="{% url 'dashboard:orders' %}?q={{ customer.email }}" class="text-xs text-[#C86D51] font-semibold hover:underline">
+                  View Orders &rarr;
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6" class="py-8 text-center text-neutral-400 text-xs">
+                No customer accounts found.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

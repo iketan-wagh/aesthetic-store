@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}404 - Oops. Wrong Vibe | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-24 sm:py-32">
+  <div class="max-w-xl mx-auto px-4 text-center space-y-6">
+    <span class="font-mono text-xs font-bold uppercase tracking-widest text-[#C57D56]">Error 404</span>
+    <h1 class="font-editorial text-5xl sm:text-6xl text-[#1C1B19]">
+      Oops. Wrong vibe.
+    </h1>
+    <p class="font-serif text-xl text-neutral-600 italic">
+      “The page you're looking for wandered off.”
+    </p>
+    <p class="text-xs text-neutral-500 max-w-sm mx-auto font-light leading-relaxed">
+      Maybe it found a better sunbeam or a slow coffee ritual elsewhere. Let's get you back to the conscious catalog.
+    </p>
+    <div class="pt-4">
+      <a href="{% url 'products:shop' %}" class="btn-primary py-4 px-8 text-xs tracking-widest uppercase">
+        BACK TO SHOP ✦
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

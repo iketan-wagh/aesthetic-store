@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Account | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-10 sm:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Top Welcome Banner -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#ECE6DB] shadow-sm mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-full bg-[#FAF8F5] border border-[#E8E2D5] flex items-center justify-center font-serif text-2xl font-bold text-neutral-800">
+          {{ user.first_name|first|default:user.username|first|upper }}
+        </div>
+        <div>
+          <h1 class="font-serif text-2xl font-bold text-neutral-900">Hello, {{ user.first_name|default:user.username }}</h1>
+          <p class="text-xs text-neutral-500 font-light">{{ user.email }} · Member since {{ user.date_joined|date:"M Y" }}</p>
+        </div>
+      </div>
+      <a href="{% url 'accounts:logout' %}" class="btn-secondary text-xs py-2 px-5 text-red-600 border-red-200 hover:bg-red-50">
+        Sign Out
+      </a>
+    </div>
+
+    <!-- Dashboard Tabs -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Nav Tabs (Left) -->
+      <aside class="lg:col-span-3">
+        <div class="bg-white p-4 rounded-2xl border border-[#ECE6DB] shadow-sm space-y-1 text-sm font-medium">
+          <a href="?tab=orders" class="flex items-center justify-between p-3 rounded-xl transition {% if active_tab == 'orders' %}bg-[#1C1B19] text-[#FAF8F5]{% else %}text-neutral-700 hover:bg-[#FAF8F5]{% endif %}">
+            <span>Orders History</span>
+            <span class="text-xs opacity-75">({{ orders.count }})</span>
+          </a>
+          <a href="?tab=addresses" class="flex items-center justify-between p-3 rounded-xl transition {% if active_tab == 'addresses' %}bg-[#1C1B19] text-[#FAF8F5]{% else %}text-neutral-700 hover:bg-[#FAF8F5]{% endif %}">
+            <span>Saved Addresses</span>
+            <span class="text-xs opacity-75">({{ addresses.count }})</span>
+          </a>
+          <a href="?tab=profile" class="flex items-center justify-between p-3 rounded-xl transition {% if active_tab == 'profile' %}bg-[#1C1B19] text-[#FAF8F5]{% else %}text-neutral-700 hover:bg-[#FAF8F5]{% endif %}">
+            <span>Profile Details</span>
+          </a>
+          <a href="{% url 'wishlist:wishlist_view' %}" class="flex items-center justify-between p-3 rounded-xl text-neutral-700 hover:bg-[#FAF8F5] transition">
+            <span>Wishlist</span>
+            <span class="text-xs opacity-75">({{ wishlist_items.count }})</span>
+          </a>
+          {% if user.is_staff %}
+            <div class="pt-2 border-t border-[#ECE6DB] mt-2">
+              <a href="{% url 'dashboard:home' %}" class="flex items-center justify-between p-3 rounded-xl bg-[#1C1B19] text-[#FAF8F5] hover:bg-[#C86D51] transition text-xs font-bold shadow-sm">
+                <span>✦ Store Operations Hub</span>
+                <span>&rarr;</span>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </aside>
+
+      <!-- Main Content Pane (Right) -->
+      <main class="lg:col-span-9">
+        
+        <!-- Tab 1: Orders History -->
+        {% if active_tab == 'orders' %}
+          <div class="space-y-6">
+            <h2 class="font-serif font-bold text-xl text-neutral-900">Your Orders ({{ orders.count }})</h2>
+
+            {% if orders %}
+              <div class="space-y-4">
+                {% for order in orders %}
+                  <div class="bg-white p-6 rounded-2xl border border-[#ECE6DB] shadow-sm space-y-4">
+                    
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-100 gap-2">
+                      <div>
+                        <p class="font-mono text-xs font-bold text-neutral-900">Order #{{ order.order_number }}</p>
+                        <p class="text-[11px] text-neutral-400">Placed on {{ order.created_at|date:"M d, Y" }}</p>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold px-3 py-1 rounded-full bg-[#FAF6F0] text-[#C57D56] border border-[#ECE6DB]">
+                          {{ order.get_order_status_display }}
+                        </span>
+                        <a href="{% url 'orders:order_detail' order.order_number %}" class="text-xs font-bold text-neutral-900 hover:text-terracotta underline">
+                          View Receipt →
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- Items list -->
+                    <div class="divide-y divide-neutral-50">
+                      {% for item in order.items.all %}
+                        <div class="py-2.5 flex items-center justify-between text-xs">
+                          <div>
+                            <span class="font-semibold text-neutral-800">{{ item.quantity }}x {{ item.product_name }}</span>
+                            <span class="text-neutral-400 font-mono ml-2">SKU: {{ item.product_sku }}</span>
+                          </div>
+                          <span class="font-bold text-neutral-900">₹{{ item.subtotal|floatformat:0 }}</span>
+                        </div>
+                      {% endfor %}
+                    </div>
+
+                    <div class="pt-3 border-t border-neutral-100 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-neutral-500 gap-2">
+                      <p>Ship to: <strong class="text-neutral-800">{{ order.shipping_name }}</strong>, {{ order.shipping_city }}</p>
+                      <p class="text-sm font-bold text-neutral-900">Total: ₹{{ order.total_amount|floatformat:2 }}</p>
+                    </div>
+
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <!-- Empty Orders State -->
+              <div class="py-16 text-center bg-white rounded-2xl border border-[#ECE6DB]">
+                <div class="text-3xl mb-3">📦</div>
+                <h3 class="font-serif text-xl text-neutral-900 mb-1">No orders yet. Let's change that.</h3>
+                <p class="text-xs text-neutral-500 max-w-sm mx-auto mb-6">Explore our curated collection of aesthetic essentials designed for everyday living.</p>
+                <a href="{% url 'products:shop' %}" class="btn-primary text-xs">Start Shopping</a>
+              </div>
+            {% endif %}
+          </div>
+
+        <!-- Tab 2: Saved Addresses -->
+        {% elif active_tab == 'addresses' %}
+          <div class="space-y-6">
+            <div class="flex items-center justify-between">
+              <h2 class="font-serif font-bold text-xl text-neutral-900">Saved Addresses</h2>
+              <a href="{% url 'accounts:address_create' %}" class="btn-primary text-xs py-2 px-4">
+                + Add New Address
+              </a>
+            </div>
+
+            {% if addresses %}
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for addr in addresses %}
+                  <div class="p-6 bg-white rounded-2xl border {% if addr.is_default %}border-neutral-900 bg-[#FAF8F5]{% else %}border-[#ECE6DB]{% endif %} shadow-sm flex flex-col justify-between space-y-4">
+                    <div class="space-y-1">
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-neutral-900">{{ addr.full_name }}</span>
+                        {% if addr.is_default %}
+                          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-neutral-900 text-white">Default</span>
+                        {% endif %}
+                      </div>
+                      <p class="text-xs text-neutral-600">{{ addr.address_line1 }}</p>
+                      {% if addr.address_line2 %}<p class="text-xs text-neutral-600">{{ addr.address_line2 }}</p>{% endif %}
+                      <p class="text-xs text-neutral-600">{{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}</p>
+                      <p class="text-xs text-neutral-500 pt-1">Phone: {{ addr.phone }}</p>
+                    </div>
+
+                    <div class="pt-3 border-t border-neutral-100 flex items-center justify-between text-xs">
+                      <div class="flex items-center space-x-3">
+                        <a href="{% url 'accounts:address_edit' addr.pk %}" class="font-semibold text-neutral-700 hover:text-terracotta">Edit</a>
+                        <form action="{% url 'accounts:address_delete' addr.pk %}" method="POST" class="inline" onsubmit="return confirm('Remove address?')">
+                          {% csrf_token %}
+                          <button type="submit" class="text-red-500 font-semibold hover:underline">Delete</button>
+                        </form>
+                      </div>
+                      {% if not addr.is_default %}
+                        <form action="{% url 'accounts:address_set_default' addr.pk %}" method="POST" class="inline">
+                          {% csrf_token %}
+                          <button type="submit" class="text-neutral-500 hover:text-neutral-900 underline font-medium">Set as default</button>
+                        </form>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="p-8 text-center bg-white rounded-2xl border border-[#ECE6DB]">
+                <p class="text-xs text-neutral-500 mb-4">No shipping addresses saved yet.</p>
+                <a href="{% url 'accounts:address_create' %}" class="btn-primary text-xs">Add First Address</a>
+              </div>
+            {% endif %}
+          </div>
+
+        <!-- Tab 3: Profile Settings -->
+        {% elif active_tab == 'profile' %}
+          <div class="bg-white p-6 sm:p-8 rounded-2xl border border-[#ECE6DB] shadow-sm space-y-6 max-w-2xl">
+            <h2 class="font-serif font-bold text-xl text-neutral-900 pb-4 border-b border-neutral-100">Personal Information</h2>
+            
+            <form method="POST" action="{% url 'accounts:profile' %}?tab=profile" class="space-y-4">
+              {% csrf_token %}
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-neutral-700 mb-1">First Name</label>
+                  {{ form.first_name }}
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-neutral-700 mb-1">Last Name</label>
+                  {{ form.last_name }}
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 mb-1">Email Address</label>
+                {{ form.email }}
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 mb-1">Phone Number</label>
+                <input type="text" name="phone_number" value="{{ profile.phone_number|default:'' }}" class="form-input text-xs" placeholder="+91 98765 43210">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 mb-1">Short Bio</label>
+                <textarea name="bio" rows="3" class="form-input text-xs" placeholder="A little about your aesthetic routine...">{{ profile.bio }}</textarea>
+              </div>
+
+              <button type="submit" class="btn-primary text-xs py-3 px-8">
+                Save Changes ✦
+              </button>
+            </form>
+          </div>
+        {% endif %}
+
+      </main>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

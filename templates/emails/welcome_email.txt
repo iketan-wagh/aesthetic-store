@@ -1,0 +1,16 @@
+Welcome to Aesthetic Store!
+
+Hi {{ user.first_name|default:user.username }},
+
+Thank you for joining our conscious community! We are thrilled to welcome you to Aesthetic Store.
+
+Our mission is simple: to create beautiful, sustainable objects for your everyday life that feel good to own and are gentle on our planet.
+
+A Welcome Gift For You:
+Enjoy 10% OFF your first drop with code: AESTHETIC10
+
+Explore our curated pieces now: {{ site_url }}/shop/
+
+With warmth,
+The Aesthetic Store Team
+https://aestheticstore.com

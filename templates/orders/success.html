@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Confirmed | Aesthetic Store{% endblock %}
+
+{% block content %}
+<div class="bg-[#FAF8F5] py-12 sm:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    
+    <div class="bg-white p-8 sm:p-12 rounded-3xl border border-[#ECE6DB] shadow-sm space-y-8">
+      
+      <!-- Success Icon & Header -->
+      <div class="text-center space-y-3 pb-6 border-b border-neutral-100">
+        <div class="w-16 h-16 mx-auto rounded-full bg-[#E7ECE6] text-[#7B8C78] flex items-center justify-center text-2xl font-bold">
+          ✓
+        </div>
+        <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Order Confirmed</span>
+        <h1 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19]">THANK YOU FOR YOUR CONSCIOUS ORDER</h1>
+        <p class="text-xs sm:text-sm text-neutral-500 font-light max-w-md mx-auto">
+          We're preparing your pieces with 100% plastic-free packaging. A confirmation has been logged for <strong class="text-neutral-800">{{ order.shipping_email }}</strong>.
+        </p>
+      </div>
+
+      <!-- Order Tracking Timeline -->
+      <div class="p-6 bg-[#FAF8F5] rounded-2xl border border-[#ECE6DB] space-y-4">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-mono font-bold text-neutral-900">Order #{{ order.order_number }}</span>
+          <span class="font-bold text-[#C86D51]">{{ order.get_order_status_display }}</span>
+        </div>
+
+        <!-- 5-Step Visual Timeline -->
+        <div class="grid grid-cols-5 gap-1 pt-2 text-center text-[10px]">
+          <div class="space-y-1">
+            <div class="h-2 rounded-full bg-[#1C1B19]"></div>
+            <span class="font-bold text-neutral-900">Confirmed</span>
+          </div>
+          <div class="space-y-1">
+            <div class="h-2 rounded-full {% if order.order_status in 'PACKED SHIPPED OUT_FOR_DELIVERY DELIVERED' %}bg-[#1C1B19]{% else %}bg-neutral-200{% endif %}"></div>
+            <span class="text-neutral-500">Packed</span>
+          </div>
+          <div class="space-y-1">
+            <div class="h-2 rounded-full {% if order.order_status in 'SHIPPED OUT_FOR_DELIVERY DELIVERED' %}bg-[#1C1B19]{% else %}bg-neutral-200{% endif %}"></div>
+            <span class="text-neutral-500">Shipped</span>
+          </div>
+          <div class="space-y-1">
+            <div class="h-2 rounded-full {% if order.order_status in 'OUT_FOR_DELIVERY DELIVERED' %}bg-[#1C1B19]{% else %}bg-neutral-200{% endif %}"></div>
+            <span class="text-neutral-500">Out for Delivery</span>
+          </div>
+          <div class="space-y-1">
+            <div class="h-2 rounded-full {% if order.order_status == 'DELIVERED' %}bg-[#1C1B19]{% else %}bg-neutral-200{% endif %}"></div>
+            <span class="text-neutral-500">Delivered</span>
+          </div>
+        </div>
+
+        {% if order.tracking_number %}
+          <p class="text-[11px] text-neutral-400 font-mono text-center pt-2">
+            Tracking ID: <strong class="text-neutral-700">{{ order.tracking_number }}</strong>
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Items Ordered -->
+      <div class="space-y-4">
+        <h3 class="font-serif font-bold text-base text-neutral-900">Items Ordered</h3>
+        <div class="divide-y divide-neutral-100 border-y border-neutral-100">
+          {% for item in order.items.all %}
+            <div class="py-4 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-3">
+                {% if item.product %}
+                  <img src="{{ item.product.primary_image_url }}" alt="{{ item.product_name }}" class="w-12 h-14 rounded-lg bg-[#FAF8F5] object-cover border border-[#ECE6DB]">
+                {% endif %}
+                <div>
+                  <p class="font-bold text-neutral-900">{{ item.product_name }}</p>
+                  <p class="text-neutral-400">Qty: {{ item.quantity }} × ₹{{ item.price|floatformat:0 }}</p>
+                </div>
+              </div>
+              <span class="font-bold text-neutral-900">₹{{ item.subtotal|floatformat:0 }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Shipping & Payment Breakdown -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs pt-2">
+        <div class="space-y-1">
+          <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Shipping Destination</p>
+          <p class="font-bold text-neutral-900">{{ order.shipping_name }}</p>
+          <p class="text-neutral-600">{{ order.shipping_address_line1 }}</p>
+          {% if order.shipping_address_line2 %}<p class="text-neutral-600">{{ order.shipping_address_line2 }}</p>{% endif %}
+          <p class="text-neutral-600">{{ order.shipping_city }}, {{ order.shipping_state }} - {{ order.shipping_pincode }}</p>
+          <p class="text-neutral-500 pt-1">Phone: {{ order.shipping_phone }}</p>
+        </div>
+
+        <div class="space-y-2">
+          <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Payment Breakdown</p>
+          <div class="flex justify-between text-neutral-600">
+            <span>Payment Method</span>
+            <span class="font-semibold text-neutral-900">{{ order.get_payment_method_display }}</span>
+          </div>
+          <div class="flex justify-between text-neutral-600">
+            <span>Subtotal</span>
+            <span class="font-semibold text-neutral-900">₹{{ order.subtotal|floatformat:2 }}</span>
+          </div>
+          {% if order.discount_amount > 0 %}
+            <div class="flex justify-between text-[#C86D51]">
+              <span>Discount ({{ order.coupon_code }})</span>
+              <span class="font-semibold">-₹{{ order.discount_amount|floatformat:2 }}</span>
+            </div>
+          {% endif %}
+          <div class="flex justify-between text-neutral-600">
+            <span>Shipping</span>
+            <span class="font-semibold text-neutral-900">
+              {% if order.shipping_fee == 0 %}FREE{% else %}₹{{ order.shipping_fee|floatformat:2 }}{% endif %}
+            </span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-neutral-900 pt-2 border-t border-neutral-100">
+            <span>Total Paid / Due</span>
+            <span class="font-serif text-lg">₹{{ order.total_amount|floatformat:2 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Actions -->
+      <div class="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <a href="{% url 'products:shop' %}" class="btn-primary w-full sm:w-auto text-xs py-3 px-8 text-center">
+          Continue Shopping ✦
+        </a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'accounts:profile' %}?tab=orders" class="text-xs font-bold text-neutral-800 hover:text-terracotta underline">
+            View in Order History →
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}
