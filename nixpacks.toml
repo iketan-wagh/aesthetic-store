@@ -10,4 +10,4 @@ cmds = [
 ]
 
 [start]
-cmd = "python manage.py migrate --no-input && python manage.py seed_data && gunicorn config.wsgi:application"
+cmd = "python manage.py migrate --no-input && gunicorn config.wsgi:application"

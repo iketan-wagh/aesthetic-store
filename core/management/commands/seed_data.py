@@ -214,30 +214,28 @@ class Command(BaseCommand):
             }
         ]
 
-        # Clean up old placeholder products if present
-        allowed_slugs = [p['slug'] for p in products_data]
-        Product.objects.exclude(slug__in=allowed_slugs).delete()
-
-        created_products = []
-        for pdata in products_data:
-            img_list = pdata.pop('images', [])
-            prod, _ = Product.objects.update_or_create(
-                slug=pdata['slug'],
-                defaults=pdata
-            )
-            
-            # Sync product images
-            ProductImage.objects.filter(product=prod).delete()
-            for idx, img_path in enumerate(img_list):
-                ProductImage.objects.create(
-                    product=prod,
-                    image=img_path,
-                    is_primary=(idx == 0),
-                    alt_text=f"{prod.name} angle {idx + 1}"
+        # 3. Only seed products if database is completely empty (Preserve user uploads & admin edits!)
+        if Product.objects.exists():
+            self.stdout.write(self.style.SUCCESS('[INFO] Products already exist in database. Preserving your custom products and images.'))
+        else:
+            created_products = []
+            for pdata in products_data:
+                img_list = pdata.pop('images', [])
+                prod, _ = Product.objects.get_or_create(
+                    slug=pdata['slug'],
+                    defaults=pdata
                 )
-            created_products.append(prod)
-
-        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded and synced {len(created_products)} active store products.'))
+                for idx, img_path in enumerate(img_list):
+                    ProductImage.objects.get_or_create(
+                        product=prod,
+                        image=img_path,
+                        defaults={
+                            'is_primary': (idx == 0),
+                            'alt_text': f"{prod.name} angle {idx + 1}"
+                        }
+                    )
+                created_products.append(prod)
+            self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Initialized {len(created_products)} store products.'))
 
         # 4. Coupons
         noma_coupon, _ = Coupon.objects.get_or_create(
