@@ -5,12 +5,14 @@ from decimal import Decimal
 from django.test import TestCase
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth.models import User
 from products.models import Category, Product
 from orders.models import Order, PaymentTransaction
 
 
 class OrderTests(TestCase):
     def setUp(self):
+        self.user = User.objects.create_user(username='testcustomer', password='password123', email='test@example.com')
         self.category = Category.objects.create(name='Workspace', slug='workspace')
         self.bamboo = Product.objects.create(
             name='Bamboo Desk Edit',
@@ -22,7 +24,15 @@ class OrderTests(TestCase):
             is_active=True
         )
 
+    def test_unauthenticated_checkout_redirects_to_login(self):
+        response = self.client.get(reverse('orders:checkout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('accounts:login'), response.url)
+
     def test_razorpay_order_initiation_and_verification(self):
+        # Log in customer
+        self.client.force_login(self.user)
+
         # 1. Add item to cart
         self.client.post(
             reverse('cart:add_to_cart'),

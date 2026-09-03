@@ -43,6 +43,8 @@ def register_view(request):
     if request.user.is_authenticated:
         return redirect('accounts:profile')
 
+    redirect_to = request.POST.get('next') or request.GET.get('next') or 'accounts:profile'
+
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -60,19 +62,19 @@ def register_view(request):
 
             # Auto login
             login(request, user)
-            messages.success(request, f"Welcome to Aesthetic Store, {user.first_name}! A welcome gift has been sent to your email.")
-            return redirect('accounts:profile')
+            messages.success(request, f"Welcome to Aesthetic Store, {user.first_name}! Your account has been created.")
+            return redirect(redirect_to)
     else:
         form = UserRegistrationForm()
 
-    return render(request, 'accounts/register.html', {'form': form})
+    return render(request, 'accounts/register.html', {'form': form, 'next': redirect_to})
 
 
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('accounts:profile')
 
-    redirect_to = request.GET.get('next', 'accounts:profile')
+    redirect_to = request.POST.get('next') or request.GET.get('next') or 'accounts:profile'
 
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)

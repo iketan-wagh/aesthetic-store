@@ -21,6 +21,7 @@ from coupons.models import Coupon, CouponUsage
 from cart.context_processors import get_or_create_cart
 
 
+@login_required(login_url='accounts:login')
 def checkout_view(request):
     cart = get_or_create_cart(request)
     if cart.total_items == 0:
@@ -33,13 +34,10 @@ def checkout_view(request):
             messages.error(request, f"Sorry, only {item.product.stock} units of {item.product.name} are in stock.")
             return redirect('cart:cart_view')
 
-    saved_addresses = []
-    default_address = None
-    if request.user.is_authenticated:
-        saved_addresses = Address.objects.filter(user=request.user)
-        default_address = saved_addresses.filter(is_default=True).first()
-        if not default_address and saved_addresses.exists():
-            default_address = saved_addresses.first()
+    saved_addresses = Address.objects.filter(user=request.user)
+    default_address = saved_addresses.filter(is_default=True).first()
+    if not default_address and saved_addresses.exists():
+        default_address = saved_addresses.first()
 
     # Calculate financial numbers
     subtotal = cart.subtotal
@@ -71,6 +69,7 @@ def checkout_view(request):
 
 
 @require_POST
+@login_required(login_url='accounts:login')
 def create_razorpay_order(request):
     """
     Creates a real Razorpay order using the Razorpay Python SDK.
@@ -106,7 +105,7 @@ def create_razorpay_order(request):
                 'payment_capture': 1,
                 'notes': {
                     'cart_items': str(cart.total_items),
-                    'customer': request.user.username if request.user.is_authenticated else 'Guest'
+                    'customer': request.user.username if request.user.is_authenticated else 'Customer'
                 }
             }
             rzp_order = client.order.create(data=order_data)
@@ -129,6 +128,7 @@ def create_razorpay_order(request):
 
 
 @require_POST
+@login_required(login_url='accounts:login')
 def verify_razorpay_payment(request):
     """
     Verifies Razorpay payment signature and completes order creation.
@@ -298,6 +298,7 @@ def verify_razorpay_payment(request):
 
 
 @require_POST
+@login_required(login_url='accounts:login')
 def process_checkout(request):
     """
     Standard form POST for Cash on Delivery (COD) or direct submission.
