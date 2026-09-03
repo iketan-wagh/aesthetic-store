@@ -34,10 +34,9 @@ db.sqlite3
 db.sqlite3-journal
 
 # ==========================================
-# Static Compilation, Media Uploads & Logs
+# Static Compilation & Logs
 # ==========================================
 staticfiles/
-media/
 *.log
 
 # ==========================================

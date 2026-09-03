@@ -9,13 +9,13 @@ from accounts.models import Address
 
 
 class Command(BaseCommand):
-    help = 'Seeds initial database for NOMA Gen-Z sustainable lifestyle brand'
+    help = 'Seeds initial and updated database for Aesthetic Store'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.NOTICE('[INFO] Starting NOMA Database Seed...'))
+        self.stdout.write(self.style.NOTICE('[INFO] Starting Database Seed & Sync...'))
 
-        # Create Superusers
-        ketan_user, k_created = User.objects.get_or_create(
+        # 1. Create Superusers
+        ketan_user, _ = User.objects.get_or_create(
             username='ketanwagh',
             defaults={
                 'email': 'iketanwagh@gmail.com',
@@ -31,7 +31,7 @@ class Command(BaseCommand):
         ketan_user.save()
         self.stdout.write(self.style.SUCCESS('[SUCCESS] Superuser provisioned: ketanwagh / Ketan@wagh1'))
 
-        admin_user, a_created = User.objects.get_or_create(
+        admin_user, _ = User.objects.get_or_create(
             username='admin',
             defaults={
                 'email': 'admin@aestheticstore.com',
@@ -46,39 +46,7 @@ class Command(BaseCommand):
         admin_user.is_superuser = True
         admin_user.save()
 
-        # Create Demo Customers for reviews
-        demo_users = [
-            ('ananya_m', 'Ananya', 'Mehta', 'ananya@example.com'),
-            ('rohan_v', 'Rohan', 'Verma', 'rohan@example.com'),
-            ('kavya_s', 'Kavya', 'Sharma', 'kavya@example.com'),
-            ('arjun_d', 'Arjun', 'Deshmukh', 'arjun@example.com'),
-            ('tanya_k', 'Tanya', 'Kapoor', 'tanya@example.com'),
-        ]
-        created_users = []
-        for uname, fname, lname, email in demo_users:
-            u, created = User.objects.get_or_create(
-                username=uname,
-                defaults={'first_name': fname, 'last_name': lname, 'email': email}
-            )
-            if created:
-                u.set_password('password123')
-                u.save()
-                # Create demo address
-                Address.objects.get_or_create(
-                    user=u,
-                    full_name=f"{fname} {lname}",
-                    phone="+91 98765 43210",
-                    address_line1="Apartment 4B, Emerald Heights",
-                    address_line2="12th Main, Indiranagar",
-                    city="Bengaluru",
-                    state="Karnataka",
-                    pincode="560038",
-                    is_default=True,
-                    address_type="HOME"
-                )
-            created_users.append(u)
-
-        # 1. Categories
+        # 2. Categories
         categories_data = [
             {
                 'name': 'Drinkware',
@@ -92,7 +60,7 @@ class Command(BaseCommand):
                 'name': 'Home & Living',
                 'slug': 'home-living',
                 'tagline': 'Warmth, mood and conscious calm',
-                'description': 'Mindfully crafted accents, natural soy scents, and slow-living essentials for your personal sanctuary.',
+                'description': 'Mindfully crafted accents, natural gemstones, and slow-living essentials for your personal sanctuary.',
                 'display_order': 2,
                 'is_featured': True
             },
@@ -124,7 +92,7 @@ class Command(BaseCommand):
                 'name': 'Gifting',
                 'slug': 'gifting',
                 'tagline': 'Thoughtful things for favorite humans',
-                'description': 'Eco-conscious, Instagram-worthy gift sets and aesthetics that spark joy.',
+                'description': 'Eco-conscious gift sets and aesthetics that spark joy.',
                 'display_order': 6,
                 'is_featured': True
             },
@@ -132,7 +100,7 @@ class Command(BaseCommand):
                 'name': 'New Drops',
                 'slug': 'new-drops',
                 'tagline': 'Fresh seasonal arrivals',
-                'description': 'Our latest limited batches, small-batch ceramics, and curated sustainable swaps.',
+                'description': 'Our latest limited batches and curated sustainable swaps.',
                 'display_order': 7,
                 'is_featured': True
             },
@@ -140,168 +108,144 @@ class Command(BaseCommand):
 
         cat_instances = {}
         for cdata in categories_data:
-            cat, _ = Category.objects.get_or_create(
+            cat, _ = Category.objects.update_or_create(
                 slug=cdata['slug'],
                 defaults=cdata
             )
             cat_instances[cdata['slug']] = cat
-        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded {len(cat_instances)} Categories.'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Synced {len(cat_instances)} Categories.'))
 
-        # 2. Products Data (5 Exact products from prompt)
+        # 3. User's Active Products & Imagery
         products_data = [
             {
-                'name': 'Aura Copper Bottle',
-                'slug': 'aura-copper-bottle',
-                'sku': 'NOMA-BOT-01',
+                'name': 'Royal Ornate Pure Copper Water Bottle',
+                'slug': 'royal-ornate-pure-copper-water-bottle',
+                'sku': 'NOMA-COPPER-ORNATE-001',
                 'category': cat_instances['drinkware'],
-                'price': Decimal('1499.00'),
-                'discount_price': Decimal('1299.00'),
-                'stock': 40,
-                'short_description': 'A minimalist copper bottle designed to turn everyday hydration into a beautiful ritual.',
+                'price': Decimal('2199.00'),
+                'discount_price': Decimal('1799.00'),
+                'stock': 8,
+                'short_description': 'A timeless copper bottle with an intricate ornamental finish, designed to bring traditional craftsmanship and everyday wellness into a modern lifestyle.',
                 'description': (
-                    'The Aura Copper Bottle brings ancient Ayurvedic water rituals into the contemporary aesthetic home. '
-                    'Meticulously spun from pure, high-grade single-source copper with an ultra-matte brushed exterior finish, '
-                    'this bottle feels luxurious in the hand and looks striking on any bedside table or desk.\n\n'
-                    'Copper naturally infuses your drinking water with trace minerals while remaining 100% plastic-free. '
-                    'Featuring an airtight, leakproof silicone-sealed copper cap and a balanced silhouette.'
+                    "Our Royal Ornate Copper Water Bottle features a rich copper body wrapped in an intricate black-and-copper ornamental pattern. "
+                    "Its elegant cylindrical silhouette and warm metallic finish make it more than just a water bottle — it's a refined everyday accessory.\n\n"
+                    "Inspired by the traditional use of copper vessels, this bottle is designed for storing drinking water while adding a touch of heritage to your daily routine.\n\n"
+                    "Whether kept on your work desk, bedside table, dining table, or carried throughout the day, its distinctive design makes it equally suited to personal use and thoughtful gifting.\n\n"
+                    "Highlights:\n"
+                    "• Copper construction\n"
+                    "• Intricate ornamental exterior design\n"
+                    "• Premium copper-finish cap\n"
+                    "• Tall, elegant cylindrical form\n"
+                    "• Suitable for everyday water storage\n"
+                    "• Traditional-inspired wellness aesthetic\n"
+                    "• Reusable alternative to disposable plastic bottles\n"
+                    "• Suitable for home, office and gifting\n\n"
+                    "Please note: Traditional wellness practices around storing water in copper vessels are widely known, but this product should not be considered a medical treatment or a substitute for professional medical advice."
                 ),
                 'badge': 'BESTSELLER',
-                'tags': 'Sustainable, Bestseller, Everyday, Drinkware',
-                'materials': '100% Pure High-Grade Ayurvedic Copper, food-safe leakproof silicone seal',
-                'dimensions': '900ml (30.4 fl oz) | Height: 26cm | Base Diameter: 7.2cm | Weight: 280g',
-                'care_instructions': 'Hand rinse with warm water and lemon/salt mixture weekly. Never place in microwave or dishwasher. For still water only.',
-                'sustainability_notes': 'Single-element metal that is infinitely recyclable. Replaces an estimated 1,400+ single-use plastic bottles over 5 years of daily use.',
-                'packaging_notes': '100% plastic-free recycled unbleached kraft box, printed with water-based soy inks.',
-                'lifespan_notes': 'Engineered to last for decades. Develops a natural, distinctive patina over time.',
+                'tags': 'Sustainable, Copper, Drinkware, Wellness, Bestseller',
+                'materials': 'Copper body with decorative black-and-copper ornamental exterior finish and copper-finish metal cap.',
+                'dimensions': 'Height: 22 cm | Diameter: 7 cm | Capacity: 950ml',
+                'care_instructions': (
+                    "Hand wash with mild soap and water.\n"
+                    "Dry thoroughly after washing.\n"
+                    "Avoid abrasive scrubbers and harsh chemical cleaners.\n"
+                    "Do not use a dishwasher.\n"
+                    "Avoid storing highly acidic beverages such as lemon water or fruit juices for extended periods.\n"
+                    "To maintain the copper's appearance, use a copper-safe cleaning method when required.\n"
+                    "Store completely dry when not in use."
+                ),
+                'sustainability_notes': 'Reusable copper construction designed for long-term everyday use, helping reduce dependence on disposable plastic water bottles. Copper is also a durable material that can be maintained over time rather than frequently replaced.',
+                'packaging_notes': 'Packaged in protective, minimal packaging designed to protect the copper surface and ornamental finish during transit.',
+                'lifespan_notes': 'Built to endure for years with simple hand washing and care.',
                 'is_featured': True,
                 'is_bestseller': True,
                 'is_new_drop': False,
+                'is_active': True,
+                'images': [
+                    'products/royal-ornate-pure-copper-water-bottle1.jpeg',
+                    'products/royal-ornate-pure-copper-water-bottle3.jpeg',
+                    'products/royal-ornate-pure-copper-water-bottle2.jpeg',
+                ]
             },
             {
-                'name': 'Copper Water Recharge Balls',
-                'slug': 'copper-water-recharge-balls',
-                'sku': 'NOMA-WEL-02',
-                'category': cat_instances['wellness'],
-                'price': Decimal('799.00'),
-                'discount_price': None,
-                'stock': 65,
-                'short_description': 'Reusable copper accessories designed for a thoughtful water-care ritual.',
-                'description': (
-                    'Turn any existing glass pitcher, carafe, or bedside water bottle into an intentional mineralizing station. '
-                    'Our Copper Water Recharge Balls are hand-turned from solid 99.8% pure copper spheres. '
-                    'Simply drop them into your daily water vessel overnight to allow subtle, natural copper ionization to infuse your water.\n\n'
-                    'Comes as a curated set of 4 solid spheres in an unbleached organic cotton drawstring bag.'
-                ),
-                'badge': 'NEW',
-                'tags': 'Wellness, Reusable, New, Ritual',
-                'materials': 'Solid artisan-forged 99.8% pure natural copper',
-                'dimensions': 'Set of 4 spheres | 2.5cm diameter each | Total weight: 140g',
-                'care_instructions': 'Rinse before first use. Soak for 5 minutes in mild lemon juice or tamarind paste every fortnight to restore natural luster.',
-                'sustainability_notes': 'Zero-waste water enhancement. No disposable filter cartridges, no microplastics, and zero recurring waste.',
-                'packaging_notes': 'Organic GOTS-certified cotton pouch inside a compostable recycled paperboard tube.',
-                'lifespan_notes': 'Indefinite reusable lifespan — solid metal that never degrades.',
-                'is_featured': True,
-                'is_bestseller': False,
-                'is_new_drop': True,
-            },
-            {
-                'name': 'Cloud Reusable Tumbler',
-                'slug': 'cloud-reusable-tumbler',
-                'sku': 'NOMA-TUM-03',
-                'category': cat_instances['drinkware'],
-                'price': Decimal('999.00'),
-                'discount_price': Decimal('899.00'),
-                'stock': 50,
-                'short_description': 'A clean, reusable tumbler designed for coffee runs, study sessions and everyday carry.',
-                'description': (
-                    'The Cloud Reusable Tumbler is sculpted for your favorite iced matcha, hot flat white, or infused water on the move. '
-                    'Featuring double-wall vacuum insulation with a cloud-soft matte ceramic-feel powder coat that resists condensation.\n\n'
-                    'Fitted with a splash-resistant ergonomic sliding lid that accommodates reusable glass and bamboo straws. '
-                    'Fits comfortably into standard cup holders and tote bag pockets.'
-                ),
-                'badge': 'NOMA_PICK',
-                'tags': 'Reusable, Everyday, Gen-Z Pick, Tumbler',
-                'materials': '18/8 Pro-Grade Double-Wall Stainless Steel, BPA-free Tritan slider lid',
-                'dimensions': '480ml (16 oz) | Height: 17.8cm | Top Diameter: 8.6cm | Weight: 260g',
-                'care_instructions': 'Top-rack dishwasher safe lid. Hand-wash body with warm soapy water to preserve soft matte coating.',
-                'sustainability_notes': 'Keeps beverages cold for 18 hours or hot for 8 hours. Replaces 400+ single-use coffee cups per year for regular coffee drinkers.',
-                'packaging_notes': 'Zero-plastic recycled kraft cylinder with water-based non-toxic inks.',
-                'lifespan_notes': 'Built for 5+ years of intense everyday use.',
-                'is_featured': True,
-                'is_bestseller': True,
-                'is_new_drop': False,
-            },
-            {
-                'name': 'Bamboo Desk Edit',
-                'slug': 'bamboo-desk-edit',
-                'sku': 'NOMA-DSK-04',
-                'category': cat_instances['workspace'],
-                'price': Decimal('699.00'),
-                'discount_price': None,
-                'stock': 35,
-                'short_description': 'A minimalist bamboo organizer for creating a calmer, cleaner workspace.',
-                'description': (
-                    'Declutter your creative corner and bring organic warmth to your digital workspace. '
-                    'The Bamboo Desk Edit is CNC-machined from single-slab sustainably harvested Moso bamboo, '
-                    'featuring custom recessed grooves for your smartphone, fountain pens, sticky notes, and everyday trinkets.\n\n'
-                    'Satin plant-oil finish highlights the natural wood grain while soft cork feet prevent desktop scratches.'
-                ),
-                'badge': 'LIMITED',
-                'tags': 'Sustainable, Workspace, Minimal, Bamboo',
-                'materials': '100% Sustainably Harvested Moso Bamboo, natural plant-based linseed oil finish, natural cork base pads',
-                'dimensions': '24cm Length × 14cm Width × 4.2cm Height | Weight: 320g',
-                'care_instructions': 'Wipe clean with a dry or lightly damp cloth. Keep away from direct standing water.',
-                'sustainability_notes': 'Moso bamboo reaches maturity in 3-5 years without synthetic fertilizers or heavy machinery. 100% biodegradable.',
-                'packaging_notes': 'FSC-certified unbleached cardboard box with paper sealing tape.',
-                'lifespan_notes': 'Durable solid bamboo built to endure 10+ years of creative work.',
-                'is_featured': True,
-                'is_bestseller': False,
-                'is_new_drop': False,
-            },
-            {
-                'name': 'Slow Sunday Soy Candle',
-                'slug': 'slow-sunday-soy-candle',
-                'sku': 'NOMA-CND-05',
+                'name': 'Seven Chakra Gemstone Tree of Life',
+                'slug': 'seven-chakra-gemstone-tree-of-life',
+                'sku': 'NOMA-HOME-GEMTREE-001',
                 'category': cat_instances['home-living'],
-                'price': Decimal('599.00'),
-                'discount_price': None,
-                'stock': 80,
-                'short_description': 'A hand-poured soy wax candle created for slow evenings and cozy spaces.',
+                'price': Decimal('999.00'),
+                'discount_price': Decimal('699.00'),
+                'stock': 10,
+                'short_description': 'A vibrant handcrafted gemstone tree inspired by the Tree of Life, bringing color, character, and a meaningful decorative touch to your space.',
                 'description': (
-                    'Infuse your sanctuary with the grounding notes of amber, hinoki wood, warm cedar, and subtle tonka bean. '
-                    'Slow Sunday is hand-poured in small batches using 100% renewable domestic soy wax and lead-free organic cotton wicks.\n\n'
-                    'Housed in a reusable matte earthenware ceramic tumbler that can be repurposed as a desktop pen holder or succulent planter once burned.'
+                    "A little tree for your space. A lot of character for your home.\n\n"
+                    "The Seven Chakra Gemstone Tree of Life is a handcrafted decorative piece featuring colorful natural-looking gemstone chips arranged across delicate golden branches and a sculpted tree trunk.\n\n"
+                    "Designed to symbolize growth, balance, and abundance, its colorful branches make it an eye-catching addition to desks, shelves, bedside tables, meditation corners, living rooms, and workspaces.\n\n"
+                    "Its compact form also makes it a thoughtful gift for housewarmings, birthdays, festive occasions, and anyone who enjoys meaningful décor inspired by nature and traditional symbolism.\n\n"
+                    "Highlights:\n"
+                    "• Tree of Life inspired design\n"
+                    "• Multicolored gemstone-chip branches\n"
+                    "• Hand-wired decorative branches\n"
+                    "• Sculpted tree-style trunk\n"
+                    "• Decorative gemstone-filled base\n"
+                    "• Suitable for home and workspace décor\n"
+                    "• Compact statement piece\n"
+                    "• Ideal for gifting\n"
+                    "• Inspired by chakra and traditional décor symbolism"
                 ),
-                'badge': 'NEW',
-                'tags': 'Home, Relax, Giftable, Soy Wax',
-                'materials': '100% Pure Soy Wax, Lead-free unbleached cotton wick, Phthalate-free botanical oils, matte stoneware ceramic vessel',
-                'dimensions': '220g (7.8 oz) | 50+ Hours Clean Burn Time | Height: 9cm | Diameter: 7.8cm',
-                'care_instructions': 'Trim wick to 6mm before every burn. Allow wax to melt to container edges on first burn to prevent tunneling.',
-                'sustainability_notes': 'Clean-burning plant wax with zero petroleum paraffin. Vessel is 100% reusable.',
-                'packaging_notes': 'Compostable paperboard box with seed-embedded paper label you can plant in soil.',
-                'lifespan_notes': '50+ hours burn time; permanent reusable ceramic cup.',
+                'badge': 'FEATURED',
+                'tags': 'Gemstone, Home Decor, Tree of Life, Chakra, Gifting',
+                'materials': 'Natural gemstone chips, decorative metal wire branches, sculpted resin/wood-effect trunk and base.',
+                'dimensions': 'Height: 18 cm | Base Width: 6 cm | Weight: 250g',
+                'care_instructions': (
+                    "Keep indoors and away from prolonged moisture.\n"
+                    "Clean gently with a soft, dry cloth.\n"
+                    "Avoid dropping or bending the gemstone branches.\n"
+                    "Handle the branches carefully when repositioning the tree.\n"
+                    "Keep away from harsh cleaning chemicals.\n"
+                    "Keep away from prolonged direct sunlight to help preserve the decorative finish."
+                ),
+                'sustainability_notes': 'Designed as a reusable decorative piece that can be enjoyed for years with proper care. Its nature-inspired design offers a long-lasting alternative to short-lived seasonal décor.',
+                'packaging_notes': 'Packed in protective, gift-ready packaging designed to safeguard the delicate gemstone branches and decorative base during delivery.',
+                'lifespan_notes': 'Permanent decorative craft piece.',
                 'is_featured': True,
                 'is_bestseller': False,
                 'is_new_drop': True,
-            },
+                'is_active': True,
+                'images': [
+                    'products/seven-chakra-gemstone-tree-of-life1.jpeg',
+                    'products/seven-chakra-gemstone-tree-of-life2.jpeg',
+                    'products/seven-chakra-gemstone-tree-of-life3.jpeg',
+                ]
+            }
         ]
+
+        # Clean up old placeholder products if present
+        allowed_slugs = [p['slug'] for p in products_data]
+        Product.objects.exclude(slug__in=allowed_slugs).delete()
 
         created_products = []
         for pdata in products_data:
-            prod, _ = Product.objects.get_or_create(
+            img_list = pdata.pop('images', [])
+            prod, _ = Product.objects.update_or_create(
                 slug=pdata['slug'],
                 defaults=pdata
             )
-            # Create a sample ProductImage record
-            ProductImage.objects.get_or_create(
-                product=prod,
-                is_primary=True,
-                defaults={'alt_text': f"{prod.name} - Studio Aesthetic View"}
-            )
+            
+            # Sync product images
+            ProductImage.objects.filter(product=prod).delete()
+            for idx, img_path in enumerate(img_list):
+                ProductImage.objects.create(
+                    product=prod,
+                    image=img_path,
+                    is_primary=(idx == 0),
+                    alt_text=f"{prod.name} angle {idx + 1}"
+                )
             created_products.append(prod)
-        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded {len(created_products)} Products.'))
 
-        # 3. Coupons
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded and synced {len(created_products)} active store products.'))
+
+        # 4. Coupons
         noma_coupon, _ = Coupon.objects.get_or_create(
             code='NOMA10',
             defaults={
@@ -314,64 +258,4 @@ class Command(BaseCommand):
             }
         )
         self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded Coupon: {noma_coupon.code} (10% OFF)'))
-
-        # 4. Verified Seed Customer Reviews
-        reviews_data = [
-            (
-                created_products[0], # Aura Copper Bottle
-                created_users[0], # Ananya
-                5,
-                'Genuinely transformed my desk aesthetic',
-                'I get compliments on this bottle every single day at my studio. The matte copper finish is so subtle and premium — not tacky or overly shiny. Feels wonderful to drink from!'
-            ),
-            (
-                created_products[0],
-                created_users[1], # Rohan
-                5,
-                'Solid build and zero leaks',
-                'Been using it daily for 3 weeks. Water genuinely tastes crisper and cooler in the morning. Great conscious packaging too — 10/10 unboxing vibe.'
-            ),
-            (
-                created_products[1], # Copper Recharge Balls
-                created_users[2], # Kavya
-                5,
-                'Such a clever minimalist idea',
-                'Dropped two into my glass bedside pitcher. It makes the everyday routine feel like an intentional ritual. Love the linen pouch.'
-            ),
-            (
-                created_products[2], # Cloud Tumbler
-                created_users[3], # Arjun
-                5,
-                'Replaced my disposable coffee cups completely',
-                'Keeps my iced matcha frosty for 6+ hours during work sessions. The texture of the powder coat is so satisfying.'
-            ),
-            (
-                created_products[3], # Bamboo Desk Edit
-                created_users[4], # Tanya
-                5,
-                'Instant Pinterest desk vibe',
-                'The bamboo grain is gorgeous and it holds my phone at the perfect angle for video calls. Clean, minimal, zero plastic.'
-            ),
-            (
-                created_products[4], # Slow Sunday Candle
-                created_users[0], # Ananya
-                5,
-                'The coziest evening scent',
-                'Hinoki and amber notes are super subtle and comforting, not overwhelming or synthetic. Ceramic jar will make the cutest pencil holder later.'
-            ),
-        ]
-
-        for prod, usr, rating, title, comment in reviews_data:
-            Review.objects.get_or_create(
-                product=prod,
-                user=usr,
-                defaults={
-                    'rating': rating,
-                    'title': title,
-                    'comment': comment,
-                    'is_verified_purchase': True,
-                    'is_approved': True
-                }
-            )
-        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded {len(reviews_data)} Customer Reviews.'))
-        self.stdout.write(self.style.SUCCESS('[SUCCESS] NOMA Database seeding completed successfully!'))
+        self.stdout.write(self.style.SUCCESS('[SUCCESS] Database sync completed successfully!'))
