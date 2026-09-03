@@ -127,19 +127,19 @@ class Product(models.Model):
         img = self.primary_image_obj
         if img and img.image:
             return img.image.url
-        return f"/static/images/products/{self.slug}.jpg"
+        return f"/static/images/products/{self.slug}1.jpeg"
 
     @property
     def secondary_image_url(self):
         if hasattr(self, '_prefetched_objects_cache') and 'images' in self._prefetched_objects_cache:
             imgs = list(self.images.all())
-            if len(imgs) > 1:
-                return imgs[1].image.url if imgs[1].image else f"/static/images/products/{self.slug}-2.jpg"
-            return f"/static/images/products/{self.slug}-2.jpg"
+            if len(imgs) > 1 and imgs[1].image:
+                return imgs[1].image.url
+            return f"/static/images/products/{self.slug}2.jpeg"
         imgs = self.images.all()
-        if len(imgs) > 1:
-            return imgs[1].image.url if imgs[1].image else f"/static/images/products/{self.slug}-2.jpg"
-        return f"/static/images/products/{self.slug}-2.jpg"
+        if len(imgs) > 1 and imgs[1].image:
+            return imgs[1].image.url
+        return f"/static/images/products/{self.slug}2.jpeg"
 
     @property
     def average_rating(self):
@@ -170,3 +170,9 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"{self.product.name} Image ({'Primary' if self.is_primary else 'Gallery'})"
+
+    @property
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        return f"/static/images/products/{self.product.slug}1.jpeg"

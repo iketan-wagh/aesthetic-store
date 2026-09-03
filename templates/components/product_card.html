@@ -8,12 +8,14 @@
         alt="{{ product.name }}" 
         class="product-primary-img max-w-full max-h-full w-auto h-auto object-contain transition duration-500 drop-shadow-sm"
         loading="lazy"
+        onerror="this.onerror=null; this.src='/static/images/products/{{ product.slug }}1.jpeg';"
       >
       <img 
         src="{{ product.secondary_image_url }}" 
         alt="{{ product.name }} lifestyle angle" 
         class="product-secondary-img max-w-full max-h-full w-auto h-auto object-contain transition duration-500 drop-shadow-sm"
         loading="lazy"
+        onerror="this.onerror=null; this.src='/static/images/products/{{ product.slug }}2.jpeg';"
       >
     </a>
 
