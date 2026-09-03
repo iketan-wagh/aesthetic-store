@@ -12,10 +12,6 @@
       <!-- Desktop Left Navigation -->
       <nav class="hidden lg:flex items-center space-x-8 text-sm font-medium tracking-wide">
         <a href="{% url 'products:shop' %}" class="text-neutral-800 hover:text-[#C86D51] transition">Shop</a>
-        <a href="{% url 'products:shop' %}?category=new-drops" class="text-neutral-800 hover:text-[#C86D51] transition flex items-center gap-1.5">
-          New Drops
-          <span class="w-1.5 h-1.5 rounded-full bg-[#C86D51]"></span>
-        </a>
         <a href="{% url 'core:sustainable_living' %}" class="text-neutral-800 hover:text-[#C86D51] transition">Sustainable Living</a>
         <a href="{% url 'core:our_story' %}" class="text-neutral-800 hover:text-[#C86D51] transition">Our Story</a>
       </nav>
@@ -100,10 +96,6 @@
 
     <nav class="mt-6 flex flex-col space-y-4">
       <a href="{% url 'products:shop' %}" class="text-lg font-medium text-neutral-800 hover:text-terracotta transition">Shop All</a>
-      <a href="{% url 'products:shop' %}?category=new-drops" class="text-lg font-medium text-neutral-800 hover:text-terracotta transition flex items-center justify-between">
-        New Drops
-        <span class="text-[10px] font-bold px-2 py-0.5 bg-[#C86D51] text-white rounded-full">HOT</span>
-      </a>
       <div class="py-2 border-y border-[#ECE6DB] my-2">
         <p class="text-[10px] tracking-widest uppercase text-neutral-400 font-bold mb-2">Categories</p>
         <div class="grid grid-cols-2 gap-2 text-sm">

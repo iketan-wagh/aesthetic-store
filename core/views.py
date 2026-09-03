@@ -7,17 +7,15 @@ from reviews.models import Review
 
 def home(request):
     featured_products = Product.objects.filter(is_active=True, is_featured=True).select_related('category').prefetch_related('images', 'reviews')
-    new_drops = Product.objects.filter(is_active=True).select_related('category').prefetch_related('images', 'reviews').order_by('-is_new_drop', '-created_at')[:4]
     bestsellers = Product.objects.filter(is_active=True, is_bestseller=True).select_related('category').prefetch_related('images', 'reviews')[:4]
     if not bestsellers.exists():
         bestsellers = Product.objects.filter(is_active=True).select_related('category').prefetch_related('images', 'reviews')[:4]
         
-    categories = Category.objects.all().order_by('display_order')
+    categories = Category.objects.exclude(slug='new-drops').order_by('display_order')
     reviews = Review.objects.filter(is_approved=True).select_related('product', 'user')[:6]
 
     context = {
         'featured_products': featured_products,
-        'new_drops': new_drops,
         'bestsellers': bestsellers,
         'categories': categories,
         'reviews': reviews,

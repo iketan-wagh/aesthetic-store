@@ -121,27 +121,6 @@
 </section>
 
 
-<!-- 3. THE NEW DROP SECTION -->
-<section class="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#ECE6DB]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-      <div>
-        <span class="text-xs uppercase tracking-[0.25em] text-[#C57D56] font-bold">Limited Seasonal Batch</span>
-        <h2 class="font-editorial text-3xl sm:text-5xl text-[#1C1B19] mt-1">THE NEW DROP</h2>
-      </div>
-      <a href="{% url 'products:shop' %}?category=new-drops" class="text-xs font-semibold uppercase tracking-widest text-[#1C1B19] hover:text-[#C86D51] transition flex items-center gap-1.5">
-        View All Drops →
-      </a>
-    </div>
-
-    <!-- 4 Product Cards Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-      {% for product in new_drops %}
-        {% include 'components/product_card.html' with product=product %}
-      {% endfor %}
-    </div>
-  </div>
-</section>
 
 
 <!-- 4. CATEGORY EXPLORER ("FIND YOUR VIBE") -->

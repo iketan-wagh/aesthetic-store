@@ -96,15 +96,9 @@ class Command(BaseCommand):
                 'display_order': 6,
                 'is_featured': True
             },
-            {
-                'name': 'New Drops',
-                'slug': 'new-drops',
-                'tagline': 'Fresh seasonal arrivals',
-                'description': 'Our latest limited batches and curated sustainable swaps.',
-                'display_order': 7,
-                'is_featured': True
-            },
         ]
+
+        Category.objects.filter(slug='new-drops').delete()
 
         cat_instances = {}
         for cdata in categories_data:
