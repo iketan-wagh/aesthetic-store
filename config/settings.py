@@ -220,12 +220,23 @@ RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '95X4uuyNvzYuv67VEiB
 
 # Email Configuration
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com').strip()
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'ketanwagh714@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh')
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
+
+_use_tls_env = os.environ.get('EMAIL_USE_TLS', 'True').strip().lower()
+_use_ssl_env = os.environ.get('EMAIL_USE_SSL', 'False').strip().lower()
+
+if EMAIL_PORT == 465 or _use_ssl_env in ('true', '1', 'yes'):
+    EMAIL_USE_SSL = True
+    EMAIL_USE_TLS = False
+    EMAIL_PORT = 465
+else:
+    EMAIL_USE_TLS = _use_tls_env in ('true', '1', 'yes', 't')
+    EMAIL_USE_SSL = False
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'ketanwagh714@gmail.com').strip()
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').strip().replace(' ', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', f'Aesthetic Store <{EMAIL_HOST_USER}>').strip()
 EMAIL_TIMEOUT = 10
 
 # Google OAuth2 Credentials (from https://console.cloud.google.com/)
