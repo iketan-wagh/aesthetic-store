@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 def _send_email_in_thread(subject, text_content, html_content, from_email, to_email, reply_to=None):
+    # Strategy 1: Standard Django Backend
     try:
         msg = EmailMultiAlternatives(
             subject=subject,
@@ -30,10 +31,40 @@ def _send_email_in_thread(subject, text_content, html_content, from_email, to_em
         )
         msg.attach_alternative(html_content, "text/html")
         msg.send(fail_silently=False)
-        print(f"[EMAIL SUCCESS] Sent welcome email to {to_email}")
-    except Exception as e:
-        print(f"[EMAIL ERROR] Failed to send email to {to_email}: {e}")
-        logger.error(f"Failed to send email to {to_email}: {e}")
+        print(f"[EMAIL SUCCESS] Dispatched welcome email to {to_email}")
+        return
+    except Exception as e1:
+        print(f"[EMAIL NOTE] Standard backend failed ({e1}). Attempting direct SSL Port 465 fallback...")
+
+    # Strategy 2: Direct SSL Port 465 (Cloud-Safe Fallback)
+    import smtplib
+    import ssl
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    host_user = getattr(settings, 'EMAIL_HOST_USER', 'ketanwagh714@gmail.com').strip()
+    host_password = getattr(settings, 'EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').strip().replace(' ', '')
+
+    if host_user and host_password:
+        try:
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = from_email
+            msg['To'] = ', '.join(to_email)
+            if reply_to:
+                msg['Reply-To'] = ', '.join(reply_to)
+
+            msg.attach(MIMEText(text_content, 'plain', 'utf-8'))
+            msg.attach(MIMEText(html_content, 'html', 'utf-8'))
+
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context, timeout=12) as server:
+                server.login(host_user, host_password)
+                server.sendmail(host_user, to_email, msg.as_string())
+            print(f"[EMAIL SUCCESS] Dispatched welcome email via Direct SSL Port 465 to {to_email}")
+        except Exception as e2:
+            print(f"[EMAIL ERROR] Both delivery strategies failed for {to_email}: {e2}")
+            logger.error(f"Email delivery error to {to_email}: {e2}")
 
 
 def send_welcome_email(user, request=None):
