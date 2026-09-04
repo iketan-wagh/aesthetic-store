@@ -20,36 +20,40 @@ logger = logging.getLogger(__name__)
 
 
 def _send_email_in_thread(subject, text_content, html_content, from_email, to_email, reply_to=None):
+    recipients = to_email if isinstance(to_email, list) else [to_email]
+
     # Strategy 1: Resend HTTPS REST API (Port 443 - 100% Cloud-Proof, Never Blocked by Railway!)
     resend_api_key = getattr(settings, 'RESEND_API_KEY', '').strip()
     if resend_api_key:
         try:
             import requests
             sender = getattr(settings, 'RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
-            recipients = to_email if isinstance(to_email, list) else [to_email]
+            payload = {
+                "from": sender,
+                "to": recipients,
+                "subject": subject,
+                "html": html_content,
+                "text": text_content,
+            }
+            if reply_to:
+                payload["reply_to"] = reply_to[0] if isinstance(reply_to, list) else reply_to
+
             resp = requests.post(
                 'https://api.resend.com/emails',
                 headers={
                     'Authorization': f'Bearer {resend_api_key}',
                     'Content-Type': 'application/json'
                 },
-                json={
-                    'from': sender,
-                    'to': recipients,
-                    'subject': subject,
-                    'html': html_content,
-                    'text': text_content,
-                    'reply_to': reply_to[0] if reply_to else 'ketanwagh714@gmail.com'
-                },
+                json=payload,
                 timeout=8
             )
             if resp.status_code in (200, 201):
-                print(f"[EMAIL SUCCESS] Dispatched via Resend HTTPS API (Port 443) to {to_email}")
+                print(f"[EMAIL SUCCESS] Dispatched via Resend HTTPS API (Port 443) to {recipients}: {resp.json()}")
                 return
             else:
-                print(f"[EMAIL RESEND ERROR] Status {resp.status_code}: {resp.text}")
+                print(f"[EMAIL RESEND NOTICE] Status {resp.status_code}: {resp.text}. Attempting SMTP fallback...")
         except Exception as e_resend:
-            print(f"[EMAIL RESEND ERROR] {e_resend}")
+            print(f"[EMAIL RESEND NOTICE] {e_resend}. Attempting SMTP fallback...")
 
     # Strategy 2: Standard Django Backend
     try:
