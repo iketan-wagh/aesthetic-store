@@ -1,83 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to Aesthetic Store</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+    @media only screen and (max-width: 620px) {
+      .email-container { width: 100% !important; padding: 12px !important; }
+      .email-content { padding: 28px 20px !important; }
+      .header-pad { padding: 32px 20px 24px 20px !important; }
+      .code-box { font-size: 20px !important; padding: 10px 24px !important; }
+    }
+  </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAF8F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1C1B19;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #FAF8F5; padding: 40px 10px;">
+<body style="margin: 0; padding: 0; background-color: #FAF8F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1C1B19; -webkit-font-smoothing: antialiased;">
+  
+  <!-- Outer Table Container -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #FAF8F5; margin: 0; padding: 30px 0;">
     <tr>
-      <td align="center">
-        <!-- Main Card -->
-        <table role="presentation" width="100%" max-width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #FFFFFF; border-radius: 24px; border: 1px solid #ECE6DB; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+      <td align="center" style="padding: 0 10px;">
+        
+        <!-- Main Email Card -->
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="email-container" style="max-width: 580px; width: 100%; background-color: #FFFFFF; border-radius: 20px; border: 1px solid #ECE6DB; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.03);">
           
-          <!-- Header / Brand Banner -->
+          <!-- Header Banner -->
           <tr>
-            <td align="center" style="padding: 40px 30px 20px 30px; background-color: #1C1B19; color: #FAF8F5;">
-              <span style="font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: #C57D56; font-weight: 700; display: block; margin-bottom: 8px;">Conscious Living</span>
-              <h1 style="margin: 0; font-family: Georgia, serif; font-size: 28px; font-weight: normal; letter-spacing: 0.08em; color: #FAF8F5;">AESTHETIC STORE</h1>
-              <p style="margin: 6px 0 0 0; font-size: 12px; color: #A8A29E; font-style: italic;">“Good things. Better vibes.”</p>
+            <td align="center" class="header-pad" style="padding: 40px 32px 28px 32px; background-color: #1C1B19; text-align: center;">
+              <span style="font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: #C86D51; font-weight: 700; display: block; margin-bottom: 8px;">Everyday Conscious</span>
+              <h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 26px; font-weight: normal; letter-spacing: 0.08em; color: #FAF8F5;">AESTHETIC STORE</h1>
+              <p style="margin: 6px 0 0 0; font-size: 12px; color: #A8A29E; font-style: italic;">Calm, intentional objects for mindful living</p>
             </td>
           </tr>
 
-          <!-- Main Content -->
+          <!-- Main Body -->
           <tr>
-            <td style="padding: 40px 36px 30px 36px;">
-              <h2 style="font-family: Georgia, serif; font-size: 24px; color: #1C1B19; margin: 0 0 16px 0; font-weight: 600;">
-                Thank you for joining us, {{ user.first_name|default:user.username }}! ✦
+            <td class="email-content" style="padding: 36px 36px 30px 36px;">
+              
+              <h2 style="font-family: Georgia, 'Times New Roman', serif; font-size: 22px; color: #1C1B19; margin: 0 0 16px 0; font-weight: 600; line-height: 1.3;">
+                Welcome, {{ user.first_name|default:user.username }}
               </h2>
               
-              <p style="font-size: 15px; line-height: 1.6; color: #57534E; margin: 0 0 20px 0;">
-                We are thrilled to welcome you to the <strong>Aesthetic Store</strong> community. Our mission is simple: to create beautiful, sustainable objects for your everyday life that feel good to own and are gentle on our planet.
+              <p style="font-size: 14px; line-height: 1.65; color: #44403C; margin: 0 0 16px 0;">
+                Your account is now ready. We curate handcrafted wellness and lifestyle pieces designed to bring warmth, balance, and conscious simplicity to your everyday routines.
               </p>
 
-              <!-- Welcome Gift Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #FAF8F5; border-radius: 16px; border: 1px solid #ECE6DB; margin: 24px 0; padding: 20px;">
+              <p style="font-size: 14px; line-height: 1.65; color: #44403C; margin: 0 0 24px 0;">
+                To welcome you to our community, here is your personal member code for your first purchase:
+              </p>
+
+              <!-- Coupon Code Card -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #FAF8F5; border-radius: 14px; border: 1px solid #ECE6DB; margin: 0 0 28px 0;">
                 <tr>
-                  <td align="center">
-                    <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #C86D51; font-weight: 700; display: block; margin-bottom: 4px;">A Welcome Gift For You</span>
-                    <p style="font-size: 14px; color: #1C1B19; margin: 0 0 8px 0; font-weight: 500;">Enjoy <strong>10% OFF</strong> your first conscious drop:</p>
-                    <div style="display: inline-block; background-color: #FFFFFF; border: 1px dashed #C86D51; padding: 8px 20px; border-radius: 8px; font-family: monospace; font-size: 18px; font-weight: bold; color: #C86D51; letter-spacing: 0.1em;">
-                      AESTHETIC10
+                  <td align="center" style="padding: 22px 20px;">
+                    <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #78716C; font-weight: 600; display: block; margin-bottom: 6px;">Your Member Privilege</span>
+                    <p style="font-size: 14px; color: #1C1B19; margin: 0 0 10px 0; font-weight: 500;">Enjoy 10% savings on your first order:</p>
+                    <div class="code-box" style="display: inline-block; background-color: #FFFFFF; border: 1.5px dashed #C86D51; padding: 8px 24px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: 700; color: #C86D51; letter-spacing: 0.12em;">
+                      NOMA10
                     </div>
+                    <p style="font-size: 11px; color: #A8A29E; margin: 8px 0 0 0;">Enter this code during checkout</p>
                   </td>
                 </tr>
               </table>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #78716C; margin: 0 0 28px 0;">
-                Explore our curated edits of pure copper Ayurvedic hydration pieces, hand-poured soy candles, insulated tumblers, and minimalist bamboo desk organizers.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: 0 auto;">
+              <!-- Call to Action Button -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: 0 auto 32px auto;">
                 <tr>
                   <td align="center" style="border-radius: 9999px; background-color: #1C1B19;">
-                    <a href="{{ site_url }}/shop/" target="_blank" style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #FAF8F5; text-decoration: none; padding: 14px 32px; display: inline-block; border-radius: 9999px;">
-                      Explore The Drop ✦
+                    <a href="{{ site_url }}/shop/" target="_blank" style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #FAF8F5; text-decoration: none; padding: 14px 34px; display: inline-block; border-radius: 9999px;">
+                      Explore Collection &rarr;
                     </a>
                   </td>
                 </tr>
               </table>
 
+              <!-- Value Props / Trust Indicators -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top: 1px solid #F0EAE1; padding-top: 20px;">
+                <tr>
+                  <td width="33%" align="center" style="padding: 6px; font-size: 11px; color: #78716C; line-height: 1.3;">
+                    <strong style="color: #1C1B19; display: block; margin-bottom: 2px;">Pure Craft</strong>
+                    100% genuine materials
+                  </td>
+                  <td width="33%" align="center" style="padding: 6px; font-size: 11px; color: #78716C; line-height: 1.3;">
+                    <strong style="color: #1C1B19; display: block; margin-bottom: 2px;">7-Day Returns</strong>
+                    Conscious guarantee
+                  </td>
+                  <td width="33%" align="center" style="padding: 6px; font-size: 11px; color: #78716C; line-height: 1.3;">
+                    <strong style="color: #1C1B19; display: block; margin-bottom: 2px;">Eco Packaging</strong>
+                    100% plastic-free
+                  </td>
+                </tr>
+              </table>
+
             </td>
           </tr>
 
-          <!-- Footer -->
+          <!-- Footer & CAN-SPAM Compliance -->
           <tr>
-            <td style="padding: 24px 36px 36px 36px; border-top: 1px solid #F5F0E8; text-align: center; background-color: #FAFAF9;">
-              <p style="font-size: 12px; color: #A8A29E; margin: 0 0 8px 0;">
-                © 2026 Aesthetic Store. Made with intention for conscious routines.
+            <td style="padding: 24px 32px 30px 32px; border-top: 1px solid #F5F0E8; text-align: center; background-color: #FAFAF9;">
+              <p style="font-size: 12px; color: #78716C; margin: 0 0 6px 0; font-weight: 500;">
+                Aesthetic Store &bull; Everyday Conscious Lifestyle
               </p>
-              <p style="font-size: 11px; color: #C57D56; margin: 0;">
-                Plastic-free packaging • Carbon-neutral shipping • Pure materials
+              <p style="font-size: 11px; color: #A8A29E; line-height: 1.5; margin: 0 0 10px 0;">
+                You are receiving this notification because you created an account at Aesthetic Store.<br>
+                <a href="{{ site_url }}/account/profile/" target="_blank" style="color: #78716C; text-decoration: underline;">Manage your profile</a> &bull; <a href="{{ site_url }}/faq/" target="_blank" style="color: #78716C; text-decoration: underline;">Help &amp; FAQ</a>
+              </p>
+              <p style="font-size: 10px; color: #C57D56; margin: 0;">
+                Handcrafted with intention &bull; Bengaluru, India
               </p>
             </td>
           </tr>
 
         </table>
+
       </td>
     </tr>
   </table>
+
 </body>
 </html>

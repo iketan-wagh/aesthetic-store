@@ -1,16 +1,23 @@
-Welcome to Aesthetic Store!
+Welcome to Aesthetic Store
 
-Hi {{ user.first_name|default:user.username }},
+Hello {{ user.first_name|default:user.username }},
 
-Thank you for joining our conscious community! We are thrilled to welcome you to Aesthetic Store.
+Your account has been created. We curate handcrafted wellness and lifestyle pieces designed to bring warmth, balance, and conscious simplicity to your everyday routines.
 
-Our mission is simple: to create beautiful, sustainable objects for your everyday life that feel good to own and are gentle on our planet.
+Your Member Code:
+Enjoy 10% savings on your first order with code: NOMA10
 
-A Welcome Gift For You:
-Enjoy 10% OFF your first drop with code: AESTHETIC10
+Explore our curated collection here:
+{{ site_url }}/shop/
 
-Explore our curated pieces now: {{ site_url }}/shop/
+Our Commitments:
+- Pure Craft: 100% authentic materials
+- 7-Day Conscious Return Policy
+- Plastic-Free Eco Packaging
 
-With warmth,
-The Aesthetic Store Team
-https://aestheticstore.com
+With warm regards,
+Aesthetic Store Team
+{{ site_url }}
+
+You received this email because you created an account at Aesthetic Store.
+Manage your account: {{ site_url }}/account/profile/

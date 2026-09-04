@@ -87,7 +87,7 @@ class AccountSecurityTests(TestCase):
         sent_email = mail.outbox[0]
         self.assertEqual(sent_email.to, ['riya@example.com'])
         self.assertIn('Welcome to Aesthetic Store', sent_email.subject)
-        self.assertIn('AESTHETIC10', sent_email.body)
+        self.assertIn('NOMA10', sent_email.body)
 
     def test_google_login_flow_and_account_creation(self):
         # 1. Access Google Login Endpoint
@@ -111,4 +111,4 @@ class AccountSecurityTests(TestCase):
         # Welcome email is dispatched to Google user too
         google_welcome_email = [e for e in mail.outbox if 'tanya_google@example.com' in e.to]
         self.assertEqual(len(google_welcome_email), 1)
-        self.assertIn('AESTHETIC10', google_welcome_email[0].body)
+        self.assertIn('NOMA10', google_welcome_email[0].body)

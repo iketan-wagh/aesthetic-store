@@ -13,16 +13,41 @@ from orders.models import Order
 from wishlist.models import Wishlist
 
 
-def send_welcome_email(user, request):
+import threading
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def _send_email_in_thread(subject, text_content, html_content, from_email, to_email, reply_to=None):
+    try:
+        msg = EmailMultiAlternatives(
+            subject=subject,
+            body=text_content,
+            from_email=from_email,
+            to=to_email,
+            reply_to=reply_to or [from_email]
+        )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send(fail_silently=False)
+        print(f"[EMAIL SUCCESS] Sent welcome email to {to_email}")
+    except Exception as e:
+        print(f"[EMAIL ERROR] Failed to send email to {to_email}: {e}")
+        logger.error(f"Failed to send email to {to_email}: {e}")
+
+
+def send_welcome_email(user, request=None):
     """Sends a warm aesthetic thank-you welcome email to the newly registered customer."""
-    if not user.email:
+    if not user or not user.email:
         return
 
-    subject = "Welcome to Aesthetic Store ✦ Thank you for joining us!"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <hello@aestheticstore.com>')
+    name = user.first_name or user.username or "there"
+    subject = f"Welcome to Aesthetic Store, {name}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
     to_email = [user.email]
+    reply_to = ['ketanwagh714@gmail.com']
 
-    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aestheticstore.com'
+    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {
         'user': user,
         'site_url': site_url,
@@ -32,11 +57,16 @@ def send_welcome_email(user, request):
         text_content = render_to_string('emails/welcome_email.txt', context)
         html_content = render_to_string('emails/welcome_email.html', context)
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
-        msg.attach_alternative(html_content, "text/html")
-        msg.send(fail_silently=True)
-    except Exception:
-        pass
+        # Send asynchronously in a background thread for zero page lag
+        thread = threading.Thread(
+            target=_send_email_in_thread,
+            args=(subject, text_content, html_content, from_email, to_email, reply_to)
+        )
+        thread.daemon = True
+        thread.start()
+    except Exception as e:
+        print(f"[EMAIL TEMPLATE ERROR] Could not render welcome email: {e}")
+        logger.error(f"Could not render welcome email: {e}")
 
 
 def register_view(request):
