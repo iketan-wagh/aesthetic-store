@@ -20,7 +20,38 @@ logger = logging.getLogger(__name__)
 
 
 def _send_email_in_thread(subject, text_content, html_content, from_email, to_email, reply_to=None):
-    # Strategy 1: Standard Django Backend
+    # Strategy 1: Resend HTTPS REST API (Port 443 - 100% Cloud-Proof, Never Blocked by Railway!)
+    resend_api_key = getattr(settings, 'RESEND_API_KEY', '').strip()
+    if resend_api_key:
+        try:
+            import requests
+            sender = getattr(settings, 'RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
+            recipients = to_email if isinstance(to_email, list) else [to_email]
+            resp = requests.post(
+                'https://api.resend.com/emails',
+                headers={
+                    'Authorization': f'Bearer {resend_api_key}',
+                    'Content-Type': 'application/json'
+                },
+                json={
+                    'from': sender,
+                    'to': recipients,
+                    'subject': subject,
+                    'html': html_content,
+                    'text': text_content,
+                    'reply_to': reply_to[0] if reply_to else 'ketanwagh714@gmail.com'
+                },
+                timeout=8
+            )
+            if resp.status_code in (200, 201):
+                print(f"[EMAIL SUCCESS] Dispatched via Resend HTTPS API (Port 443) to {to_email}")
+                return
+            else:
+                print(f"[EMAIL RESEND ERROR] Status {resp.status_code}: {resp.text}")
+        except Exception as e_resend:
+            print(f"[EMAIL RESEND ERROR] {e_resend}")
+
+    # Strategy 2: Standard Django Backend
     try:
         msg = EmailMultiAlternatives(
             subject=subject,
@@ -36,7 +67,7 @@ def _send_email_in_thread(subject, text_content, html_content, from_email, to_em
     except Exception as e1:
         print(f"[EMAIL NOTE] Standard backend failed ({e1}). Attempting direct SSL Port 465 fallback...")
 
-    # Strategy 2: Direct SSL Port 465 (Cloud-Safe Fallback)
+    # Strategy 3: Direct SSL Port 465 (Cloud-Safe Fallback)
     import smtplib
     import ssl
     from email.mime.multipart import MIMEMultipart

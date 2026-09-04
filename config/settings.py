@@ -248,6 +248,11 @@ EMAIL_HOST_PASSWORD = _clean_env('EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').repl
 DEFAULT_FROM_EMAIL = _clean_env('DEFAULT_FROM_EMAIL', f'Aesthetic Store <{EMAIL_HOST_USER}>')
 EMAIL_TIMEOUT = 10
 
+# HTTPS Cloud Email APIs (Port 443 - 100% Unblockable on Railway)
+RESEND_API_KEY = _clean_env('RESEND_API_KEY', '')
+RESEND_FROM_EMAIL = _clean_env('RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
+BREVO_API_KEY = _clean_env('BREVO_API_KEY', '')
+
 # Google OAuth2 Credentials (from https://console.cloud.google.com/)
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', '')
