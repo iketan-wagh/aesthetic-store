@@ -218,13 +218,22 @@ DEFAULT_SHIPPING_FEE = 99      # INR
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_TWVVLy5RVzwlJ9')
 RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '95X4uuyNvzYuv67VEiBFeE15')
 
-# Email Configuration
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com').strip()
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+def _clean_env(key, default=''):
+    raw = os.environ.get(key, default)
+    if raw is None:
+        return default
+    return str(raw).strip(' \t\n\r"\'')
 
-_use_tls_env = os.environ.get('EMAIL_USE_TLS', 'True').strip().lower()
-_use_ssl_env = os.environ.get('EMAIL_USE_SSL', 'False').strip().lower()
+# Email Configuration
+EMAIL_BACKEND = _clean_env('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = _clean_env('EMAIL_HOST', 'smtp.gmail.com')
+try:
+    EMAIL_PORT = int(_clean_env('EMAIL_PORT', '587'))
+except ValueError:
+    EMAIL_PORT = 587
+
+_use_tls_env = _clean_env('EMAIL_USE_TLS', 'True').lower()
+_use_ssl_env = _clean_env('EMAIL_USE_SSL', 'False').lower()
 
 if EMAIL_PORT == 465 or _use_ssl_env in ('true', '1', 'yes'):
     EMAIL_USE_SSL = True
@@ -234,9 +243,9 @@ else:
     EMAIL_USE_TLS = _use_tls_env in ('true', '1', 'yes', 't')
     EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'ketanwagh714@gmail.com').strip()
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').strip().replace(' ', '')
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', f'Aesthetic Store <{EMAIL_HOST_USER}>').strip()
+EMAIL_HOST_USER = _clean_env('EMAIL_HOST_USER', 'ketanwagh714@gmail.com')
+EMAIL_HOST_PASSWORD = _clean_env('EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').replace(' ', '')
+DEFAULT_FROM_EMAIL = _clean_env('DEFAULT_FROM_EMAIL', f'Aesthetic Store <{EMAIL_HOST_USER}>')
 EMAIL_TIMEOUT = 10
 
 # Google OAuth2 Credentials (from https://console.cloud.google.com/)
