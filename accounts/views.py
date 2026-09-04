@@ -88,13 +88,8 @@ def send_welcome_email(user, request=None):
         text_content = render_to_string('emails/welcome_email.txt', context)
         html_content = render_to_string('emails/welcome_email.html', context)
 
-        # Send asynchronously in a background thread for zero page lag
-        thread = threading.Thread(
-            target=_send_email_in_thread,
-            args=(subject, text_content, html_content, from_email, to_email, reply_to)
-        )
-        thread.daemon = True
-        thread.start()
+        # Execute directly so Gunicorn sync worker does not cut off the socket
+        _send_email_in_thread(subject, text_content, html_content, from_email, to_email, reply_to)
     except Exception as e:
         print(f"[EMAIL TEMPLATE ERROR] Could not render welcome email: {e}")
         logger.error(f"Could not render welcome email: {e}")
