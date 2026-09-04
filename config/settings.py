@@ -252,6 +252,8 @@ EMAIL_TIMEOUT = 10
 RESEND_API_KEY = _clean_env('RESEND_API_KEY', '')
 RESEND_FROM_EMAIL = _clean_env('RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
 BREVO_API_KEY = _clean_env('BREVO_API_KEY', '')
+BREVO_SENDER_EMAIL = _clean_env('BREVO_SENDER_EMAIL', 'ketanwagh714@gmail.com')
+BREVO_SENDER_NAME = _clean_env('BREVO_SENDER_NAME', 'Aesthetic Store')
 
 # Google OAuth2 Credentials (from https://console.cloud.google.com/)
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')

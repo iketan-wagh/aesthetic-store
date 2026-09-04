@@ -22,7 +22,43 @@ logger = logging.getLogger(__name__)
 def _send_email_in_thread(subject, text_content, html_content, from_email, to_email, reply_to=None):
     recipients = to_email if isinstance(to_email, list) else [to_email]
 
-    # Strategy 1: Resend HTTPS REST API (Port 443 - 100% Cloud-Proof, Never Blocked by Railway!)
+    # Strategy 1: Brevo HTTPS REST API (Port 443 - Sends to ANY customer email worldwide with zero domain restriction!)
+    brevo_api_key = getattr(settings, 'BREVO_API_KEY', '').strip()
+    if brevo_api_key:
+        try:
+            import requests
+            sender_email = getattr(settings, 'BREVO_SENDER_EMAIL', 'ketanwagh714@gmail.com')
+            sender_name = getattr(settings, 'BREVO_SENDER_NAME', 'Aesthetic Store')
+            to_list = [{'email': e} for e in recipients]
+            payload = {
+                'sender': {'name': sender_name, 'email': sender_email},
+                'to': to_list,
+                'subject': subject,
+                'htmlContent': html_content,
+                'textContent': text_content,
+            }
+            if reply_to:
+                payload['replyTo'] = {'email': reply_to[0] if isinstance(reply_to, list) else reply_to}
+
+            resp = requests.post(
+                'https://api.brevo.com/v3/smtp/email',
+                headers={
+                    'api-key': brevo_api_key,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                json=payload,
+                timeout=8
+            )
+            if resp.status_code in (200, 201):
+                print(f"[EMAIL SUCCESS] Dispatched via Brevo HTTPS API to {recipients}: {resp.json()}")
+                return
+            else:
+                print(f"[EMAIL BREVO NOTICE] Status {resp.status_code}: {resp.text}. Trying next strategy...")
+        except Exception as e_brevo:
+            print(f"[EMAIL BREVO ERROR] {e_brevo}. Trying next strategy...")
+
+    # Strategy 2: Resend HTTPS REST API (Port 443 - Cloud-Safe)
     resend_api_key = getattr(settings, 'RESEND_API_KEY', '').strip()
     if resend_api_key:
         try:
