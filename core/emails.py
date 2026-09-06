@@ -165,7 +165,7 @@ def send_welcome_email(user, request=None):
     to_email = [user.email]
     reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in']
 
-    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
+    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://www.housesofaesthetics.in'
     context = {
         'user': user,
         'site_url': site_url,
@@ -190,7 +190,7 @@ def send_order_confirmation_email(order, request=None):
     to_email = [order.shipping_email]
     reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in']
 
-    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
+    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://www.housesofaesthetics.in'
     context = {
         'order': order,
         'site_url': site_url,
@@ -217,7 +217,7 @@ def send_password_reset_email(user, reset_url, request=None):
     to_email = [user.email]
     reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in']
 
-    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
+    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://www.housesofaesthetics.in'
     context = {
         'user': user,
         'reset_url': reset_url,
