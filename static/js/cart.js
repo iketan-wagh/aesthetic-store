@@ -173,8 +173,8 @@ const CartDrawer = {
     data.items.forEach(item => {
       html += `
         <div class="flex gap-4 py-4 border-b border-[#EAE4D9] items-center">
-          <a href="${item.url}" class="w-20 h-24 bg-[#F5F2EB] rounded-lg overflow-hidden flex-shrink-0 border border-[#E8E2D5]">
-            <img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-cover">
+          <a href="${item.url}" class="w-20 h-24 bg-[#F5F2EB] rounded-lg overflow-hidden flex-shrink-0 border border-[#E8E2D5] flex items-center justify-center p-1.5">
+            <img src="${item.image_url}" alt="${item.name}" class="max-w-full max-h-full object-contain" onerror="if (!this.dataset.tried) { this.dataset.tried='1'; this.src='/static/images/products/' + encodeURIComponent('${item.slug}') + '1.jpeg'; } else if (this.dataset.tried=='1') { this.dataset.tried='2'; this.src='/static/images/products/' + encodeURIComponent('${item.slug}') + '.jpg'; } else { this.src='/static/images/placeholder.svg'; }">
           </a>
           <div class="flex-1 min-w-0">
             <div class="flex justify-between items-start">
