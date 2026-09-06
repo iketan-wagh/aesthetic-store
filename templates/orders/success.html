@@ -66,9 +66,9 @@
           {% for item in order.items.all %}
             <div class="py-4 flex items-center justify-between text-xs">
               <div class="flex items-center gap-3">
-                {% if item.product %}
-                  <img src="{{ item.product.primary_image_url }}" alt="{{ item.product_name }}" class="w-12 h-14 rounded-lg bg-[#FAF8F5] object-cover border border-[#ECE6DB]">
-                {% endif %}
+                <div class="w-12 h-14 rounded-lg bg-[#FAF8F5] border border-[#ECE6DB] flex items-center justify-center p-1 shrink-0 overflow-hidden">
+                  <img src="{% if item.product %}{{ item.product.primary_image_url }}{% else %}/static/images/placeholder.svg{% endif %}" alt="{{ item.product_name }}" class="max-w-full max-h-full object-contain" onerror="if (!this.dataset.tried) { this.dataset.tried='1'; this.src='/static/images/products/{{ item.product.slug }}1.jpeg'; } else if (this.dataset.tried=='1') { this.dataset.tried='2'; this.src='/static/images/products/{{ item.product.slug }}.jpg'; } else { this.src='/static/images/placeholder.svg'; }">
+                </div>
                 <div>
                   <p class="font-bold text-neutral-900">{{ item.product_name }}</p>
                   <p class="text-neutral-400">Qty: {{ item.quantity }} × ₹{{ item.price|floatformat:0 }}</p>

@@ -133,8 +133,8 @@ const SearchModal = {
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           ${data.results.map(p => `
             <a href="${p.url}" onclick="SearchModal.close()" class="group block p-2 rounded-xl bg-white border border-[#ECE6DB] hover:border-terracotta transition">
-              <div class="aspect-[4/5] rounded-lg overflow-hidden bg-[#F7F4EE] mb-2 relative">
-                <img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <div class="aspect-square rounded-lg overflow-hidden bg-[#F7F4EE] mb-2 relative flex items-center justify-center p-2">
+                <img src="${p.image_url}" alt="${p.name}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition duration-300" onerror="if (!this.dataset.tried) { this.dataset.tried='1'; this.src='/static/images/products/' + encodeURIComponent('${p.slug}') + '1.jpeg'; } else if (this.dataset.tried=='1') { this.dataset.tried='2'; this.src='/static/images/products/' + encodeURIComponent('${p.slug}') + '.jpg'; } else { this.src='/static/images/placeholder.svg'; }">
                 ${p.badge ? `<span class="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-charcoal text-white">${p.badge}</span>` : ''}
               </div>
               <p class="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">${p.category}</p>

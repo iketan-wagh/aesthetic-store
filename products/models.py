@@ -29,6 +29,15 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('products:category_detail', kwargs={'slug': self.slug})
 
+    @property
+    def image_url(self):
+        if self.image:
+            try:
+                return self.image.url
+            except Exception:
+                pass
+        return f"/static/images/categories/category-{self.slug}.jpg"
+
 
 class Product(models.Model):
     BADGE_CHOICES = (
@@ -126,7 +135,15 @@ class Product(models.Model):
     def primary_image_url(self):
         img = self.primary_image_obj
         if img and img.image:
-            return img.image.url
+            try:
+                url_val = img.image.url
+                if url_val:
+                    return url_val
+            except Exception:
+                pass
+        # Fallback to static product image if available
+        if self.slug:
+            return f"/static/images/products/{self.slug}1.jpeg"
         return "/static/images/placeholder.svg"
 
     @property
@@ -134,11 +151,17 @@ class Product(models.Model):
         if hasattr(self, '_prefetched_objects_cache') and 'images' in self._prefetched_objects_cache:
             imgs = list(self.images.all())
             if len(imgs) > 1 and imgs[1].image:
-                return imgs[1].image.url
+                try:
+                    return imgs[1].image.url
+                except Exception:
+                    pass
             return self.primary_image_url
         imgs = self.images.all()
         if len(imgs) > 1 and imgs[1].image:
-            return imgs[1].image.url
+            try:
+                return imgs[1].image.url
+            except Exception:
+                pass
         return self.primary_image_url
 
     @property
@@ -174,5 +197,10 @@ class ProductImage(models.Model):
     @property
     def image_url(self):
         if self.image:
-            return self.image.url
+            try:
+                url_val = self.image.url
+                if url_val:
+                    return url_val
+            except Exception:
+                pass
         return "/static/images/placeholder.svg"

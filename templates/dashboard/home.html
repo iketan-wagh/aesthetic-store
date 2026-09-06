@@ -173,7 +173,9 @@
         {% for p in low_stock_products %}
           <div class="p-3 rounded-xl bg-[#FAF8F5] border border-[#ECE6DB] flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-              <img src="{{ p.primary_image_url }}" class="w-10 h-10 object-cover rounded-lg border border-[#ECE6DB]" alt="{{ p.name }}">
+              <div class="w-10 h-10 rounded-lg bg-white border border-[#ECE6DB] flex items-center justify-center p-0.5 shrink-0 overflow-hidden">
+                <img src="{{ p.primary_image_url }}" class="max-w-full max-h-full object-contain" alt="{{ p.name }}" onerror="if (!this.dataset.tried) { this.dataset.tried='1'; this.src='/static/images/products/{{ p.slug }}1.jpeg'; } else if (this.dataset.tried=='1') { this.dataset.tried='2'; this.src='/static/images/products/{{ p.slug }}.jpg'; } else { this.src='/static/images/placeholder.svg'; }">
+              </div>
               <div>
                 <p class="text-xs font-bold text-neutral-900 truncate max-w-[140px]">{{ p.name }}</p>
                 <p class="text-[10px] text-neutral-500 font-mono">SKU: {{ p.sku }}</p>

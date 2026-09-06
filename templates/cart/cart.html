@@ -41,8 +41,8 @@
               <div class="p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 
                 <div class="flex items-center gap-4 w-full sm:w-auto">
-                  <a href="{{ item.product.get_absolute_url }}" class="w-20 h-24 rounded-xl bg-[#FAF8F5] overflow-hidden flex-shrink-0 border border-[#ECE6DB]">
-                    <img src="{{ item.product.primary_image_url }}" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+                  <a href="{{ item.product.get_absolute_url }}" class="w-20 h-24 rounded-xl bg-[#FAF8F5] overflow-hidden flex-shrink-0 border border-[#ECE6DB] flex items-center justify-center p-1.5">
+                    <img src="{{ item.product.primary_image_url }}" alt="{{ item.product.name }}" class="max-w-full max-h-full object-contain" onerror="if (!this.dataset.tried) { this.dataset.tried='1'; this.src='/static/images/products/{{ item.product.slug }}1.jpeg'; } else if (this.dataset.tried=='1') { this.dataset.tried='2'; this.src='/static/images/products/{{ item.product.slug }}.jpg'; } else { this.src='/static/images/placeholder.svg'; }">
                   </a>
                   <div>
                     <span class="text-[10px] uppercase tracking-widest text-neutral-400 font-semibold">{{ item.product.category.name }}</span>

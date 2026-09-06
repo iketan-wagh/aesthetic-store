@@ -49,11 +49,9 @@
           {% for item in order.items.all %}
             <div class="py-4 flex items-center justify-between text-xs">
               <div class="flex items-center gap-4">
-                {% if item.product %}
-                  <a href="{{ item.product.get_absolute_url }}">
-                    <img src="{{ item.product.primary_image_url }}" alt="{{ item.product_name }}" class="w-14 h-16 rounded-xl bg-[#FAF8F5] object-cover border border-[#ECE6DB]">
-                  </a>
-                {% endif %}
+                <a href="{% if item.product %}{{ item.product.get_absolute_url }}{% else %}#{% endif %}" class="w-14 h-16 rounded-xl bg-[#FAF8F5] border border-[#ECE6DB] flex items-center justify-center p-1 shrink-0 overflow-hidden">
+                  <img src="{% if item.product %}{{ item.product.primary_image_url }}{% else %}/static/images/placeholder.svg{% endif %}" alt="{{ item.product_name }}" class="max-w-full max-h-full object-contain" onerror="if (!this.dataset.tried) { this.dataset.tried='1'; this.src='/static/images/products/{{ item.product.slug }}1.jpeg'; } else if (this.dataset.tried=='1') { this.dataset.tried='2'; this.src='/static/images/products/{{ item.product.slug }}.jpg'; } else { this.src='/static/images/placeholder.svg'; }">
+                </a>
                 <div>
                   <a href="{% if item.product %}{{ item.product.get_absolute_url }}{% else %}#{% endif %}" class="font-bold text-sm text-neutral-900 hover:text-terracotta transition">{{ item.product_name }}</a>
                   <p class="text-neutral-400 font-mono mt-0.5">SKU: {{ item.product_sku }} · Qty: {{ item.quantity }} × ₹{{ item.price|floatformat:0 }}</p>
