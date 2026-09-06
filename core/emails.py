@@ -20,8 +20,10 @@ def dispatch_email(subject, text_content, html_content, from_email, to_email, re
     5. Direct SSL Port 465 fallback
     """
     recipients = to_email if isinstance(to_email, list) else [to_email]
-    from_addr = from_email or getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
-    reply_addrs = reply_to if isinstance(reply_to, list) else ([reply_to] if reply_to else ['ketanwagh714@gmail.com'])
+    default_from = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
+    default_reply = getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com'
+    from_addr = from_email or default_from
+    reply_addrs = reply_to if isinstance(reply_to, list) else ([reply_to] if reply_to else [default_reply])
 
     # In automated unit test environment (locmem), route directly to outbox
     if 'locmem' in getattr(settings, 'EMAIL_BACKEND', ''):
@@ -44,7 +46,7 @@ def dispatch_email(subject, text_content, html_content, from_email, to_email, re
     if brevo_api_key:
         try:
             import requests
-            sender_email = getattr(settings, 'BREVO_SENDER_EMAIL', 'ketanwagh714@gmail.com')
+            sender_email = getattr(settings, 'BREVO_SENDER_EMAIL', 'support@aestheticstore.com')
             sender_name = getattr(settings, 'BREVO_SENDER_NAME', 'Aesthetic Store')
             to_list = [{'email': e} for e in recipients]
             payload = {
@@ -123,8 +125,8 @@ def dispatch_email(subject, text_content, html_content, from_email, to_email, re
         print(f"[EMAIL NOTE] Standard backend failed ({e1}). Attempting direct SSL Port 465 fallback...")
 
     # Strategy 4: Direct SSL Port 465 (Cloud-Safe Fallback)
-    host_user = getattr(settings, 'EMAIL_HOST_USER', 'ketanwagh714@gmail.com').strip()
-    host_password = getattr(settings, 'EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').strip().replace(' ', '')
+    host_user = getattr(settings, 'EMAIL_HOST_USER', '').strip()
+    host_password = getattr(settings, 'EMAIL_HOST_PASSWORD', '').strip().replace(' ', '')
 
     if host_user and host_password:
         try:
@@ -159,9 +161,9 @@ def send_welcome_email(user, request=None):
 
     name = user.first_name or user.username or "there"
     subject = f"Welcome to Aesthetic Store, {name}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
     to_email = [user.email]
-    reply_to = ['ketanwagh714@gmail.com']
+    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com']
 
     site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {
@@ -184,9 +186,9 @@ def send_order_confirmation_email(order, request=None):
         return
 
     subject = f"Order Confirmed #{order.order_number} - Aesthetic Store"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
     to_email = [order.shipping_email]
-    reply_to = ['ketanwagh714@gmail.com']
+    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com']
 
     site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {
@@ -211,9 +213,9 @@ def send_password_reset_email(user, reset_url, request=None):
 
     name = user.first_name or user.username or "there"
     subject = "Reset Your Aesthetic Store Password"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
     to_email = [user.email]
-    reply_to = ['ketanwagh714@gmail.com']
+    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com']
 
     site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {

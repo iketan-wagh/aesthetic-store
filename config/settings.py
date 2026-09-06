@@ -215,16 +215,17 @@ MESSAGE_TAGS = {
 FREE_SHIPPING_THRESHOLD = 999  # INR
 DEFAULT_SHIPPING_FEE = 99      # INR
 
-RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_TWVVLy5RVzwlJ9')
-RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '95X4uuyNvzYuv67VEiBFeE15')
-
 def _clean_env(key, default=''):
     raw = os.environ.get(key, default)
     if raw is None:
         return default
     return str(raw).strip(' \t\n\r"\'')
 
-# Email Configuration
+# Payment Gateway Configuration (Razorpay)
+RAZORPAY_KEY_ID = _clean_env('RAZORPAY_KEY_ID', '')
+RAZORPAY_KEY_SECRET = _clean_env('RAZORPAY_KEY_SECRET', '')
+
+# Email Configuration (SMTP)
 EMAIL_BACKEND = _clean_env('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = _clean_env('EMAIL_HOST', 'smtp.gmail.com')
 try:
@@ -243,18 +244,19 @@ else:
     EMAIL_USE_TLS = _use_tls_env in ('true', '1', 'yes', 't')
     EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = _clean_env('EMAIL_HOST_USER', 'ketanwagh714@gmail.com')
-EMAIL_HOST_PASSWORD = _clean_env('EMAIL_HOST_PASSWORD', 'dsvrrdfznhtrhuqh').replace(' ', '')
-DEFAULT_FROM_EMAIL = _clean_env('DEFAULT_FROM_EMAIL', f'Aesthetic Store <{EMAIL_HOST_USER}>')
+EMAIL_HOST_USER = _clean_env('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = _clean_env('EMAIL_HOST_PASSWORD', '').replace(' ', '')
+DEFAULT_FROM_EMAIL = _clean_env('DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
 EMAIL_TIMEOUT = 10
 
 # HTTPS Cloud Email APIs (Port 443 - 100% Unblockable on Railway)
-RESEND_API_KEY = _clean_env('RESEND_API_KEY', '')
-RESEND_FROM_EMAIL = _clean_env('RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
 BREVO_API_KEY = _clean_env('BREVO_API_KEY', '')
-BREVO_SENDER_EMAIL = _clean_env('BREVO_SENDER_EMAIL', 'ketanwagh714@gmail.com')
+BREVO_SENDER_EMAIL = _clean_env('BREVO_SENDER_EMAIL', 'support@aestheticstore.com')
 BREVO_SENDER_NAME = _clean_env('BREVO_SENDER_NAME', 'Aesthetic Store')
 
+RESEND_API_KEY = _clean_env('RESEND_API_KEY', '')
+RESEND_FROM_EMAIL = _clean_env('RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
+
 # Google OAuth2 Credentials (from https://console.cloud.google.com/)
-GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
-GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', '')
+GOOGLE_CLIENT_ID = _clean_env('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_SECRET = _clean_env('GOOGLE_CLIENT_SECRET', '')

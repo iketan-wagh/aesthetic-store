@@ -35,7 +35,7 @@ View receipt & track your package:
 {{ site_url }}/orders/detail/{{ order.order_number }}/
 
 Need help with your order?
-Contact us at ketanwagh714@gmail.com
+Contact us at support@aestheticstore.com
 
 With warmth,
 Aesthetic Store Team

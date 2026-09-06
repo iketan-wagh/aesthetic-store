@@ -1,3 +1,4 @@
+import os
 from decimal import Decimal
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
@@ -14,37 +15,27 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE('[INFO] Starting Database Seed & Sync...'))
 
-        # 1. Create Superusers
-        ketan_user, _ = User.objects.get_or_create(
-            username='ketanwagh',
-            defaults={
-                'email': 'iketanwagh@gmail.com',
-                'first_name': 'Ketan',
-                'last_name': 'Wagh',
-                'is_staff': True,
-                'is_superuser': True
-            }
-        )
-        ketan_user.set_password('Ketan@wagh1')
-        ketan_user.is_staff = True
-        ketan_user.is_superuser = True
-        ketan_user.save()
-        self.stdout.write(self.style.SUCCESS('[SUCCESS] Superuser provisioned: ketanwagh / Ketan@wagh1'))
+        # 1. Create Superuser (configured via environment variables)
+        su_username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
+        su_email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@aestheticstore.com')
+        su_password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'Admin@12345')
 
         admin_user, _ = User.objects.get_or_create(
-            username='admin',
+            username=su_username,
             defaults={
-                'email': 'admin@aestheticstore.com',
+                'email': su_email,
                 'first_name': 'Store',
                 'last_name': 'Admin',
                 'is_staff': True,
                 'is_superuser': True
             }
         )
-        admin_user.set_password('Ketan@wagh1')
+        admin_user.email = su_email
+        admin_user.set_password(su_password)
         admin_user.is_staff = True
         admin_user.is_superuser = True
         admin_user.save()
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Superuser provisioned: {su_username} ({su_email})'))
 
         # 2. Categories
         categories_data = [

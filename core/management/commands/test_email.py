@@ -12,10 +12,11 @@ class Command(BaseCommand):
     help = 'Tests and diagnoses live email sending configurations'
 
     def add_arguments(self, parser):
+        default_target = getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com'
         parser.add_argument(
             '--to',
             type=str,
-            default='ketanwagh714@gmail.com',
+            default=default_target,
             help='Recipient email address to test delivery'
         )
 
