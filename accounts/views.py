@@ -46,7 +46,7 @@ def register_view(request):
 
             # Auto login
             login(request, user)
-            messages.success(request, f"Welcome to Aesthetic Store, {user.first_name}! Your account has been created.")
+            messages.success(request, f"Welcome to House of Aesthetics, {user.first_name}! Your account has been created.")
             return redirect(redirect_to)
     else:
         form = UserRegistrationForm()
@@ -190,7 +190,7 @@ def google_callback_view(request):
     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
     if is_new:
-        messages.success(request, f"Welcome to Aesthetic Store, {user.first_name}! Your Google account is ready & a welcome gift was emailed to you.")
+        messages.success(request, f"Welcome to House of Aesthetics, {user.first_name}! Your Google account is ready & a welcome gift was emailed to you.")
     else:
         messages.success(request, f"Welcome back, {user.first_name or user.username}!")
 

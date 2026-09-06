@@ -114,7 +114,7 @@ elif DB_ENGINE == 'mysql' or os.environ.get('MYSQL_DATABASE') or os.environ.get(
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get('MYSQLDATABASE') or os.environ.get('MYSQL_DATABASE') or os.environ.get('MYSQL_DB') or os.environ.get('DB_NAME', 'aesthetic_store_db'),
+            'NAME': os.environ.get('MYSQLDATABASE') or os.environ.get('MYSQL_DATABASE') or os.environ.get('MYSQL_DB') or os.environ.get('DB_NAME', 'housesofaesthetics_db'),
             'USER': os.environ.get('MYSQLUSER') or os.environ.get('MYSQL_USER') or os.environ.get('DB_USER', 'root'),
             'PASSWORD': os.environ.get('MYSQLPASSWORD') or os.environ.get('MYSQL_PASSWORD') or os.environ.get('DB_PASSWORD', ''),
             'HOST': os.environ.get('MYSQLHOST') or os.environ.get('MYSQL_HOST') or os.environ.get('DB_HOST', '127.0.0.1'),
@@ -130,7 +130,7 @@ elif os.environ.get('DB_NAME') or os.environ.get('POSTGRES_DB'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME') or os.environ.get('POSTGRES_DB', 'aesthetic_store_db'),
+            'NAME': os.environ.get('DB_NAME') or os.environ.get('POSTGRES_DB', 'housesofaesthetics_db'),
             'USER': os.environ.get('DB_USER') or os.environ.get('POSTGRES_USER', 'postgres'),
             'PASSWORD': os.environ.get('DB_PASSWORD') or os.environ.get('POSTGRES_PASSWORD', ''),
             'HOST': os.environ.get('DB_HOST') or os.environ.get('POSTGRES_HOST', 'localhost'),
@@ -246,16 +246,16 @@ else:
 
 EMAIL_HOST_USER = _clean_env('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = _clean_env('EMAIL_HOST_PASSWORD', '').replace(' ', '')
-DEFAULT_FROM_EMAIL = _clean_env('DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
+DEFAULT_FROM_EMAIL = _clean_env('DEFAULT_FROM_EMAIL', 'House of Aesthetics <support@housesofaesthetics.in>')
 EMAIL_TIMEOUT = 10
 
 # HTTPS Cloud Email APIs (Port 443 - 100% Unblockable on Railway)
 BREVO_API_KEY = _clean_env('BREVO_API_KEY', '')
-BREVO_SENDER_EMAIL = _clean_env('BREVO_SENDER_EMAIL', 'support@aestheticstore.com')
-BREVO_SENDER_NAME = _clean_env('BREVO_SENDER_NAME', 'Aesthetic Store')
+BREVO_SENDER_EMAIL = _clean_env('BREVO_SENDER_EMAIL', 'support@housesofaesthetics.in')
+BREVO_SENDER_NAME = _clean_env('BREVO_SENDER_NAME', 'House of Aesthetics')
 
 RESEND_API_KEY = _clean_env('RESEND_API_KEY', '')
-RESEND_FROM_EMAIL = _clean_env('RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
+RESEND_FROM_EMAIL = _clean_env('RESEND_FROM_EMAIL', 'House of Aesthetics <onboarding@resend.dev>')
 
 # Google OAuth2 Credentials (from https://console.cloud.google.com/)
 GOOGLE_CLIENT_ID = _clean_env('GOOGLE_CLIENT_ID', '')

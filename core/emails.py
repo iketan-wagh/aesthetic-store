@@ -20,8 +20,8 @@ def dispatch_email(subject, text_content, html_content, from_email, to_email, re
     5. Direct SSL Port 465 fallback
     """
     recipients = to_email if isinstance(to_email, list) else [to_email]
-    default_from = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
-    default_reply = getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com'
+    default_from = getattr(settings, 'DEFAULT_FROM_EMAIL', 'House of Aesthetics <support@housesofaesthetics.in>')
+    default_reply = getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in'
     from_addr = from_email or default_from
     reply_addrs = reply_to if isinstance(reply_to, list) else ([reply_to] if reply_to else [default_reply])
 
@@ -46,8 +46,8 @@ def dispatch_email(subject, text_content, html_content, from_email, to_email, re
     if brevo_api_key:
         try:
             import requests
-            sender_email = getattr(settings, 'BREVO_SENDER_EMAIL', 'support@aestheticstore.com')
-            sender_name = getattr(settings, 'BREVO_SENDER_NAME', 'Aesthetic Store')
+            sender_email = getattr(settings, 'BREVO_SENDER_EMAIL', 'support@housesofaesthetics.in')
+            sender_name = getattr(settings, 'BREVO_SENDER_NAME', 'House of Aesthetics')
             to_list = [{'email': e} for e in recipients]
             payload = {
                 'sender': {'name': sender_name, 'email': sender_email},
@@ -81,7 +81,7 @@ def dispatch_email(subject, text_content, html_content, from_email, to_email, re
     if resend_api_key:
         try:
             import requests
-            sender = getattr(settings, 'RESEND_FROM_EMAIL', 'Aesthetic Store <onboarding@resend.dev>')
+            sender = getattr(settings, 'RESEND_FROM_EMAIL', 'House of Aesthetics <onboarding@resend.dev>')
             payload = {
                 "from": sender,
                 "to": recipients,
@@ -160,10 +160,10 @@ def send_welcome_email(user, request=None):
         return
 
     name = user.first_name or user.username or "there"
-    subject = f"Welcome to Aesthetic Store, {name}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
+    subject = f"Welcome to House of Aesthetics, {name}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'House of Aesthetics <support@housesofaesthetics.in>')
     to_email = [user.email]
-    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com']
+    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in']
 
     site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {
@@ -185,10 +185,10 @@ def send_order_confirmation_email(order, request=None):
     if not order or not order.shipping_email:
         return
 
-    subject = f"Order Confirmed #{order.order_number} - Aesthetic Store"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
+    subject = f"Order Confirmed #{order.order_number} - House of Aesthetics"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'House of Aesthetics <support@housesofaesthetics.in>')
     to_email = [order.shipping_email]
-    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com']
+    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in']
 
     site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {
@@ -212,10 +212,10 @@ def send_password_reset_email(user, reset_url, request=None):
         return
 
     name = user.first_name or user.username or "there"
-    subject = "Reset Your Aesthetic Store Password"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <support@aestheticstore.com>')
+    subject = "Reset Your House of Aesthetics Password"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'House of Aesthetics <support@housesofaesthetics.in>')
     to_email = [user.email]
-    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com']
+    reply_to = [getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in']
 
     site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
     context = {

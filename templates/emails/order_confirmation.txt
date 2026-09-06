@@ -1,4 +1,4 @@
-AESTHETIC STORE - ORDER CONFIRMATION & RECEIPT
+HOUSE OF AESTHETICS - ORDER CONFIRMATION & RECEIPT
 ==================================================
 
 Thank you for your order, {{ order.shipping_name }}!
@@ -35,8 +35,8 @@ View receipt & track your package:
 {{ site_url }}/orders/detail/{{ order.order_number }}/
 
 Need help with your order?
-Contact us at support@aestheticstore.com
+Contact us at support@housesofaesthetics.in
 
 With warmth,
-Aesthetic Store Team
+House of Aesthetics Team
 {{ site_url }}

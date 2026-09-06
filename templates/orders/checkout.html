@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Checkout &amp; Razorpay Gateway | Aesthetic Store{% endblock %}
+{% block title %}Checkout &amp; Razorpay Gateway | House of Aesthetics{% endblock %}
 
 {% block extra_head %}
 <!-- Official Razorpay Checkout JS SDK -->
@@ -337,7 +337,7 @@ async function startRazorpayCheckout() {
         key: orderData.key_id,
         amount: orderData.amount,
         currency: orderData.currency || 'INR',
-        name: 'Aesthetic Store',
+        name: 'House of Aesthetics',
         description: 'Sustainable Lifestyle Order',
         order_id: orderData.razorpay_order_id,
         image: '/static/images/lifestyle/hero-composition.jpg',

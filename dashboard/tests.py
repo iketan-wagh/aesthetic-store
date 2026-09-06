@@ -9,7 +9,7 @@ from products.models import Product, Category
 
 class DashboardSecurityAndFunctionalityTests(TestCase):
     def setUp(self):
-        self.staff_user = User.objects.create_superuser(username='admin_staff', password='staffpassword123', email='admin@aestheticstore.com')
+        self.staff_user = User.objects.create_superuser(username='admin_staff', password='staffpassword123', email='admin@housesofaesthetics.in')
         self.normal_user = User.objects.create_user(username='normal_customer', password='customerpass123', email='customer@example.com')
 
         self.category = Category.objects.create(name='Wellness', slug='wellness')

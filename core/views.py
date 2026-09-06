@@ -64,7 +64,7 @@ def newsletter_subscribe(request):
     if email and '@' in email:
         return JsonResponse({
             'status': 'success',
-            'message': 'Welcome to Aesthetic Store! Keep an eye on your inbox for quiet drops and secret edits.'
+            'message': 'Welcome to House of Aesthetics! Keep an eye on your inbox for quiet drops and secret edits.'
         })
     return JsonResponse({
         'status': 'error',

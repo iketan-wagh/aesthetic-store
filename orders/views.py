@@ -124,7 +124,7 @@ def create_razorpay_order(request):
         'amount': amount_in_paise,
         'currency': 'INR',
         'key_id': key_id,
-        'brand_name': 'Aesthetic Store',
+        'brand_name': 'House of Aesthetics',
     })
 
 
@@ -225,7 +225,7 @@ def verify_razorpay_payment(request):
         order = Order.objects.create(
             user=request.user if request.user.is_authenticated else None,
             shipping_name=shipping_name,
-            shipping_email=shipping_email or (request.user.email if request.user.is_authenticated else 'customer@aestheticstore.com'),
+            shipping_email=shipping_email or (request.user.email if request.user.is_authenticated else 'customer@housesofaesthetics.in'),
             shipping_phone=shipping_phone,
             shipping_address_line1=shipping_address_line1,
             shipping_address_line2=shipping_address_line2,

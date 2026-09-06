@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = 'Tests and diagnoses live email sending configurations'
 
     def add_arguments(self, parser):
-        default_target = getattr(settings, 'EMAIL_HOST_USER', '') or 'support@aestheticstore.com'
+        default_target = getattr(settings, 'EMAIL_HOST_USER', '') or 'support@housesofaesthetics.in'
         parser.add_argument(
             '--to',
             type=str,
@@ -36,7 +36,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE('\n[1] Testing via Django send_mail()...'))
         try:
             res = send_mail(
-                subject='Aesthetic Store - Diagnostic Test 1',
+                subject='House of Aesthetics - Diagnostic Test 1',
                 message='This is a diagnostic test via Django send_mail.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[recipient],
@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 return
 
             msg = MIMEMultipart('alternative')
-            msg['Subject'] = 'Aesthetic Store - Direct SSL Port 465 Test'
+            msg['Subject'] = 'House of Aesthetics - Direct SSL Port 465 Test'
             msg['From'] = settings.DEFAULT_FROM_EMAIL
             msg['To'] = recipient
             msg.attach(MIMEText('This is a direct SSL 465 test message.', 'plain', 'utf-8'))

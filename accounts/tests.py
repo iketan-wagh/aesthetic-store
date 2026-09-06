@@ -86,7 +86,7 @@ class AccountSecurityTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         sent_email = mail.outbox[0]
         self.assertEqual(sent_email.to, ['riya@example.com'])
-        self.assertIn('Welcome to Aesthetic Store', sent_email.subject)
+        self.assertIn('Welcome to House of Aesthetics', sent_email.subject)
         self.assertIn('NOMA10', sent_email.body)
 
     def test_google_login_flow_and_account_creation(self):
@@ -129,7 +129,7 @@ class AccountSecurityTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         reset_email = mail.outbox[0]
         self.assertEqual(reset_email.to, ['alice@example.com'])
-        self.assertIn('Reset Your Aesthetic Store Password', reset_email.subject)
+        self.assertIn('Reset Your House of Aesthetics Password', reset_email.subject)
         self.assertIn('password-reset-confirm', reset_email.body)
 
         # 4. Extract token & uidb64 from the email or generate matching token

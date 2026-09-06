@@ -10,14 +10,14 @@ from accounts.models import Address
 
 
 class Command(BaseCommand):
-    help = 'Seeds initial and updated database for Aesthetic Store'
+    help = 'Seeds initial and updated database for House of Aesthetics'
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE('[INFO] Starting Database Seed & Sync...'))
 
         # 1. Create Superuser (configured via environment variables)
         su_username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
-        su_email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@aestheticstore.com')
+        su_email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@housesofaesthetics.in')
         su_password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'Admin@12345')
 
         admin_user, _ = User.objects.get_or_create(

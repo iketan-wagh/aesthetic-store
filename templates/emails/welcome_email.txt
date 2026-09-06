@@ -1,4 +1,4 @@
-Welcome to Aesthetic Store
+Welcome to House of Aesthetics
 
 Hello {{ user.first_name|default:user.username }},
 
@@ -16,8 +16,8 @@ Our Commitments:
 - Plastic-Free Eco Packaging
 
 With warm regards,
-Aesthetic Store Team
+House of Aesthetics Team
 {{ site_url }}
 
-You received this email because you created an account at Aesthetic Store.
+You received this email because you created an account at House of Aesthetics.
 Manage your account: {{ site_url }}/account/profile/
