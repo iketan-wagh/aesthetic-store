@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - #{{ order.order_number }}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+    @media only screen and (max-width: 620px) {
+      .email-container { width: 100% !important; padding: 12px !important; }
+      .email-content { padding: 24px 18px !important; }
+      .header-pad { padding: 32px 18px 24px 18px !important; }
+      .item-row td { padding: 10px 4px !important; font-size: 13px !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #FAF8F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1C1B19; -webkit-font-smoothing: antialiased;">
+  
+  <!-- Outer Table Container -->
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #FAF8F5; margin: 0; padding: 30px 0;">
+    <tr>
+      <td align="center" style="padding: 0 10px;">
+        
+        <!-- Main Email Card -->
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="email-container" style="max-width: 620px; width: 100%; background-color: #FFFFFF; border-radius: 20px; border: 1px solid #ECE6DB; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.03);">
+          
+          <!-- Header Banner -->
+          <tr>
+            <td align="center" class="header-pad" style="padding: 36px 32px 24px 32px; background-color: #1C1B19; text-align: center;">
+              <span style="font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: #C86D51; font-weight: 700; display: block; margin-bottom: 6px;">Order Confirmed</span>
+              <h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: normal; letter-spacing: 0.08em; color: #FAF8F5;">AESTHETIC STORE</h1>
+              <p style="margin: 6px 0 0 0; font-size: 12px; color: #A8A29E; font-style: italic;">Thank you for your conscious purchase</p>
+            </td>
+          </tr>
+
+          <!-- Confirmation Pill -->
+          <tr>
+            <td align="center" style="background-color: #F7F5F0; padding: 14px 20px; border-bottom: 1px solid #ECE6DB;">
+              <p style="margin: 0; font-size: 13px; color: #44403C; font-weight: 500;">
+                Order Number: <strong style="color: #1C1B19; font-family: monospace; font-size: 14px;">#{{ order.order_number }}</strong>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Main Body -->
+          <tr>
+            <td class="email-content" style="padding: 32px 36px 28px 36px;">
+              
+              <h2 style="font-family: Georgia, 'Times New Roman', serif; font-size: 20px; color: #1C1B19; margin: 0 0 12px 0; font-weight: 600;">
+                Hi {{ order.shipping_name }},
+              </h2>
+              
+              <p style="font-size: 14px; line-height: 1.65; color: #57534E; margin: 0 0 24px 0;">
+                We have received and confirmed your order. Our studio team is now preparing your handcrafted sustainable items with eco-friendly, plastic-free packaging.
+              </p>
+
+              <!-- Order & Shipping Summary Cards -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td width="50%" valign="top" style="background-color: #FAF8F5; border-radius: 12px; border: 1px solid #ECE6DB; padding: 16px; margin-right: 8px;">
+                    <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #78716C; font-weight: 700; display: block; margin-bottom: 6px;">Delivery Details</span>
+                    <p style="font-size: 13px; font-weight: 600; color: #1C1B19; margin: 0 0 4px 0;">{{ order.shipping_name }}</p>
+                    <p style="font-size: 12px; color: #57534E; line-height: 1.5; margin: 0 0 4px 0;">{{ order.full_shipping_address }}</p>
+                    <p style="font-size: 12px; color: #78716C; margin: 0;">Phone: {{ order.shipping_phone }}</p>
+                  </td>
+                  <td width="4%"></td>
+                  <td width="46%" valign="top" style="background-color: #FAF8F5; border-radius: 12px; border: 1px solid #ECE6DB; padding: 16px;">
+                    <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #78716C; font-weight: 700; display: block; margin-bottom: 6px;">Status &amp; Tracking</span>
+                    <p style="font-size: 12px; color: #57534E; margin: 0 0 4px 0;">
+                      Payment: <strong style="color: {% if order.payment_status == 'PAID' %}#16A34A{% else %}#D97706{% endif %};">{{ order.payment_status }}</strong>
+                    </p>
+                    <p style="font-size: 12px; color: #57534E; margin: 0 0 4px 0;">
+                      Method: <strong style="color: #1C1B19;">{{ order.get_payment_method_display }}</strong>
+                    </p>
+                    {% if order.tracking_number %}
+                      <p style="font-size: 11px; color: #78716C; margin: 4px 0 0 0;">
+                        Tracking: <span style="font-family: monospace; color: #C86D51;">{{ order.tracking_number }}</span>
+                      </p>
+                    {% endif %}
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Purchased Items Section -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border: 1px solid #ECE6DB; border-radius: 14px; overflow: hidden; margin-bottom: 24px;">
+                <tr style="background-color: #F7F5F0; border-bottom: 1px solid #ECE6DB;">
+                  <th align="left" style="padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #78716C; font-weight: 700;">Item</th>
+                  <th align="center" style="padding: 12px 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #78716C; font-weight: 700;">Qty</th>
+                  <th align="right" style="padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #78716C; font-weight: 700;">Amount</th>
+                </tr>
+                {% for item in order.items.all %}
+                  <tr class="item-row" style="border-bottom: 1px solid #F2ECE1;">
+                    <td style="padding: 14px 16px; vertical-align: top;">
+                      <p style="margin: 0 0 3px 0; font-size: 13px; font-weight: 600; color: #1C1B19;">{{ item.product_name }}</p>
+                      {% if item.product_sku %}
+                        <span style="font-size: 10px; color: #A8A29E; font-family: monospace;">SKU: {{ item.product_sku }}</span>
+                      {% endif %}
+                    </td>
+                    <td align="center" style="padding: 14px 8px; font-size: 13px; color: #57534E; vertical-align: top;">
+                      {{ item.quantity }}
+                    </td>
+                    <td align="right" style="padding: 14px 16px; font-size: 13px; font-weight: 600; color: #1C1B19; vertical-align: top;">
+                      ₹{{ item.subtotal }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+
+              <!-- Pricing Calculation Table -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 28px;">
+                <tr>
+                  <td style="padding: 4px 0; font-size: 13px; color: #78716C;">Subtotal:</td>
+                  <td align="right" style="padding: 4px 0; font-size: 13px; color: #1C1B19; font-weight: 500;">₹{{ order.subtotal }}</td>
+                </tr>
+                {% if order.discount_amount > 0 %}
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #C86D51;">Discount {% if order.coupon_code %}({{ order.coupon_code }}){% endif %}:</td>
+                    <td align="right" style="padding: 4px 0; font-size: 13px; color: #C86D51; font-weight: 600;">-₹{{ order.discount_amount }}</td>
+                  </tr>
+                {% endif %}
+                <tr>
+                  <td style="padding: 4px 0; font-size: 13px; color: #78716C;">Shipping Fee:</td>
+                  <td align="right" style="padding: 4px 0; font-size: 13px; color: #1C1B19; font-weight: 500;">
+                    {% if order.shipping_fee == 0 %}<span style="color: #16A34A; font-weight: 600;">FREE</span>{% else %}₹{{ order.shipping_fee }}{% endif %}
+                  </td>
+                </tr>
+                <tr style="border-top: 1.5px solid #1C1B19;">
+                  <td style="padding: 10px 0 0 0; font-size: 15px; font-weight: 700; color: #1C1B19;">Total Amount:</td>
+                  <td align="right" style="padding: 10px 0 0 0; font-size: 18px; font-weight: 700; color: #C86D51;">₹{{ order.total_amount }}</td>
+                </tr>
+              </table>
+
+              <!-- View Receipt / Track Order Button -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: 0 auto 28px auto;">
+                <tr>
+                  <td align="center" style="border-radius: 9999px; background-color: #1C1B19;">
+                    <a href="{{ site_url }}/orders/detail/{{ order.order_number }}/" target="_blank" style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #FAF8F5; text-decoration: none; padding: 14px 34px; display: inline-block; border-radius: 9999px;">
+                      View Order &amp; Track Package &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Trust & Care Indicators -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #FAF8F5; border-radius: 12px; border: 1px solid #ECE6DB; padding: 14px;">
+                <tr>
+                  <td align="center" style="font-size: 11px; color: #78716C; line-height: 1.5;">
+                    Estimated delivery: <strong>3–5 business days</strong> &bull; Plastic-free packaging &bull; Need help? Reply to this email or contact <a href="mailto:ketanwagh714@gmail.com" style="color: #C86D51; text-decoration: underline;">ketanwagh714@gmail.com</a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 32px 30px 32px; border-top: 1px solid #F5F0E8; text-align: center; background-color: #FAFAF9;">
+              <p style="font-size: 12px; color: #78716C; margin: 0 0 6px 0; font-weight: 500;">
+                Aesthetic Store &bull; Everyday Conscious Living
+              </p>
+              <p style="font-size: 11px; color: #A8A29E; line-height: 1.5; margin: 0 0 10px 0;">
+                You received this receipt because an order was placed on Aesthetic Store.<br>
+                <a href="{{ site_url }}/account/profile/?tab=orders" target="_blank" style="color: #78716C; text-decoration: underline;">My Account Orders</a> &bull; <a href="{{ site_url }}/faq/" target="_blank" style="color: #78716C; text-decoration: underline;">Shipping &amp; Returns Policy</a>
+              </p>
+              <p style="font-size: 10px; color: #C57D56; margin: 0;">
+                Handcrafted with intention &bull; Bengaluru, India
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

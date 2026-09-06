@@ -19,6 +19,7 @@ from cart.models import Cart
 from accounts.models import Address
 from coupons.models import Coupon, CouponUsage
 from cart.context_processors import get_or_create_cart
+from core.emails import send_order_confirmation_email
 
 
 @login_required(login_url='accounts:login')
@@ -290,6 +291,9 @@ def verify_razorpay_payment(request):
         request.session.pop('applied_coupon_code', None)
         request.session['last_order_number'] = order.order_number
 
+    # Send receipt and order confirmation email to customer
+    send_order_confirmation_email(order, request)
+
     return JsonResponse({
         'status': 'success',
         'order_number': order.order_number,
@@ -440,6 +444,9 @@ def process_checkout(request):
         cart.items.all().delete()
         request.session.pop('applied_coupon_code', None)
         request.session['last_order_number'] = order.order_number
+
+    # Send receipt and order confirmation email to customer
+    send_order_confirmation_email(order, request)
 
     return redirect('orders:order_success', order_number=order.order_number)
 

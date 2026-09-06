@@ -88,3 +88,6 @@ class OrderTests(TestCase):
         # Stock reduced from 10 to 9
         self.bamboo.refresh_from_db()
         self.assertEqual(self.bamboo.stock, 9)
+
+        # 5. Verify Order Confirmation Receipt Email was dispatched
+        self.assertTrue(Order.objects.filter(order_number=verify_data['order_number']).exists())

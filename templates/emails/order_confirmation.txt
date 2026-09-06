@@ -1,0 +1,42 @@
+AESTHETIC STORE - ORDER CONFIRMATION & RECEIPT
+==================================================
+
+Thank you for your order, {{ order.shipping_name }}!
+
+We have confirmed your order #{{ order.order_number }}.
+Our studio is now preparing your handcrafted sustainable items.
+
+ORDER DETAILS:
+--------------------------------------------------
+Order Number: #{{ order.order_number }}
+Payment Status: {{ order.payment_status }} ({{ order.get_payment_method_display }})
+{% if order.tracking_number %}Tracking Number: {{ order.tracking_number }}{% endif %}
+
+DELIVERY ADDRESS:
+--------------------------------------------------
+{{ order.shipping_name }}
+{{ order.full_shipping_address }}
+Phone: {{ order.shipping_phone }}
+
+PURCHASED ITEMS:
+--------------------------------------------------
+{% for item in order.items.all %}
+* {{ item.product_name }} (Qty: {{ item.quantity }}) - ₹{{ item.subtotal }}
+{% endfor %}
+
+FINANCIAL SUMMARY:
+--------------------------------------------------
+Subtotal: ₹{{ order.subtotal }}
+{% if order.discount_amount > 0 %}Discount ({{ order.coupon_code }}): -₹{{ order.discount_amount }}{% endif %}
+Shipping: {% if order.shipping_fee == 0 %}FREE{% else %}₹{{ order.shipping_fee }}{% endif %}
+Total Amount Paid: ₹{{ order.total_amount }}
+
+View receipt & track your package:
+{{ site_url }}/orders/detail/{{ order.order_number }}/
+
+Need help with your order?
+Contact us at ketanwagh714@gmail.com
+
+With warmth,
+Aesthetic Store Team
+{{ site_url }}
