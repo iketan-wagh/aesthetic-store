@@ -65,3 +65,31 @@ class AddressForm(forms.ModelForm):
             'address_type': forms.Select(attrs={'class': 'form-input'}),
             'is_default': forms.CheckboxInput(attrs={'class': 'rounded text-amber-900 focus:ring-amber-800'}),
         }
+
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your registered email address', 'class': 'form-input'})
+    )
+
+
+class SetNewPasswordForm(forms.Form):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'New Password (min. 6 chars)', 'class': 'form-input'}),
+        min_length=6,
+        required=True
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm New Password', 'class': 'form-input'}),
+        required=True
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        p1 = cleaned_data.get('password')
+        p2 = cleaned_data.get('password2')
+        if p1 and p2 and p1 != p2:
+            self.add_error('password2', "Passwords do not match.")
+        return cleaned_data
+

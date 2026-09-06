@@ -2,18 +2,25 @@ import uuid
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
-from .forms import UserRegistrationForm, UserLoginForm, UserProfileForm, AddressForm
+from .forms import (
+    UserRegistrationForm, UserLoginForm, UserProfileForm, AddressForm,
+    PasswordResetRequestForm, SetNewPasswordForm
+)
 from .models import UserProfile, Address
 from orders.models import Order
 from wishlist.models import Wishlist
 
 
-from core.emails import send_welcome_email
+from core.emails import send_welcome_email, send_password_reset_email
 
 
 def register_view(request):
@@ -281,3 +288,57 @@ def address_set_default(request, pk):
     address.save()
     messages.success(request, f"Default delivery address updated to {address.full_name}.")
     return redirect('/account/?tab=addresses')
+
+
+def password_reset_request_view(request):
+    if request.user.is_authenticated:
+        return redirect('accounts:profile')
+
+    if request.method == 'POST':
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            associated_users = User.objects.filter(email__iexact=email, is_active=True)
+            for user in associated_users:
+                token = default_token_generator.make_token(user)
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                reset_url = request.build_absolute_uri(
+                    reverse('accounts:password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token})
+                )
+                send_password_reset_email(user, reset_url, request)
+            return redirect('accounts:password_reset_done')
+    else:
+        form = PasswordResetRequestForm()
+
+    return render(request, 'accounts/password_reset.html', {'form': form})
+
+
+def password_reset_done_view(request):
+    return render(request, 'accounts/password_reset_done.html')
+
+
+def password_reset_confirm_view(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.filter(pk=uid, is_active=True).first()
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = SetNewPasswordForm(request.POST)
+            if form.is_valid():
+                user.set_password(form.cleaned_data['password'])
+                user.save()
+                messages.success(request, "Your password has been reset successfully! You can now log in.")
+                return redirect('accounts:password_reset_complete')
+        else:
+            form = SetNewPasswordForm()
+        return render(request, 'accounts/password_reset_confirm.html', {'form': form, 'validlink': True})
+    else:
+        return render(request, 'accounts/password_reset_confirm.html', {'validlink': False})
+
+
+def password_reset_complete_view(request):
+    return render(request, 'accounts/password_reset_complete.html')
+

@@ -112,3 +112,70 @@ class AccountSecurityTests(TestCase):
         google_welcome_email = [e for e in mail.outbox if 'tanya_google@example.com' in e.to]
         self.assertEqual(len(google_welcome_email), 1)
         self.assertIn('NOMA10', google_welcome_email[0].body)
+
+    def test_password_reset_flow(self):
+        # 1. Access password reset request page
+        response = self.client.get(reverse('accounts:password_reset'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Reset your password')
+
+        # 2. Submit registered email
+        mail.outbox.clear()
+        post_res = self.client.post(reverse('accounts:password_reset'), {'email': 'alice@example.com'}, follow=True)
+        self.assertEqual(post_res.status_code, 200)
+        self.assertContains(post_res, 'Check your inbox')
+
+        # 3. Verify password reset email was dispatched
+        self.assertEqual(len(mail.outbox), 1)
+        reset_email = mail.outbox[0]
+        self.assertEqual(reset_email.to, ['alice@example.com'])
+        self.assertIn('Reset Your Aesthetic Store Password', reset_email.subject)
+        self.assertIn('password-reset-confirm', reset_email.body)
+
+        # 4. Extract token & uidb64 from the email or generate matching token
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+
+        uidb64 = urlsafe_base64_encode(force_bytes(self.user1.pk))
+        token = default_token_generator.make_token(self.user1)
+
+        # 5. Invalid token check
+        bad_confirm_res = self.client.get(
+            reverse('accounts:password_reset_confirm', kwargs={'uidb64': uidb64, 'token': 'invalid-token-123'})
+        )
+        self.assertEqual(bad_confirm_res.status_code, 200)
+        self.assertContains(bad_confirm_res, 'Link Expired or Invalid')
+
+        # 6. Valid token GET
+        valid_confirm_res = self.client.get(
+            reverse('accounts:password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token})
+        )
+        self.assertEqual(valid_confirm_res.status_code, 200)
+        self.assertContains(valid_confirm_res, 'Create new password')
+
+        # 7. Submit new password
+        set_pw_res = self.client.post(
+            reverse('accounts:password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token}),
+            data={'password': 'BrandNewPassword2026!', 'password2': 'BrandNewPassword2026!'},
+            follow=True
+        )
+        self.assertEqual(set_pw_res.status_code, 200)
+        self.assertContains(set_pw_res, 'Password Reset Complete')
+
+        # 8. Verify old password fails and new password succeeds
+        self.client.logout()
+        login_fail = self.client.post(
+            reverse('accounts:login'),
+            data={'username': 'alice', 'password': 'password123'}
+        )
+        self.assertContains(login_fail, 'Invalid username/email or password')
+
+        login_success = self.client.post(
+            reverse('accounts:login'),
+            data={'username': 'alice', 'password': 'BrandNewPassword2026!'},
+            follow=True
+        )
+        self.assertEqual(login_success.status_code, 200)
+        self.assertEqual(int(self.client.session['_auth_user_id']), self.user1.pk)
+

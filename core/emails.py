@@ -202,3 +202,32 @@ def send_order_confirmation_email(order, request=None):
     except Exception as e:
         print(f"[ORDER EMAIL ERROR] Could not send confirmation receipt for #{order.order_number}: {e}")
         logger.error(f"Could not send order confirmation receipt: {e}")
+
+
+def send_password_reset_email(user, reset_url, request=None):
+    """Sends a secure, branded password reset link to the user."""
+    if not user or not user.email:
+        return
+
+    name = user.first_name or user.username or "there"
+    subject = "Reset Your Aesthetic Store Password"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'Aesthetic Store <ketanwagh714@gmail.com>')
+    to_email = [user.email]
+    reply_to = ['ketanwagh714@gmail.com']
+
+    site_url = request.build_absolute_uri('/')[:-1] if request else 'https://aesthetic-store.up.railway.app'
+    context = {
+        'user': user,
+        'reset_url': reset_url,
+        'site_url': site_url,
+    }
+
+    try:
+        text_content = render_to_string('emails/password_reset_email.txt', context)
+        html_content = render_to_string('emails/password_reset_email.html', context)
+        dispatch_email(subject, text_content, html_content, from_email, to_email, reply_to)
+        print(f"[PASSWORD RESET EMAIL] Dispatched reset email to {user.email}")
+    except Exception as e:
+        print(f"[PASSWORD RESET EMAIL ERROR] Could not send password reset email to {user.email}: {e}")
+        logger.error(f"Could not send password reset email: {e}")
+
