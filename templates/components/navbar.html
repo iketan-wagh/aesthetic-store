@@ -85,45 +85,74 @@
 
 <!-- Mobile Navigation Drawer -->
 <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden transition-opacity"></div>
-<div id="mobile-menu-drawer" class="fixed inset-y-0 left-0 max-w-xs w-full bg-[#FAF8F5] z-50 shadow-2xl p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out hidden">
+<div id="mobile-menu-drawer" class="fixed inset-y-0 left-0 max-w-xs w-full bg-[#FAF8F5] z-50 shadow-2xl p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out hidden overflow-y-auto">
   <div>
-    <div class="flex items-center justify-between pb-6 border-b border-[#ECE6DB]">
-      <span class="font-editorial text-2xl tracking-widest text-[#1C1B19]">House of Aesthetics</span>
-      <button id="mobile-menu-close" class="p-2 text-neutral-500 hover:text-black">
+    <!-- Header -->
+    <div class="flex items-center justify-between pb-5 border-b border-[#ECE6DB]">
+      <div>
+        <span class="font-editorial text-2xl tracking-widest text-[#1C1B19] block">House of Aesthetics</span>
+        <span class="text-[9px] uppercase tracking-[0.2em] text-neutral-400 font-sans">Everyday Conscious</span>
+      </div>
+      <button id="mobile-menu-close" class="p-2 text-neutral-500 hover:text-black rounded-full hover:bg-neutral-100 transition" aria-label="Close menu">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
 
-    <nav class="mt-6 flex flex-col space-y-4">
-      <a href="{% url 'products:shop' %}" class="text-lg font-medium text-neutral-800 hover:text-terracotta transition">Shop All</a>
-      <div class="py-2 border-y border-[#ECE6DB] my-2">
-        <p class="text-[10px] tracking-widest uppercase text-neutral-400 font-bold mb-2">Categories</p>
-        <div class="grid grid-cols-2 gap-2 text-sm">
+    <!-- Main Navigation List -->
+    <nav class="mt-5 flex flex-col space-y-1">
+      <!-- Shop All Main Link -->
+      <a href="{% url 'products:shop' %}" class="flex items-center justify-between py-2.5 px-3 -mx-3 rounded-xl text-base font-semibold text-neutral-900 hover:bg-[#F3EFE6] hover:text-[#C86D51] transition group">
+        <span>Shop All Products</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-[#C86D51] group-hover:translate-x-0.5 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+
+      <!-- Categories Section (Single Clean Column with High Visibility) -->
+      <div class="pt-3 pb-3 my-2 border-y border-[#ECE6DB]/80">
+        <div class="flex items-center justify-between mb-2.5 px-1">
+          <span class="text-[11px] uppercase tracking-[0.2em] text-[#C57D56] font-bold">Categories</span>
+          <span class="text-[10px] text-neutral-400 font-medium">{{ nav_categories|length }} collections</span>
+        </div>
+        
+        <div class="flex flex-col space-y-1">
           {% for cat in nav_categories %}
-            <a href="{% url 'products:shop' %}?category={{ cat.slug }}" class="text-neutral-600 hover:text-terracotta">{{ cat.name }}</a>
+            <a href="{% url 'products:shop' %}?category={{ cat.slug }}" class="flex items-center justify-between py-2 px-3 -mx-2 rounded-lg text-sm font-medium text-neutral-700 hover:text-[#C86D51] hover:bg-[#F3EFE6]/70 transition group">
+              <span class="group-hover:translate-x-0.5 transition-transform">{{ cat.name }}</span>
+              <span class="text-xs text-neutral-300 group-hover:text-[#C86D51] transition">→</span>
+            </a>
           {% endfor %}
         </div>
       </div>
-      <a href="{% url 'core:sustainable_living' %}" class="text-base font-medium text-neutral-800 hover:text-terracotta transition">Sustainable Living</a>
-      <a href="{% url 'core:our_story' %}" class="text-base font-medium text-neutral-800 hover:text-terracotta transition">Our Story</a>
-      <a href="{% url 'core:faq' %}" class="text-base font-medium text-neutral-800 hover:text-terracotta transition">FAQ & Support</a>
+
+      <!-- Core Marketing Links -->
+      <div class="flex flex-col space-y-1 pt-1">
+        <a href="{% url 'core:sustainable_living' %}" class="flex items-center justify-between py-2.5 px-3 -mx-3 rounded-xl text-sm font-medium text-neutral-800 hover:bg-[#F3EFE6] hover:text-[#C86D51] transition">
+          <span>Sustainable Living</span>
+        </a>
+        <a href="{% url 'core:our_story' %}" class="flex items-center justify-between py-2.5 px-3 -mx-3 rounded-xl text-sm font-medium text-neutral-800 hover:bg-[#F3EFE6] hover:text-[#C86D51] transition">
+          <span>Our Story</span>
+        </a>
+        <a href="{% url 'core:faq' %}" class="flex items-center justify-between py-2.5 px-3 -mx-3 rounded-xl text-sm font-medium text-neutral-800 hover:bg-[#F3EFE6] hover:text-[#C86D51] transition">
+          <span>FAQ &amp; Support</span>
+        </a>
+      </div>
     </nav>
   </div>
 
-  <div class="pt-6 border-t border-[#ECE6DB]">
+  <!-- Bottom Auth & Account Section -->
+  <div class="pt-5 mt-6 border-t border-[#ECE6DB]">
     {% if user.is_authenticated %}
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <p class="text-xs text-neutral-400">Signed in as</p>
-          <p class="text-sm font-semibold text-neutral-900">{{ user.first_name|default:user.username }}</p>
+      <div class="flex items-center justify-between mb-3 bg-[#F3EFE6]/60 p-3 rounded-xl">
+        <div class="min-w-0 pr-2">
+          <p class="text-[10px] text-neutral-400 uppercase tracking-wider">Signed in as</p>
+          <p class="text-xs font-bold text-neutral-900 truncate">{{ user.first_name|default:user.username }}</p>
         </div>
-        <a href="{% url 'accounts:logout' %}" class="text-xs text-red-600 font-medium">Sign Out</a>
+        <a href="{% url 'accounts:logout' %}" class="text-xs text-red-600 hover:underline font-medium flex-shrink-0">Sign Out</a>
       </div>
-      <a href="{% url 'accounts:profile' %}" class="btn-secondary w-full text-center text-xs py-2.5">My Account</a>
+      <a href="{% url 'accounts:profile' %}" class="btn-secondary w-full text-center text-xs py-2.5 block">My Account &amp; Orders</a>
     {% else %}
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-2 gap-2.5">
         <a href="{% url 'accounts:login' %}" class="btn-secondary text-center text-xs py-2.5">Sign In</a>
-        <a href="{% url 'accounts:register' %}" class="btn-primary text-center text-xs py-2.5">Join NOMA</a>
+        <a href="{% url 'accounts:register' %}" class="btn-primary text-center text-xs py-2.5">Create Account</a>
       </div>
     {% endif %}
   </div>
