@@ -15,6 +15,15 @@
   --color-sage-light: #EBF0EA;
   --color-copper: #C57D56;
   --color-copper-light: #F7EFE9;
+  
+  /* Royal Maroon & Champagne Gold Brand Palette */
+  --color-maroon: #6B1724;
+  --color-maroon-dark: #4A0E17;
+  --color-maroon-light: #FBF4F5;
+  --color-maroon-border: #E8D5D8;
+  --color-gold: #C5A059;
+  --color-gold-dark: #9E7D3B;
+  --color-gold-light: #E9D7A5;
 
   --font-editorial: 'DM Serif Display', 'Cormorant Garamond', Georgia, serif;
   --font-serif: 'Cormorant Garamond', 'DM Serif Display', Georgia, serif;
@@ -130,7 +139,7 @@ button, a, input, select, textarea {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.25rem 0.55rem;
+  padding: 0.28rem 0.65rem;
   border-radius: 9999px;
   display: inline-flex;
   align-items: center;
@@ -144,18 +153,24 @@ button, a, input, select, textarea {
 }
 
 .badge-bestseller {
-  background-color: var(--color-copper);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #6B1724 0%, #4A0E17 100%);
+  color: #FAF8F5;
+  border: 1px solid rgba(197, 160, 89, 0.4);
 }
 
 .badge-limited {
-  background-color: var(--color-terracotta);
+  background-color: var(--color-maroon);
   color: #FFFFFF;
 }
 
 .badge-noma-pick {
   background-color: var(--color-sage);
   color: #FFFFFF;
+}
+
+.badge-maroon {
+  background-color: #6B1724;
+  color: #FAF8F5;
 }
 
 /* High-End Buttons */
@@ -178,9 +193,9 @@ button, a, input, select, textarea {
 }
 
 .btn-primary:hover {
-  background-color: var(--color-terracotta);
+  background-color: var(--color-maroon);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(200, 109, 81, 0.25);
+  box-shadow: 0 6px 20px rgba(107, 23, 36, 0.3);
   color: #FFFFFF;
 }
 
@@ -206,6 +221,31 @@ button, a, input, select, textarea {
   background-color: var(--color-charcoal);
   color: #FAF8F5;
   transform: translateY(-1px);
+}
+
+.btn-maroon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.875rem;
+  background: linear-gradient(135deg, #6B1724 0%, #4A0E17 100%);
+  color: #FAF8F5;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(74, 14, 23, 0.25);
+  cursor: pointer;
+}
+
+.btn-maroon:hover {
+  background: linear-gradient(135deg, #7E1C2B 0%, #5B121D 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(107, 23, 36, 0.38);
+  color: #FFFFFF;
 }
 
 .btn-terracotta {
