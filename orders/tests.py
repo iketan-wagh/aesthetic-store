@@ -67,9 +67,9 @@ class OrderTests(TestCase):
             'email': 'ketan@example.com',
             'phone': '+91 9876543210',
             'address_line1': '100 Feet Road',
-            'city': 'Bengaluru',
-            'state': 'Karnataka',
-            'pincode': '560038'
+            'city': 'Pune',
+            'state': 'Maharashtra',
+            'pincode': '411001'
         }
         verify_res = self.client.post(
             reverse('orders:verify_razorpay_payment'),

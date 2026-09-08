@@ -122,10 +122,10 @@
               {% else %}
                 <form action="{% url 'coupons:apply_coupon' %}" method="POST" class="flex gap-2">
                   {% csrf_token %}
-                  <input type="text" name="code" placeholder="Enter coupon (e.g. NOMA10)" required class="form-input text-xs uppercase font-mono py-2.5">
-                  <button type="submit" class="btn-primary text-xs py-2.5 px-4 whitespace-nowrap">Apply</button>
+                  <input type="text" name="code" placeholder="Enter coupon (e.g. AESTHETIC10)" required class="form-input text-xs uppercase font-mono py-2.5">
+                  <button type="submit" class="btn-maroon text-xs py-2.5 px-4 whitespace-nowrap">Apply</button>
                 </form>
-                <p class="text-[11px] text-neutral-400 mt-1.5">Try code <span class="font-mono font-bold text-neutral-700">NOMA10</span> for 10% off.</p>
+                <p class="text-[11px] text-neutral-400 mt-1.5">Try code <span class="font-mono font-bold text-neutral-700">AESTHETIC10</span> for 10% off.</p>
               {% endif %}
             </div>
 

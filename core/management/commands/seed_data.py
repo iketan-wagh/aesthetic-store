@@ -229,6 +229,17 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Initialized {len(created_products)} store products.'))
 
         # 4. Coupons
+        aesthetic_coupon, _ = Coupon.objects.get_or_create(
+            code='AESTHETIC10',
+            defaults={
+                'discount_percentage': 10,
+                'max_discount_amount': Decimal('500.00'),
+                'min_order_value': Decimal('499.00'),
+                'active': True,
+                'valid_from': timezone.now(),
+                'usage_limit': 10000
+            }
+        )
         noma_coupon, _ = Coupon.objects.get_or_create(
             code='NOMA10',
             defaults={
@@ -240,5 +251,5 @@ class Command(BaseCommand):
                 'usage_limit': 10000
             }
         )
-        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded Coupon: {noma_coupon.code} (10% OFF)'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Seeded Coupons: {aesthetic_coupon.code}, {noma_coupon.code} (10% OFF)'))
         self.stdout.write(self.style.SUCCESS('[SUCCESS] Database sync completed successfully!'))

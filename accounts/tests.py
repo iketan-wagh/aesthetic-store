@@ -16,9 +16,9 @@ class AccountSecurityTests(TestCase):
             full_name='Alice Wonderland',
             phone='+91 9988776655',
             address_line1='100 Alice Road',
-            city='Bengaluru',
-            state='Karnataka',
-            pincode='560001'
+            city='Pune',
+            state='Maharashtra',
+            pincode='411001'
         )
 
         self.alice_order = Order.objects.create(
@@ -28,9 +28,9 @@ class AccountSecurityTests(TestCase):
             shipping_email='alice@example.com',
             shipping_phone='+91 9988776655',
             shipping_address_line1='100 Alice Road',
-            shipping_city='Bengaluru',
-            shipping_state='Karnataka',
-            shipping_pincode='560001',
+            shipping_city='Pune',
+            shipping_state='Maharashtra',
+            shipping_pincode='411001',
             subtotal=999,
             shipping_fee=0,
             discount_amount=0,
@@ -87,7 +87,7 @@ class AccountSecurityTests(TestCase):
         sent_email = mail.outbox[0]
         self.assertEqual(sent_email.to, ['riya@example.com'])
         self.assertIn('Welcome to House of Aesthetics', sent_email.subject)
-        self.assertIn('NOMA10', sent_email.body)
+        self.assertIn('AESTHETIC10', sent_email.body)
 
     def test_google_login_flow_and_account_creation(self):
         # 1. Access Google Login Endpoint
@@ -111,7 +111,7 @@ class AccountSecurityTests(TestCase):
         # Welcome email is dispatched to Google user too
         google_welcome_email = [e for e in mail.outbox if 'tanya_google@example.com' in e.to]
         self.assertEqual(len(google_welcome_email), 1)
-        self.assertIn('NOMA10', google_welcome_email[0].body)
+        self.assertIn('AESTHETIC10', google_welcome_email[0].body)
 
     def test_password_reset_flow(self):
         # 1. Access password reset request page

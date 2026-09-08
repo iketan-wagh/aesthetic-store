@@ -5,7 +5,7 @@ Hello {{ user.first_name|default:user.username }},
 Your account has been created. We curate handcrafted wellness and lifestyle pieces designed to bring warmth, balance, and conscious simplicity to your everyday routines.
 
 Your Member Code:
-Enjoy 10% savings on your first order with code: NOMA10
+Enjoy 10% savings on your first order with code: AESTHETIC10
 
 Explore our curated collection here:
 {{ site_url }}/shop/
