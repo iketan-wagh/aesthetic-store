@@ -4,15 +4,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>{% block title %}House of Aesthetics | Good things. Better vibes.{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}House of Aesthetics is a modern sustainable lifestyle store helping you make your everyday life more beautiful and conscious. Aesthetic essentials crafted to last.{% endblock %}">
+  <title>{% block title %}House of Aesthetics | Pure Copper Bottles, Gemstone Trees &amp; Conscious Living{% endblock %}</title>
   
-  <!-- Open Graph / Meta -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="{% block og_title %}House of Aesthetics | Good things. Better vibes.{% endblock %}">
-  <meta property="og:description" content="{% block og_description %}Aesthetic, sustainable, minimal lifestyle essentials for a more conscious everyday.{% endblock %}">
+  <!-- Primary Meta Tags -->
+  <meta name="description" content="{% block meta_description %}House of Aesthetics curates heirloom-grade pure Ayurvedic copper water bottles, 7-chakra gemstone crystal trees, and artisan soy candles. Shipped plastic-free from Pune across India.{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}house of aesthetics, pure copper water bottle, royal ornate copper bottle, 7 chakra gemstone tree, tree of life crystal, aesthetic desk essentials, conscious living, eco luxury lifestyle, buy copper bottle online india, pune lifestyle store{% endblock %}">
+  <meta name="author" content="House of Aesthetics">
+  <meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock %}">
+  <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+
+  <!-- Local & Geo SEO (Pune, Maharashtra, India) -->
+  <meta name="geo.region" content="IN-MH">
+  <meta name="geo.placename" content="Pune">
+  <meta name="geo.position" content="18.5204;73.8567">
+  <meta name="ICBM" content="18.5204, 73.8567">
+  <meta name="theme-color" content="#6B1724">
+  <meta name="apple-mobile-web-app-title" content="House of Aesthetics">
+  <meta name="application-name" content="House of Aesthetics">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
   <meta property="og:site_name" content="House of Aesthetics">
-  
+  <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}House of Aesthetics | Good things. Better vibes.{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Aesthetic essentials for a more conscious everyday. Pure Ayurvedic copperware, crystal gemstone trees, and intentional objects.{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/lifestyle/hero-composition.jpg' %}{% endblock %}">
+  <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/lifestyle/hero-composition.jpg' %}{% endblock %}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{% block og_image_alt %}House of Aesthetics - Conscious Lifestyle Essentials{% endblock %}">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@housesofaesthetics">
+  <meta name="twitter:creator" content="@housesofaesthetics">
+  <meta name="twitter:title" content="{% block twitter_title %}{% block title_plain %}House of Aesthetics | Pure Copper Bottles &amp; Gemstone Trees{% endblock %}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Aesthetic, sustainable, minimal lifestyle essentials for a more conscious everyday. Hand-crafted in India.{% endblock %}">
+  <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/lifestyle/hero-composition.jpg' %}{% endblock %}">
+
   <!-- Font Preconnect & Stylesheets -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,17 +86,86 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-  <!-- JSON-LD Structured Data -->
+  <!-- JSON-LD Global Schema (Organization, LocalBusiness & Sitelinks SearchBox) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Store",
-    "name": "House of Aesthetics",
-    "description": "Modern sustainable lifestyle store for conscious routines.",
-    "url": "{{ request.scheme }}://{{ request.get_host }}",
-    "priceRange": "₹599 - ₹1499"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
+        "name": "House of Aesthetics",
+        "url": "{{ request.scheme }}://{{ request.get_host }}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/lifestyle/hero-composition.jpg' %}",
+          "caption": "House of Aesthetics Logo"
+        },
+        "email": "support@housesofaesthetics.in",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Koregaon Park",
+          "addressLocality": "Pune",
+          "addressRegion": "Maharashtra",
+          "postalCode": "411001",
+          "addressCountry": "IN"
+        },
+        "sameAs": [
+          "https://instagram.com/housesofaesthetics.in",
+          "https://pinterest.com/housesofaesthetics"
+        ]
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#localbusiness",
+        "name": "House of Aesthetics",
+        "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/lifestyle/hero-composition.jpg' %}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}",
+        "telephone": "+91-9876543210",
+        "priceRange": "₹499 - ₹2999",
+        "currenciesAccepted": "INR",
+        "paymentAccepted": "Cash, Credit Card, Debit Card, UPI, Net Banking, Razorpay",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Koregaon Park",
+          "addressLocality": "Pune",
+          "addressRegion": "Maharashtra",
+          "postalCode": "411001",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 18.5362,
+          "longitude": 73.8940
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "19:00"
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+        "url": "{{ request.scheme }}://{{ request.get_host }}",
+        "name": "House of Aesthetics",
+        "description": "Modern sustainable lifestyle store for conscious everyday essentials.",
+        "publisher": {
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "{{ request.scheme }}://{{ request.get_host }}/shop/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
   }
   </script>
+  {% block extra_schema %}{% endblock %}
   {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-[#FAF8F5] text-[#1C1B19] antialiased flex flex-col min-h-screen">

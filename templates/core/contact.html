@@ -1,7 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Contact &amp; Studio | House of Aesthetics{% endblock %}
+{% block title %}Contact &amp; Studio Care | House of Aesthetics Pune, India{% endblock %}
+{% block meta_description %}Contact House of Aesthetics studio in Pune, Maharashtra. Reach out for order inquiries, custom corporate gifting, or wholesale collaborations at support@housesofaesthetics.in.{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact House of Aesthetics",
+  "description": "Customer support, studio inquiries, and wholesale collaborations.",
+  "url": "{{ request.build_absolute_uri }}",
+  "mainEntity": {
+    "@type": "LocalBusiness",
+    "name": "House of Aesthetics Studio",
+    "email": "support@housesofaesthetics.in",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Koregaon Park",
+      "addressLocality": "Pune",
+      "addressRegion": "Maharashtra",
+      "postalCode": "411001",
+      "addressCountry": "IN"
+    }
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="bg-[#FAF8F5] py-12 sm:py-20">

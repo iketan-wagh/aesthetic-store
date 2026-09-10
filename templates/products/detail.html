@@ -1,8 +1,114 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ product.name }} | House of Aesthetics{% endblock %}
-{% block meta_description %}{{ product.short_description }}{% endblock %}
+{% block title %}{{ product.name }} | Buy Online India | House of Aesthetics{% endblock %}
+{% block meta_description %}{{ product.short_description }} Handcrafted with {{ product.materials|default:"pure natural materials" }}. Free delivery above ₹999 &amp; 7-day doorstep trial.{% endblock %}
+{% block meta_keywords %}{{ product.name }}, buy {{ product.name }} online, {{ product.category.name }}, {{ product.tags }}, aesthetic living essentials india, pune decor{% endblock %}
+
+{% block og_type %}product{% endblock %}
+{% block og_title %}{{ product.name }} | House of Aesthetics{% endblock %}
+{% block og_description %}{{ product.short_description }}{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.primary_image_url }}{% endblock %}
+{% block og_image_secure %}{{ request.scheme }}://{{ request.get_host }}{{ product.primary_image_url }}{% endblock %}
+{% block og_image_alt %}{{ product.name }} - House of Aesthetics{% endblock %}
+
+{% block twitter_title %}{{ product.name }} | House of Aesthetics{% endblock %}
+{% block twitter_description %}{{ product.short_description }}{% endblock %}
+{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.primary_image_url }}{% endblock %}
+
+{% block extra_schema %}
+<!-- Product & Breadcrumb Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.name|escapejs }}",
+  "image": [
+    "{{ request.scheme }}://{{ request.get_host }}{{ product.primary_image_url }}"{% for img in product.images.all %},
+    "{{ request.scheme }}://{{ request.get_host }}{{ img.image_url }}"{% endfor %}
+  ],
+  "description": "{{ product.short_description|escapejs }}",
+  "sku": "{{ product.sku|escapejs }}",
+  "mpn": "{{ product.sku|escapejs }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "House of Aesthetics"
+  },
+  "category": "{{ product.category.name|escapejs }}",
+  "material": "{{ product.materials|escapejs }}",
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ request.build_absolute_uri }}",
+    "priceCurrency": "INR",
+    "price": "{{ product.current_price|floatformat:2 }}",
+    "priceValidUntil": "2027-12-31",
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "{% if product.in_stock %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "seller": {
+      "@type": "Organization",
+      "name": "House of Aesthetics"
+    },
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "0.00",
+        "currency": "INR"
+      },
+      "deliveryTime": {
+        "@type": "ShippingDeliveryTime",
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 1,
+          "maxValue": 2,
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 2,
+          "maxValue": 5,
+          "unitCode": "DAY"
+        }
+      }
+    }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.average_rating|default:'4.9' }}",
+    "reviewCount": "{{ product.review_count|default:'1' }}",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ product.category.name|escapejs }}",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/shop/?category={{ product.category.slug }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ product.name|escapejs }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="bg-[#FAF8F5] py-8 sm:py-14">

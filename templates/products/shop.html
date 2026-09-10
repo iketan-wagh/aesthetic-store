@@ -1,7 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Shop All Conscious Pieces | House of Aesthetics{% endblock %}
+{% block title %}{% if selected_category %}{{ selected_category.name }} — Aesthetic &amp; Conscious Collection | House of Aesthetics{% elif query %}Search Results for “{{ query }}” | House of Aesthetics{% else %}Shop All Aesthetic Essentials &amp; Conscious Pieces | House of Aesthetics India{% endif %}{% endblock %}
+
+{% block meta_description %}{% if selected_category %}{{ selected_category.description|default:"Explore our curated collection of handcrafted aesthetic essentials." }} Free delivery in India above ₹999.{% else %}Browse the full collection of artisanal Ayurvedic copper water bottles, 7-chakra gemstone crystal trees, and conscious lifestyle essentials from House of Aesthetics.{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% if selected_category %}{{ selected_category.name }}, {{ selected_category.slug }}, {% endif %}aesthetic store, conscious living, copper bottles india, gemstone trees, desk decor pune, eco luxury essentials{% endblock %}
+
+{% block extra_schema %}
+<!-- Collection & ItemList Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{% if selected_category %}{{ selected_category.name|escapejs }}{% else %}All Aesthetic Products{% endif %}",
+  "description": "{% if selected_category %}{{ selected_category.description|escapejs }}{% else %}Full catalog of conscious lifestyle pieces{% endif %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {% for product in products %}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.counter }},
+        "url": "{{ request.scheme }}://{{ request.get_host }}{{ product.get_absolute_url }}",
+        "name": "{{ product.name|escapejs }}",
+        "image": "{{ request.scheme }}://{{ request.get_host }}{{ product.primary_image_url }}"
+      }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="bg-[#FAF8F5] py-10 sm:py-16">

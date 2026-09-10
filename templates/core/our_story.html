@@ -1,7 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Our Story | House of Aesthetics{% endblock %}
+{% block title %}Our Story &amp; Craft Manifesto | House of Aesthetics India{% endblock %}
+{% block meta_description %}Learn the story behind House of Aesthetics. Conscious everyday essentials crafted with noble materials — pure Ayurvedic copper, crystal gemstone trees, and 100% plastic-free packaging.{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Our Story - House of Aesthetics",
+  "description": "The mission, craft lineage, and sustainable design philosophy of House of Aesthetics.",
+  "url": "{{ request.build_absolute_uri }}",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "House of Aesthetics",
+    "slogan": "Good things. Better vibes.",
+    "foundingLocation": {
+      "@type": "Place",
+      "name": "Pune, Maharashtra, India"
+    }
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="bg-[#FAF8F5] py-12 sm:py-20">

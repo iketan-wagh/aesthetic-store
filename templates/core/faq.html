@@ -1,7 +1,60 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Frequently Asked Questions | House of Aesthetics{% endblock %}
+{% block title %}FAQ &amp; Product Care | House of Aesthetics Support{% endblock %}
+{% block meta_description %}Frequently asked questions regarding Ayurvedic copper bottle care, free shipping above ₹999, 7-day doorstep trials, and plastic-free packaging.{% endblock %}
+
+{% block extra_schema %}
+<!-- FAQPage Schema.org JSON-LD for Google Rich Results -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I care for my pure copper bottle?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hand-wash only with room temperature or warm water. For routine cleaning, rinse with a mix of lemon juice and a pinch of salt, then rinse thoroughly with clean water. Never put copper products in a dishwasher or microwave."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the shipping times and free shipping threshold?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We provide FREE SHIPPING on all orders above ₹999 across India. Orders are verified and dispatched within 24-48 business hours from our Pune studio. Delivery typically takes 2-5 business days."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is your return and exchange policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We offer a hassle-free 7-day return and exchange window for unused items in original packaging. If your piece arrives damaged or defective, we replace it immediately free of charge."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is your packaging truly 100% plastic-free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We use unbleached recycled FSC-certified kraft cardboard, honeycomb paper wrap, water-activated paper sealing tape, and natural soy-based inks. Zero plastic bubble wrap or styrofoam."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I apply the AESTHETIC10 discount coupon?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter AESTHETIC10 in the discount code input box on the Cart or Checkout page and click 'Apply'. A 10% discount will automatically be deducted from your eligible subtotal."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="bg-[#FAF8F5] py-12 sm:py-20">
